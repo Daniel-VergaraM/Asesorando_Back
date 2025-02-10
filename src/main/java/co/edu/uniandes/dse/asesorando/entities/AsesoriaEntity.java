@@ -4,12 +4,11 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+
 import lombok.Data;
 
 @Data
 @Entity
-
-@OnetooMany
 
 
 
@@ -22,8 +21,6 @@ public class AsesoriaEntity extends BaseEntity {
 
     @ManyToOne
     private UsuarioEntity usuario;
-    
-    
     
     
 
