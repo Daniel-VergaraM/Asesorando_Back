@@ -23,13 +23,15 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 
@@ -49,6 +51,7 @@ public class UsuarioEntity extends BaseEntity {
     private String correo;
     private String telefono;
     private String contrasena;
-    // TODO: Cambiar de String a AsesoriaEntity
-    private ArrayList<String> asesoriasCompletadas;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AsesoriaEntity> asesoriasCompletadas;
 }
