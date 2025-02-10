@@ -4,7 +4,8 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
@@ -21,8 +22,15 @@ public class AsesoriaEntity extends BaseEntity {
 
     @ManyToOne
     private UsuarioEntity usuario;
-    
-    
+
+    @OneToOne
+    private CalendarioEntity calendario;
+    @OneToOne
+    private ComentarioEntity comentario;
+
+    @OneToMany
+    private ProfesorEntity profesor;
+
 
 
 
