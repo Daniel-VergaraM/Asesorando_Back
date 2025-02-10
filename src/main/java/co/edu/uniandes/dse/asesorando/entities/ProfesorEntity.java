@@ -20,23 +20,32 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
-
+ */
 package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.ArrayList;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Data;
 
+
+/*
+ * 
+ * Clase que representa un profesor de cualquier tipo en la base de datos
+ * 
+ * Author: @Daniel-VergaraM
+ */
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ProfesorEntity extends UsuarioEntity {
+
     private String formacion;
     private ArrayList<String> tematicas;
     private String experiencia;
     private String precioHora;
     private String fotoUrl;
     private String videoUrl;
-    private ArrayList<String> horariosDisponibilidad;
 }
