@@ -25,9 +25,9 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.ArrayList;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
 
@@ -38,7 +38,7 @@ import lombok.Data;
  * Author: @Daniel-VergaraM
  */
 @Data
-@Entity
+@MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ProfesorEntity extends UsuarioEntity {
 
