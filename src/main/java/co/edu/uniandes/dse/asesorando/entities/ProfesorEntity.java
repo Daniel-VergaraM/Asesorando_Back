@@ -23,10 +23,11 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
@@ -43,7 +44,8 @@ import lombok.Data;
 public class ProfesorEntity extends UsuarioEntity {
 
     private String formacion;
-    private ArrayList<String> tematicas;
+    @ManyToMany
+    private Set<TematicaEntity> tematicas;
     private String experiencia;
     private String precioHora;
     private String fotoUrl;
