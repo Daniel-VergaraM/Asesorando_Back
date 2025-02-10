@@ -10,10 +10,8 @@ import lombok.Data;
 
 @Data
 @Entity
-
-
-
 public class AsesoriaEntity extends BaseEntity {
+
     private String duracion;
     private String tematica;
     private String tipo;
@@ -25,13 +23,11 @@ public class AsesoriaEntity extends BaseEntity {
 
     @OneToOne
     private CalendarioEntity calendario;
-    @OneToOne
-    private ComentarioEntity comentario;
 
-    @OneToMany
+    @OneToMany(mappedBy = "asesoria")
+    private List<ComentarioEntity> comentarios;
+
+    @ManyToOne
     private ProfesorEntity profesor;
-
-
-
 
 }

@@ -21,39 +21,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package co.edu.uniandes.dse.asesorando.entities;
+package co.edu.uniandes.dse.asesorando.repositories;
 
 import java.util.List;
-import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.OneToMany;
-import lombok.Data;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
 
 
-/*
- * 
- * Clase que representa un profesor de cualquier tipo en la base de datos
- * 
- * Author: @Daniel-VergaraM
+/**
+ * Interfaz que define las operaciones sobre la tabla de temáticas
+ *
+ * @author @Daniel-VergaraM
  */
-@Data
-@MappedSuperclass
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class ProfesorEntity extends UsuarioEntity {
-
-    private String formacion;
-    @ManyToMany
-    private Set<TematicaEntity> tematicas;
-    private String experiencia;
-    private String precioHora;
-    private String fotoUrl;
-    private String videoUrl;
-
-    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AsesoriaEntity> asesorias;
+public interface TematicaRepository extends JpaRepository<TematicaEntity, Long> {
+    List<TematicaEntity> findByArea(String area);
+    Boolean containsProfesor(String nombre);
 }

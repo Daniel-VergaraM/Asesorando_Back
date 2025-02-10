@@ -8,9 +8,11 @@ import lombok.Data;
 
 @Data
 @Entity
-public class TematicaEntity extends BaseEntity{
+public class TematicaEntity extends BaseEntity {
+
     private String area;
-    @ManyToMany(mappedBy="tematicas")
-    private Set<ProfesorEntity> profesores;
     private String tema;
+
+    @ManyToMany(mappedBy = "tematicas")
+    private Set<ProfesorEntity> profesores;
 }
