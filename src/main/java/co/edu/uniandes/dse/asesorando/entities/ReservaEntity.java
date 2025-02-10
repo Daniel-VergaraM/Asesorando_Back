@@ -12,11 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class ReservaEntity {
-
-
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class ReservaEntity extends BaseEntity {
 
     private LocalDate fechaReserva;
 
