@@ -33,7 +33,7 @@ public class ReservaEntity {
     private Asesoria asesoria;
 
     private boolean cancelada = false;
-
+    
     
 }
 
