@@ -38,7 +38,7 @@ import lombok.Data;
  * 
  * Clase que representa un profesor de cualquier tipo en la base de datos
  * 
- * Author: @Daniel-VergaraM
+ * @author Daniel-VergaraM
  */
 @Data
 @MappedSuperclass

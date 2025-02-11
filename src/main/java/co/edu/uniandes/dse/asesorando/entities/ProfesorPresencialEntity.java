@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
  * 
  * Clase que representa un profesor de tipo presencial en la base de datos
  * 
- * Author: @Daniel-VergaraM
+ * @author Daniel-VergaraM
  */
 @Data
 @Entity

@@ -41,7 +41,7 @@ import lombok.Data;
  * 
  * Clase que representa un usuario en la base de datos
  * 
- * Author: @Daniel-VergaraM
+ * @author Daniel-VergaraM
  */
 @Data
 @MappedSuperclass
