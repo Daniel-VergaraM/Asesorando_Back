@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ComentarioRepository extends  JpaRepository<ComentarioEntity, Long> {
+public interface ComentarioRepository extends  JpaRepository<ComentarioRepository, Long> {
     
     
 }
