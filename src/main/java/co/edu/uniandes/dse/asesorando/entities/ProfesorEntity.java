@@ -25,6 +25,8 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
@@ -43,6 +45,7 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ProfesorEntity extends UsuarioEntity {
 
+    @NotNull
     private String formacion;
     @ManyToMany
     private Set<TematicaEntity> tematicas;

@@ -25,6 +25,8 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -47,9 +49,15 @@ import lombok.Data;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
+    @NotNull
     private String nombre;
+
+    @NotNull
     private String correo;
+
     private String telefono;
+
+    @NotNull
     private String contrasena;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

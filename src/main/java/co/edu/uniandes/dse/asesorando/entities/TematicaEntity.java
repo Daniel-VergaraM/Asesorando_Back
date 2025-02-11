@@ -1,6 +1,8 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.Set;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -8,9 +10,14 @@ import lombok.Data;
 
 @Data
 @Entity
-public class TematicaEntity extends BaseEntity{
+public class TematicaEntity extends BaseEntity {
+
+    @NotNull
     private String area;
-    @ManyToMany(mappedBy="tematicas")
-    private Set<ProfesorEntity> profesores;
+
+    @NotNull
     private String tema;
+
+    @ManyToMany(mappedBy = "tematicas")
+    private List<ProfesorEntity> profesores;
 }

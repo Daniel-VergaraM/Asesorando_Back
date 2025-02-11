@@ -43,7 +43,6 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("PROFESORPRESENCIAL")
 public class ProfesorPresencialEntity extends ProfesorEntity {
 
-    private String nombre;
     private Integer codigoPostal;
     private Double latitud;
     private Double longitud;
