@@ -21,51 +21,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package co.edu.uniandes.dse.asesorando.entities;
+package co.edu.uniandes.dse.asesorando.services;
 
-import java.util.List;
+import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import co.edu.uniandes.dse.asesorando.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
-/*
- * 
- * Clase que representa un usuario en la base de datos
- * 
+/**
+ * Clase que implementa la conexión con el repositorio de Usuario
+ *
  * @author Daniel-VergaraM
  */
-@Data
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
-public class UsuarioEntity extends BaseEntity {
+@Slf4j
+@Service
+public class UsuarioService {
 
-    private String tipo;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    @NotNull
-    private String nombre;
 
-    @NotNull
-    private String correo;
 
-    private String telefono;
+    @Transactional
+    ProfesorEntity registrarProfesor(@Valid @NotNull ProfesorEntity profesor) {
+        log.info("Registrando un profesor nuevo");
 
-    @NotNull
-    private String contrasena;
+        Optional<UsuarioEntity> profesorExistente = usuarioRepository.findById(profesor.getId());
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
-    private List<AsesoriaEntity> asesoriasCompletadas;
+        if (profesorExistente.isEmpty()) {
+            throw new IllegalArgumentException("El profesor ya esta registrado.");
+        }
+
+        log.info("Profesor creado");
+        return usuarioRepository.save(profesor);
+    }
+
 }

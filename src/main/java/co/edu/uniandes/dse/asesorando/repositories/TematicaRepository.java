@@ -8,6 +8,6 @@ import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
 
 
 public interface TematicaRepository extends JpaRepository<TematicaEntity, Long>{
-    Set<TematicaEntity> findByTematica(String tematica);
+    Set<TematicaEntity> findByTema(String tema);
     Set<TematicaEntity> findByArea(String area);
 }
