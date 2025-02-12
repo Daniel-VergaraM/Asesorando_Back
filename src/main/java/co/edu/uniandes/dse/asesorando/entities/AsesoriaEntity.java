@@ -1,10 +1,9 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -18,16 +17,14 @@ public class AsesoriaEntity extends BaseEntity {
     private String area;
     private Boolean completada;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = UsuarioEntity.class)
     private UsuarioEntity usuario;
 
     @OneToOne
     private CalendarioEntity calendario;
 
-    @OneToMany(mappedBy = "asesoria")
-    private List<ComentarioEntity> comentarios;
-
-    @ManyToOne
+    @NotNull
+    @ManyToOne(targetEntity = ProfesorEntity.class)
     private ProfesorEntity profesor;
 
 }

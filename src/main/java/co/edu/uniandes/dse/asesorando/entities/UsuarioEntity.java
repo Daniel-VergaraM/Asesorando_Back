@@ -23,32 +23,50 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /*
  * 
  * Clase que representa un usuario en la base de datos
  * 
- * Author: @Daniel-VergaraM
+ * @author Daniel-VergaraM
  */
 @Data
-@MappedSuperclass
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
+    private String tipo;
+
+    @NotNull
     private String nombre;
+
+    @NotNull
     private String correo;
+
     private String telefono;
+
+    @NotNull
     private String contrasena;
-    // TODO: Cambiar de String a AsesoriaEntity
-    private ArrayList<String> asesoriasCompletadas;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
+    private List<AsesoriaEntity> asesoriasCompletadas;
 }
