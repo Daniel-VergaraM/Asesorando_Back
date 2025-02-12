@@ -16,16 +16,16 @@ public class ReservaEntity extends BaseEntity {
 
     private LocalDate fechaReserva;
 
- 
+    private boolean cancelada = false;
+
     //@JoinColumn(name = "estudiante_id", nullable = false)
     //private Estudiante estudiante;
 
-    
     //@JoinColumn(name = "asesoria_id", nullable = false)
    // private Asesoria asesoria;
 
     private boolean cancelada = false;
     private String estado;
-    
+  
 }
 
