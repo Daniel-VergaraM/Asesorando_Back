@@ -23,7 +23,9 @@ public class ReservaEntity extends BaseEntity {
 
     //@JoinColumn(name = "asesoria_id", nullable = false)
    // private Asesoria asesoria;
-    
-    
+
+    private boolean cancelada = false;
+    private String estado;
+  
 }
 
