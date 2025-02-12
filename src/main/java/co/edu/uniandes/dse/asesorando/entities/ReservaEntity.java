@@ -25,7 +25,7 @@ public class ReservaEntity extends BaseEntity {
    // private Asesoria asesoria;
 
     private boolean cancelada = false;
-    
+    private String estado;
     
 }
 
