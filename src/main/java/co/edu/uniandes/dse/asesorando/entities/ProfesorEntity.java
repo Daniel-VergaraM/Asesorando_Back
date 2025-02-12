@@ -61,4 +61,27 @@ public class ProfesorEntity extends UsuarioEntity {
     private String fotoUrl;
     private String videoUrl;
 
+    public ProfesorEntity() {
+        super();
+        this.tipo = "PROFESOR";
+        this.asesorias = List.of();
+        this.tematicas = Set.of();
+        this.formacion = "";
+        this.experiencia = "";
+        this.precioHora = "";
+        this.fotoUrl = "";
+        this.videoUrl = "";
+    }
+
+    public ProfesorEntity(ProfesorEntity profesor) {
+        super();
+        this.asesorias = profesor.asesorias;
+        this.tematicas = profesor.tematicas;
+        this.formacion = profesor.formacion;
+        this.experiencia = profesor.experiencia;
+        this.precioHora = profesor.precioHora;
+        this.fotoUrl = profesor.fotoUrl;
+        this.videoUrl = profesor.videoUrl;
+    }
+
 }
