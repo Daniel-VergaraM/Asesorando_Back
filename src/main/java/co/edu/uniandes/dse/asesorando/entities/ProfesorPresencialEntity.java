@@ -27,11 +27,10 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Data;
 
-
-/*
- * 
+/**
+ *
  * Clase que representa un profesor de tipo presencial en la base de datos
- * 
+ *
  * @author Daniel-VergaraM
  */
 @Data

@@ -38,11 +38,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-/*
- * 
+/**
+ *
  * Clase que representa un usuario en la base de datos
- * 
+ *
  * @author Daniel-VergaraM
  */
 @Data

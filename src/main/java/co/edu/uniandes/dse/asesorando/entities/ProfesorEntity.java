@@ -36,11 +36,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-
-/*
- * 
+/**
+ *
  * Clase que representa un profesor de cualquier tipo en la base de datos
- * 
+ *
  * @author Daniel-VergaraM
  */
 @Data
@@ -53,7 +52,7 @@ public class ProfesorEntity extends UsuarioEntity {
     @ManyToMany
     private Set<TematicaEntity> tematicas;
 
-    @OneToMany(mappedBy = "profesor", cascade= CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesorias;
 
     private String experiencia;
