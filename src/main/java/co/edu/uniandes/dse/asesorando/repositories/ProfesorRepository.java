@@ -37,9 +37,25 @@ import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
  */
 public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> {
 
+
+    /**
+     * Obtiene todos los profesores de un tipo en particular
+     * @param tipo
+     * @return
+     */
     <T extends ProfesorEntity> List<T> findByTipo(String tipo);
 
+    /**
+     * Obtiene un profesor por correo electrónico
+     * @param correo
+     * @return
+     */
     <T extends ProfesorEntity> Optional<T> findByCorreo(String correo);
 
+    /**
+     * Obtiene un profesor por su nombre
+     * @param nombre
+     * @return
+     */
     <T extends ProfesorEntity> Optional<T> findByNombre(String nombre);
 }
