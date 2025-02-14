@@ -9,7 +9,6 @@ import lombok.Data;
 
 @Data
 @Entity
-
 public class AsesoriaEntity extends BaseEntity {
 
     private String duracion;
@@ -23,8 +22,6 @@ public class AsesoriaEntity extends BaseEntity {
 
     @OneToOne
     private CalendarioEntity calendario;
-    @OneToOne
-    private ComentarioEntity comentario;
 
     @NotNull
     @ManyToOne(targetEntity = ProfesorEntity.class)
