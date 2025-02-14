@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
  * 
  * Clase que representa un profesor de tipo presencial en la base de datos
  * 
- * Author: @Daniel-VergaraM
+ * @author Daniel-VergaraM
  */
 @Data
 @Entity
@@ -43,7 +43,6 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("PROFESORPRESENCIAL")
 public class ProfesorPresencialEntity extends ProfesorEntity {
 
-    private String nombre;
     private Integer codigoPostal;
     private Double latitud;
     private Double longitud;
