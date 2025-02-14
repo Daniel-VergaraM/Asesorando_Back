@@ -92,10 +92,14 @@ public class AsesoriaService {
         
         return asesoriaRepository.findByCompletada(completada);
     }
-    
+    @Transactional
+    public List <AsesoriaEntity> getAsesoriasByProfesor(ProfesorEntity profesor) throws IllegalOperationException {
+        log.info("Inicia proceso de consulta de asesorias con profesor = {}", profesor);
+        
+        return asesoriaRepository.findByProfesor(profesor);
+    }
 
     
-
 
     
 }
