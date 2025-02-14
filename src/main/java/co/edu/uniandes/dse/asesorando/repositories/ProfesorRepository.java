@@ -21,34 +21,41 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package co.edu.uniandes.dse.asesorando.entities;
+package co.edu.uniandes.dse.asesorando.repositories;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import lombok.Data;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 
 /**
+ * Interfaz que define las operaciones sobre la tabla de profesores
  *
- * Clase que representa un profesor de tipo virtual en la base de datos
- *
- * @author: @Daniel-VergaraM
+ * @author @Daniel-VergaraM
  */
-@Data
-@Entity
-@DiscriminatorValue("PROFESORVIRTUAL")
-public class ProfesorVirtualEntity extends ProfesorEntity {
+public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> {
 
-    private String enlaceReunion;
 
-    public ProfesorVirtualEntity() {
-        super();
-        this.tipo = "PROFESORVIRTUAL";
-        this.enlaceReunion = "";
-    }
+    /**
+     * Obtiene todos los profesores de un tipo en particular
+     * @param tipo
+     * @return
+     */
+    <T extends ProfesorEntity> List<T> findByTipo(String tipo);
 
-    public ProfesorVirtualEntity(ProfesorVirtualEntity profesor) {
-        super(profesor);
-        this.tipo = "PROFESORVIRTUAL";
-        this.enlaceReunion = profesor.enlaceReunion;
-    }
+    /**
+     * Obtiene un profesor por correo electrónico
+     * @param correo
+     * @return
+     */
+    <T extends ProfesorEntity> Optional<T> findByCorreo(String correo);
+
+    /**
+     * Obtiene un profesor por su nombre
+     * @param nombre
+     * @return
+     */
+    <T extends ProfesorEntity> Optional<T> findByNombre(String nombre);
 }

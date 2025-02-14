@@ -33,17 +33,15 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-/*
- * 
+/**
+ *
  * Clase que representa un usuario en la base de datos
- * 
+ *
  * @author Daniel-VergaraM
  */
 @Data
@@ -54,7 +52,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
-    private String tipo;
+    public String tipo;
 
     @NotNull
     private String nombre;
@@ -69,4 +67,13 @@ public class UsuarioEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesoriasCompletadas;
+
+    public UsuarioEntity(UsuarioEntity usuario) {
+        this.asesoriasCompletadas = usuario.asesoriasCompletadas;
+        this.contrasena = usuario.contrasena;
+        this.correo = usuario.correo;
+        this.telefono = usuario.telefono;
+        this.nombre = usuario.nombre;
+        this.tipo = usuario.tipo;
+    }
 }
