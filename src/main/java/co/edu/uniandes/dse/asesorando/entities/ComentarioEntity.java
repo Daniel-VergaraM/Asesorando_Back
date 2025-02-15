@@ -1,7 +1,7 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,7 @@ public class ComentarioEntity extends BaseEntity {
 
     private Integer calificacion;
 
-    @OneToMany(mappedBy = "comentar")
+    @ManyToOne
     private EstudianteEntity estudiante;
 
-   
 }
