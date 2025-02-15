@@ -7,16 +7,18 @@ import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.repositories.ComentarioRepository;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @MappedSuperclass
+@Slf4j
 public class ComentarioService{
 
     @Autowired
     private ComentarioRepository comentarioRepository;
 @Transactional    
 public ComentarioEntity crearComentario(ComentarioEntity comentario) throws IllegalArgumentException{
- 
+    log.info("Inicia proceso de creación de comentario");
     if( comentario.getComentario() == null || comentario.getComentario().isEmpty() 
     || comentario.getCalificacion() == null) {
         throw new IllegalArgumentException("El comentario no puede ser nulo o vacio");
@@ -30,8 +32,8 @@ public ComentarioEntity crearComentario(ComentarioEntity comentario) throws Ille
 }
 
 @Transactional
-public ComentarioEntity leer_comentario(ComentarioEntity comentario){
-
+public ComentarioEntity leer_comentario(ComentarioEntity comentario) throws IllegalArgumentException{
+    log.info("Inicia proceso de lectura de comentario");
     if (comentario.getId() == null){
         throw new IllegalArgumentException("El id del comentario no puede ser nulo");
     }
@@ -44,7 +46,8 @@ public ComentarioEntity leer_comentario(ComentarioEntity comentario){
 }
 
 @Transactional
-public ComentarioEntity actualizar_comentario(ComentarioEntity comentario){
+public ComentarioEntity actualizar_comentario(ComentarioEntity comentario) throws IllegalArgumentException{
+    log.info("Inicia proceso de actualizacion de comentario");    
     if( comentario.getComentario() == null || comentario.getComentario().isEmpty() 
     || comentario.getCalificacion() == null) {
         throw new IllegalArgumentException("El comentario no puede ser nulo o vacio");
@@ -61,7 +64,8 @@ public ComentarioEntity actualizar_comentario(ComentarioEntity comentario){
 
 
 @Transactional
-public void  eliminar_comentario(ComentarioEntity comentario){
+public void  eliminar_comentario(ComentarioEntity comentario) throws IllegalArgumentException{
+    log.info("Inicia proceso de eliminacion de comentario");
     if(comentario.getId() == null){
         throw new IllegalArgumentException("El id del comentario no puede ser nulo");
     }
