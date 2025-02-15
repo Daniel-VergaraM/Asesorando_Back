@@ -10,7 +10,7 @@ import lombok.Data;
 
 /**
  * Clase que representa una temática en la base de datos
- * 
+ *
  * @author Daniel-VergaraM
  */
 @Data

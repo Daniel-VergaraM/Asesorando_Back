@@ -25,22 +25,30 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-/*
- * 
+/**
+ *
  * Clase que representa un profesor de tipo virtual en la base de datos
- * 
- * Author: @Daniel-VergaraM
+ *
+ * @author: @Daniel-VergaraM
  */
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @DiscriminatorValue("PROFESORVIRTUAL")
 public class ProfesorVirtualEntity extends ProfesorEntity {
 
     private String enlaceReunion;
+
+    public ProfesorVirtualEntity() {
+        super();
+        this.tipo = "PROFESORVIRTUAL";
+        this.enlaceReunion = "";
+    }
+
+    public ProfesorVirtualEntity(ProfesorVirtualEntity profesor) {
+        super(profesor);
+        this.tipo = "PROFESORVIRTUAL";
+        this.enlaceReunion = profesor.enlaceReunion;
+    }
 }

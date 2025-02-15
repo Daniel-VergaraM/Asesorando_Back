@@ -24,6 +24,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.asesorando.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -31,11 +32,30 @@ import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 
 /**
  * Interfaz que define las operaciones sobre la tabla de profesores
- * 
+ *
  * @author @Daniel-VergaraM
  */
 public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> {
-    List<ProfesorEntity> findByTipo(String tipo);
-    List<ProfesorEntity> findByTematica(String tematica);
-    List<ProfesorEntity> findByTipoAndTematica(String tipo, String tematica);
+
+
+    /**
+     * Obtiene todos los profesores de un tipo en particular
+     * @param tipo
+     * @return
+     */
+    <T extends ProfesorEntity> List<T> findByTipo(String tipo);
+
+    /**
+     * Obtiene un profesor por correo electrónico
+     * @param correo
+     * @return
+     */
+    <T extends ProfesorEntity> Optional<T> findByCorreo(String correo);
+
+    /**
+     * Obtiene un profesor por su nombre
+     * @param nombre
+     * @return
+     */
+    <T extends ProfesorEntity> Optional<T> findByNombre(String nombre);
 }
