@@ -2,6 +2,7 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ReservaService {
         }
     
         @Transactional
-        public String toString(String fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) {
+        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) {
             return "ReservaEntity{" +
                 "fechaReserva='" + fechaReserva + '\'' +
                 ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
@@ -48,7 +49,34 @@ public class ReservaService {
         @Transactional
         public List<ReservaEntity> listarReservas() {
             return reservaRepository.findAll();
+        }   
+
+        @Transactional
+        public void eliminarReserva(Long Id) {
+            ReservaEntity reservaEliminar = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
+            reservaRepository.delete(reservaEliminar);
+
         }
+
+        @Transactional
+        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNueva, AsesoriaEntity asesoriaNueva){
+            ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
+
+            reservaUpdate.setFechaReserva(fechaReservaNueva);
+            reservaUpdate.setEstudiante(estudianteNueva);
+            reservaUpdate.setAsesoria(asesoriaNueva);
+
+            ReservaEntity reservaGuardada = reservaRepository.save(reservaUpdate);
+
+            return reservaGuardada;
+        }
+        
+
+
+
+
+
+
 
     
 
