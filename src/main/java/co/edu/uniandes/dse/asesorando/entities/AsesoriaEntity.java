@@ -29,7 +29,9 @@ public class AsesoriaEntity extends BaseEntity {
     @JoinColumn(name = "profesor_id", nullable = false)
     private ProfesorEntity profesor;
 
-
+    @OneToOne(mappedBy = "asesoria")
+    private ReservaEntity reserva;
+    
 }
 
 
