@@ -25,10 +25,7 @@ public class AsesoriaEntity extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
-    @OneToOne
-    @JoinColumn(name = "comentario")
-    private ComentarioEntity comentario;
-
+    
     @ManyToOne
     @JoinColumn(name = "profesor")
     private ProfesorEntity profesor;
