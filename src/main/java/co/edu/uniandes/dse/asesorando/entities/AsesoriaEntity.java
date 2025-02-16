@@ -23,13 +23,14 @@ public class AsesoriaEntity extends BaseEntity {
     private UsuarioEntity usuario;
 
     @OneToOne
+    @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
     @OneToOne
+    @JoinColumn(name = "comentario")
     private ComentarioEntity comentario;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "profesor_id", nullable = false)
+    @JoinColumn(name = "profesor")
     private ProfesorEntity profesor;
 
 
