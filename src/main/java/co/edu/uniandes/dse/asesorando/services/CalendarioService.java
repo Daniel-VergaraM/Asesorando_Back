@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
@@ -55,8 +56,11 @@ public class CalendarioService {
 }
 
   @Transactional
-    public void deleteCalendario(Long id) {
+    public void deleteCalendario(Long id) throws EntityNotFoundException {
     log.info("Inicia proceso de eliminación del calendario con id = {0}", id);
+    if(calendarioRepository.findById(id).isEmpty()){
+        throw new EntityNotFoundException("No se encontró el calendario con el id = {0}");
+    }
     calendarioRepository.deleteById(id);
     log.info("Termina proceso de eliminación del calendario con id = {0}", id);
 }
