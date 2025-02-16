@@ -33,5 +33,3 @@ public class AsesoriaEntity extends BaseEntity {
     private ReservaEntity reserva;
     
 }
-
-

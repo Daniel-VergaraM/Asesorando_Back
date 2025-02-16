@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public class ReservaEntity extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
-    
+
     @OneToOne
     @JoinColumn(name = "asesoria")
     private AsesoriaEntity asesoria;
@@ -40,6 +39,5 @@ public class ReservaEntity extends BaseEntity {
     private boolean cancelada = false;
 
     private String estado = "noCompletada";
-    
-}
 
+}
