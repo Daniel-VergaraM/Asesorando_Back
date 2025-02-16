@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import java.util.Date;
 
@@ -9,9 +10,11 @@ import java.util.Date;
 
 public class CalendarioEntity extends BaseEntity 
 { 
-
-private Date fechaInicio;
-private Date fechaFin;
+    @OneToOne(mappedBy = "calendario")
+    private ReservaEntity reserva;
+    
+    private Date fechaInicio;
+    private Date fechaFin;
 
 }
 
