@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -15,6 +16,9 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class EstudianteEntity extends UsuarioEntity {
     
+    @OneToMany(mappedBy = "estudiante")
+    private List<ReservaEntity> reservas;
+  
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesorias;
 
@@ -27,4 +31,5 @@ public class EstudianteEntity extends UsuarioEntity {
         super();
         this.asesorias = estudiante.asesorias;
     }
+
 }
