@@ -1,6 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ReservaEntity extends BaseEntity {
 
-    private LocalDate fechaReserva;
+    private Date fechaReserva;
 
     @ManyToOne
     @JoinColumn(name = "estudiante")
@@ -36,7 +36,7 @@ public class ReservaEntity extends BaseEntity {
     @JoinColumn(name = "comentario")
     private ComentarioEntity comentario;
 
-    private boolean cancelada = false;
+    private Boolean cancelada = false;
 
     private String estado = "noCompletada";
 
