@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Data
+@Data   
 @Entity
 public class AsesoriaEntity extends BaseEntity {
 
@@ -21,24 +21,17 @@ public class AsesoriaEntity extends BaseEntity {
     @ManyToOne(targetEntity = UsuarioEntity.class)
     private UsuarioEntity usuario;
 
-<<<<<<< HEAD
-    @OneToOne
-    @JoinColumn(name = "calendario")
-    private CalendarioEntity calendario;
-    
-=======
     @ManyToOne
     @JoinColumn(name = "calendario_id")
     private CalendarioEntity calendario;
 
     @NotNull
->>>>>>> 7398f4e804032446d833015a386fbe16a30f3a8a
     @ManyToOne
-    @JoinColumn(name = "profesor")
+    @JoinColumn(name = "profesor_id")
     private ProfesorEntity profesor;
 
     @OneToOne
-    @JoinColumn(name = "calendario")
+    @JoinColumn(name = "reserva_id")
     private ReservaEntity reserva;
     
 }
