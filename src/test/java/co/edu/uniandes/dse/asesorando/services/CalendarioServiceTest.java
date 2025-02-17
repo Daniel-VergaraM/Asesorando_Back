@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
-import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+//import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import jakarta.transaction.Transactional;
