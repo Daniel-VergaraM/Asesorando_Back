@@ -21,18 +21,29 @@ public class ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
-    
+
         @Transactional
         public ReservaEntity crearReserva(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria){ 
-               ReservaEntity reserva = new ReservaEntity();
+               
+            if (fechaReserva == null) {
+                throw new IllegalArgumentException("La fecha de la reserva no puede ser nula");
+            }
+            if (estudiante == null) {
+                throw new IllegalArgumentException("El estudiante no puede ser nulo");
+            }
+            if (asesoria == null) {
+                throw new IllegalArgumentException("La asesoría no puede ser nula");
+            }
     
-               reserva.setFechaReserva(fechaReserva);
-               reserva.setEstudiante(estudiante);
-               reserva.setAsesoria(asesoria);
+            ReservaEntity reserva = new ReservaEntity();
     
-               ReservaEntity reservaGuardada = reservaRepository.save(reserva);
+            reserva.setFechaReserva(fechaReserva);
+            reserva.setEstudiante(estudiante);
+            reserva.setAsesoria(asesoria);
     
-               return reservaGuardada;
+            ReservaEntity reservaGuardada = reservaRepository.save(reserva);
+    
+            return reservaGuardada;
         }
     
         @Transactional
@@ -51,32 +62,35 @@ public class ReservaService {
 
         @Transactional
         public void eliminarReserva(Long Id) {
+
+            if (Id == null) {
+                throw new IllegalArgumentException("El ID de la reserva no puede ser nulo");
+            }
+
             ReservaEntity reservaEliminar = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
             reservaRepository.delete(reservaEliminar);
+    }
 
-        }
 
         @Transactional
-        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNueva, AsesoriaEntity asesoriaNueva){
+        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva){
+            
             ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
 
+            if (Id == null) {throw new IllegalArgumentException("El ID de la reserva no puede ser nulo");}
+            if (fechaReservaNueva == null) {throw new IllegalArgumentException("La nueva fecha de la reserva no puede ser nula");}
+            if (estudianteNuevo == null) {throw new IllegalArgumentException("El nuevo estudiante no puede ser nulo");}
+            if (asesoriaNueva == null) {throw new IllegalArgumentException("La nueva asesoría no puede ser nula");}
+
             reservaUpdate.setFechaReserva(fechaReservaNueva);
-            reservaUpdate.setEstudiante(estudianteNueva);
+            reservaUpdate.setEstudiante(estudianteNuevo);
             reservaUpdate.setAsesoria(asesoriaNueva);
 
             ReservaEntity reservaGuardada = reservaRepository.save(reservaUpdate);
 
             return reservaGuardada;
         }
-        
 
-
-
-
-
-
-
-    
 
     }
 
