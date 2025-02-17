@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
@@ -107,4 +108,11 @@ public class CalendarioService {
     return calendarioEntity;
 
     }
+@Transactional
+public List<CalendarioEntity> findByProfesor(ProfesorEntity profesor){
+    log.info("Inicia proceso de consultar el calendario con profesor = {0}", profesor);
+    List<CalendarioEntity> calendarioEntity = calendarioRepository.findByProfesor(profesor);
+    log.info("Termina proceso de consultar el calendario con profesor = {0}", profesor);
+    return calendarioEntity;
+}
 }
