@@ -23,31 +23,64 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-
-/*
- * 
+/**
+ *
  * Clase que representa un profesor de cualquier tipo en la base de datos
- * 
- * Author: @Daniel-VergaraM
+ *
+ * @author Daniel-VergaraM
  */
 @Data
-@MappedSuperclass
+@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ProfesorEntity extends UsuarioEntity {
 
+    @NotNull
     private String formacion;
     @ManyToMany
     private Set<TematicaEntity> tematicas;
+
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
+    private List<AsesoriaEntity> asesorias;
+
     private String experiencia;
     private String precioHora;
     private String fotoUrl;
     private String videoUrl;
+
+    public ProfesorEntity() {
+        super();
+        this.tipo = "PROFESOR";
+        this.asesorias = List.of();
+        this.tematicas = Set.of();
+        this.formacion = "";
+        this.experiencia = "";
+        this.precioHora = "";
+        this.fotoUrl = "";
+        this.videoUrl = "";
+    }
+
+    public ProfesorEntity(ProfesorEntity profesor) {
+        super();
+        this.asesorias = profesor.asesorias;
+        this.tematicas = profesor.tematicas;
+        this.formacion = profesor.formacion;
+        this.experiencia = profesor.experiencia;
+        this.precioHora = profesor.precioHora;
+        this.fotoUrl = profesor.fotoUrl;
+        this.videoUrl = profesor.videoUrl;
+    }
+
 }
