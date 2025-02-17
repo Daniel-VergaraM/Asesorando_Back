@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -32,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
 import co.edu.uniandes.dse.asesorando.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -49,20 +52,116 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
-
+    /**
+     * Crea un usuario por medio de un objeto usuario
+     */
     @Transactional
-    ProfesorEntity registrarProfesor(@Valid @NotNull ProfesorEntity profesor) {
-        log.info("Registrando un profesor nuevo");
+    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) {
+        log.info("Creando un usuario nuevo");
+        Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
 
-        Optional<UsuarioEntity> profesorExistente = usuarioRepository.findById(profesor.getId());
-
-        if (profesorExistente.isEmpty()) {
-            throw new IllegalArgumentException("El profesor ya esta registrado.");
+        if (usuarioExistente.isPresent()) {
+            log.error("El usuario con correo {} ya existe", usuario.getCorreo());
+            throw new IllegalArgumentException("El usuario con correo " + usuario.getCorreo() + " ya existe");
         }
 
-        log.info("Profesor creado");
-        return usuarioRepository.save(profesor);
+        log.info("Usuario creado");
+        return usuarioRepository.save(usuario);
+    }
+
+    /**
+     * Obtiene todos los usuarios
+     *
+     * @return
+     */
+    @Transactional
+    public List<UsuarioEntity> obtenerUsuarios() {
+        log.info("Obteniendo todos los usuarios");
+        return usuarioRepository.findAll();
+    }
+
+    /**
+     * Obtiene un usuario por su correo
+     *
+     * @param correo
+     * @return
+     */
+    @Transactional
+    public UsuarioEntity getUsuario(@NotNull Long id) {
+        log.info("Obteniendo un profesor");
+
+        Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findById(id);
+
+        if (usuarioExistente.isEmpty()) {
+            throw new IllegalArgumentException("El profesor no existe.");
+        }
+
+        log.info("Profesor obtenido");
+        return usuarioExistente.get();
+    }
+
+    /**
+     * Actualiza un usuario por medio de un objeto usuario
+     *
+     * @param id
+     * @param usuario
+     * @return
+     */
+    @Transactional
+    public UsuarioEntity updateUsuario(@NotNull Long id, @Valid @NotNull UsuarioEntity usuario) {
+        log.info("Actualizando un usuario");
+
+        UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+
+        usuarioExistente.setContrasena(usuario.getContrasena());
+        usuarioExistente.setCorreo(usuario.getCorreo());
+        usuarioExistente.setNombre(usuario.getNombre());
+        usuarioExistente.setTipo(usuario.getTipo());
+
+        if (usuario instanceof ProfesorEntity && usuarioExistente instanceof ProfesorEntity) {
+            ProfesorEntity profesor = (ProfesorEntity) usuario;
+            ProfesorEntity profesorExistente = (ProfesorEntity) usuarioExistente;
+            profesorExistente.setTematicas(profesor.getTematicas());
+            profesorExistente.setFormacion(profesor.getFormacion());
+            profesorExistente.setExperiencia(profesor.getExperiencia());
+            profesorExistente.setPrecioHora(profesor.getPrecioHora());
+            profesorExistente.setFotoUrl(profesor.getFotoUrl());
+
+            if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
+                ((ProfesorVirtualEntity) profesorExistente)
+                        .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
+            }
+
+            if (profesor instanceof ProfesorPresencialEntity && profesorExistente instanceof ProfesorPresencialEntity) {
+                ((ProfesorPresencialEntity) profesorExistente)
+                        .setCodigoPostal(((ProfesorPresencialEntity) profesor).getCodigoPostal());
+                ((ProfesorPresencialEntity) profesorExistente)
+                        .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
+                ((ProfesorPresencialEntity) profesorExistente)
+                        .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
+            }
+        }
+
+        log.info("Usuario actualizado");
+        return usuarioRepository.save(usuarioExistente);
+    }
+
+    /**
+     * Elimina un usuario por su id
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    public void deleteUsuario(@NotNull Long id) {
+        log.info("Eliminando un usuario");
+
+        UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+
+        log.info("Usuario eliminado");
+        usuarioRepository.deleteById(usuarioExistente.getId());
     }
 
 }

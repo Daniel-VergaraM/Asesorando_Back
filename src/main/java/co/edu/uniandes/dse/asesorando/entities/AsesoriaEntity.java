@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 @Entity
-
 public class AsesoriaEntity extends BaseEntity {
 
     private String duracion;
@@ -22,15 +21,24 @@ public class AsesoriaEntity extends BaseEntity {
     @ManyToOne(targetEntity = UsuarioEntity.class)
     private UsuarioEntity usuario;
 
+<<<<<<< HEAD
     @OneToOne
     @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
     
+=======
+    @ManyToOne
+    @JoinColumn(name = "calendario_id")
+    private CalendarioEntity calendario;
+
+    @NotNull
+>>>>>>> 7398f4e804032446d833015a386fbe16a30f3a8a
     @ManyToOne
     @JoinColumn(name = "profesor")
     private ProfesorEntity profesor;
 
-
+    @OneToOne
+    @JoinColumn(name = "calendario")
+    private ReservaEntity reserva;
+    
 }
-
-
