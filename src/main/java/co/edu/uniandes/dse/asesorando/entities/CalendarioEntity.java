@@ -18,7 +18,7 @@ public class CalendarioEntity extends BaseEntity
     private Date fechaFin;
 
 @PodamExclude
-
+@OneToMany(mappedBy = "calendario", fetch = FetchType.LAZY)
 private List<ReservaEntity> reservas;
 
 
@@ -28,7 +28,7 @@ private List<ReservaEntity> reservas;
 private ProfesorEntity profesor;
 
 @PodamExclude
-
+@OneToMany(mappedBy = "calendario", fetch = FetchType.LAZY)
 private List<AsesoriaEntity> asesorias;
 
 }
