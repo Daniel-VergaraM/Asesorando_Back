@@ -2,7 +2,6 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -19,13 +18,13 @@ public class CalendarioEntity extends BaseEntity
     private Date fechaFin;
 
 @PodamExclude
-@OneToMany(mappedBy = "calendario")
+@OneToMany(mappedBy = "calendario", fetch = FetchType.LAZY)
 private List<ReservaEntity> reservas;
 
 
 @PodamExclude
 @ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn (name = "profesor")
+
 private ProfesorEntity profesor;
 
 @PodamExclude
