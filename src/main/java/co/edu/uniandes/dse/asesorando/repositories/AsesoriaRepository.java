@@ -6,7 +6,7 @@
     import org.springframework.stereotype.Repository;
     
 
-import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+    import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 
     @Repository
     public interface AsesoriaRepository extends JpaRepository<AsesoriaEntity, Long> {
@@ -15,7 +15,8 @@ import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 
         List<AsesoriaEntity> findByTematica(String tematica);
 
-        List<AsesoriaEntity> findByProfesor(ProfesorEntity profesor);
+        List<AsesoriaEntity> findByProfesorId(Long profesorId);
+        List<AsesoriaEntity> findByCalendarioId(Long calendarioId);
 
         List<AsesoriaEntity> findByArea(String area);
         List<AsesoriaEntity> findByCompletada(Boolean completada);
