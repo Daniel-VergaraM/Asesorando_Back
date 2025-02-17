@@ -1,6 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ReservaEntity extends BaseEntity {
 
-    private Date fechaReserva;
+    private LocalDate fechaReserva;
 
     @ManyToOne
     @JoinColumn(name = "estudiante")
