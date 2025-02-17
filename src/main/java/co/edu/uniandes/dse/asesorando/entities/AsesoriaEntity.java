@@ -21,7 +21,8 @@ public class AsesoriaEntity extends BaseEntity {
     @ManyToOne(targetEntity = UsuarioEntity.class)
     private UsuarioEntity usuario;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "calendario_id")
     private CalendarioEntity calendario;
 
     @NotNull
@@ -29,7 +30,8 @@ public class AsesoriaEntity extends BaseEntity {
     @JoinColumn(name = "profesor_id", nullable = false)
     private ProfesorEntity profesor;
 
-
+    @OneToOne
+    @JoinColumn(name = "calendario")
+    private ReservaEntity reserva;
+    
 }
-
-
