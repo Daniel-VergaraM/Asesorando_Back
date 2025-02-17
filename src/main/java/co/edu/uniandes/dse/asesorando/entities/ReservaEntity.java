@@ -24,7 +24,7 @@ public class ReservaEntity extends BaseEntity {
     @JoinColumn(name = "estudiante")
     private EstudianteEntity estudiante;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
 
