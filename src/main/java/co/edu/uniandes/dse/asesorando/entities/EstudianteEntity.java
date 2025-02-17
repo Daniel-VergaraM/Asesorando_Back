@@ -25,11 +25,14 @@ public class EstudianteEntity extends UsuarioEntity {
         super();
         this.tipo = "ESTUDIANTE";
         this.reservas = List.of();
+        this.asesorias = List.of();
     }
 
     public EstudianteEntity(EstudianteEntity estudiante){
         super();
+        this.tipo = "ESTUDIANTE";
         this.reservas = estudiante.reservas;
+        this.asesorias = estudiante.asesorias;
     }
 
 }
