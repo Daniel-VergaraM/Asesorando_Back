@@ -1,12 +1,17 @@
 package co.edu.uniandes.dse.asesorando.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 import co.edu.uniandes.dse.asesorando.repositories.ComentarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
 
 public class ReservaComentarioService {
     @Autowired

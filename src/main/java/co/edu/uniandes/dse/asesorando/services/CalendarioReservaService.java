@@ -3,12 +3,17 @@ package co.edu.uniandes.dse.asesorando.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
 
 public class CalendarioReservaService {
     @Autowired
