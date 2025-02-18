@@ -68,7 +68,7 @@ SOFTWARE.
      }
  
      /**
-      * Lista todas las asesorías asignadas a un profesor.
+      * Lista todas las asesorías asignadas a un profesor,en este cso seria el get.
       *
       * @param profesorId ID del profesor.
       * @return Lista de asesorías del profesor.
