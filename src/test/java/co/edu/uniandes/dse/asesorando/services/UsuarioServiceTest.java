@@ -1,0 +1,158 @@
+/*
+MIT License
+
+Copyright (c) 2021 Universidad de los Andes - ISIS2603
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+package co.edu.uniandes.dse.asesorando.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+
+import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import jakarta.transaction.Transactional;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
+
+/**
+ * Clase que prueba el servicio de Usuario
+ *
+ * @author Daniel-VergaraM
+ */
+@DataJpaTest
+@Transactional
+@Import(UsuarioService.class)
+public class UsuarioServiceTest {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    private final PodamFactory factory = new PodamFactoryImpl();
+
+    private List<UsuarioEntity> data = new ArrayList<>();
+
+    private void clearData() {
+        entityManager.getEntityManager().createQuery("delete from UsuarioEntity").executeUpdate();
+        data.clear();
+    }
+
+    private void insertData() {
+        for (int i = 0; i < 3; i++) {
+            UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+            entityManager.persist(entity);
+            data.add(entity);
+        }
+    }
+
+    @BeforeEach
+    public void setUp() {
+        clearData();
+        insertData();
+    }
+
+    @Test
+    public void testCreateUsuario() {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+
+        UsuarioEntity result = usuarioService.createUsuario(entity);
+
+        assertNotNull(result);
+
+        UsuarioEntity entityInDB = entityManager.find(UsuarioEntity.class, result.getId());
+
+        assertNotNull(entityInDB);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.createUsuario(entity);
+        });
+    }
+
+    @Test
+    public void testGetUsuarios() {
+        List<UsuarioEntity> list = usuarioService.obtenerUsuarios();
+
+        List<UsuarioEntity> listInDB = entityManager
+                .getEntityManager()
+                .createQuery("select p from UsuarioEntity p", UsuarioEntity.class).getResultList();
+        assertNotNull(list);
+        assertNotNull(listInDB);
+        assertEquals(list, listInDB);
+    }
+
+    @Test
+    public void testGetUsuario() {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+        entityManager.persist(entity);
+        UsuarioEntity result = usuarioService.getUsuario(entity.getId());
+        assertNotNull(result);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.getUsuario(factory.manufacturePojo(Long.class));
+        });
+    }
+
+    @Test
+    public void testUpdateUsuario() {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+        entityManager.persist(entity);
+        UsuarioEntity result = usuarioService.updateUsuario(entity.getId(), entity);
+        assertNotNull(result);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), entity);
+        });
+    }
+
+    @Test
+    public void testDeleteUsuario() {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+        entityManager.persist(entity);
+        usuarioService.deleteUsuario(entity.getId());
+        UsuarioEntity entityInDB = entityManager.find(UsuarioEntity.class, entity.getId());
+        assertNull(entityInDB);
+    }
+
+    @Test
+    public void testGetUsuarioByCorreo() {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+        entityManager.persist(entity);
+        UsuarioEntity result = usuarioService.getUsuarioByCorreo(entity.getCorreo());
+        assertNotNull(result);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            usuarioService.getUsuarioByCorreo(factory.manufacturePojo(String.class));
+        });
+    }
+
+}
