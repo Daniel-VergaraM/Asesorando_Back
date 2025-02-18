@@ -80,6 +80,7 @@ public class ProfesorEntity extends UsuarioEntity {
         this.tipo = "PROFESOR";
         this.asesorias = List.of();
         this.tematicas = Set.of();
+        this.calendario = List.of();
         this.formacion = "";
         this.experiencia = "";
         this.precioHora = "";
@@ -92,6 +93,7 @@ public class ProfesorEntity extends UsuarioEntity {
         this.asesorias = profesor.asesorias;
         this.tematicas = profesor.tematicas;
         this.formacion = profesor.formacion;
+        this.calendario = profesor.calendario;
         this.experiencia = profesor.experiencia;
         this.precioHora = profesor.precioHora;
         this.fotoUrl = profesor.fotoUrl;
