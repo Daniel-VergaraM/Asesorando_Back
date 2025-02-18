@@ -169,4 +169,24 @@ public class UsuarioService {
         usuarioRepository.deleteById(usuarioExistente.getId());
     }
 
+    /**
+     * Obtiene un usuario por su correo
+     *
+     * @param correo
+     * @return
+     */
+    @Transactional
+    public UsuarioEntity getUsuarioByCorreo(@NotNull String correo) {
+        log.info("Obteniendo un usuario por correo");
+
+        Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(correo);
+
+        if (usuarioExistente.isEmpty()) {
+            throw new IllegalArgumentException("El usuario no existe.");
+        }
+
+        log.info("Usuario obtenido");
+        return usuarioExistente.get();
+    }
+
 }
