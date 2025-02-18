@@ -73,7 +73,7 @@ public class ProfesorEntity extends UsuarioEntity {
 
     @PodamExclude
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = CalendarioEntity.class)
-    private CalendarioEntity calendario;
+    private List<CalendarioEntity> calendario;
 
     public ProfesorEntity() {
         super();
