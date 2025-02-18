@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
 import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -20,6 +21,9 @@ public class EstudianteEntity extends UsuarioEntity {
   
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesorias;
+
+    @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ComentarioEntity.class)
+    private List<ComentarioEntity> comentarios;
 
     public EstudianteEntity(){
         super();
