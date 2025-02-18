@@ -30,17 +30,13 @@ public class ComentarioServiceTest {
     private ComentarioService comentarioService;
 
     @Autowired
-    private EstudianteService estudianteService;
-
-    @Autowired
     private TestEntityManager entityManager;
 
     private PodamFactory factory = new PodamFactoryImpl();
 
-    private List<EstudianteEntity> estudianteList = new ArrayList<>();
-    private List<ReservaEntity> reservaList = new ArrayList<>();
-    private List<ComentarioEntity> comentarioList = new ArrayList<>();
+    private final List<ComentarioEntity> comentarioList = new ArrayList<>();
 
+    
     @BeforeEach
     void setUp() {
         clearData();
@@ -145,6 +141,24 @@ public class ComentarioServiceTest {
     void testEliminarComentarioInvalido() {
         assertThrows(IllegalArgumentException.class, () -> {
             comentarioService.eliminar_comentario(0L);
+        });
+    }
+
+    @Test
+    void testCrearComentarioCalificacionInvalida() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            ComentarioEntity newEntity = factory.manufacturePojo(ComentarioEntity.class);
+            newEntity.setCalificacion(-1);
+            comentarioService.crearComentario(newEntity);
+        });
+    }
+
+    @Test
+    void testActualizarComentarioCalificacionInvalida() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            ComentarioEntity pojoEntity = factory.manufacturePojo(ComentarioEntity.class);
+            pojoEntity.setCalificacion(6);
+            comentarioService.actualizar_comentario(0L, pojoEntity);
         });
     }
 }
