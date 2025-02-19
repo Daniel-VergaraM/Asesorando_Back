@@ -23,9 +23,9 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -90,7 +90,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity createProfesor(@Valid @NotNull ProfesorEntity profesor, @Valid @NotNull String tipo) throws IllegalArgumentException{
+    public ProfesorEntity createProfesor(@Valid @NotNull ProfesorEntity profesor, @Valid @NotNull String tipo) throws IllegalArgumentException {
         log.info("Registrando un profesor nuevo");
 
         Optional<ProfesorEntity> profesorExistente = profesorRepository.findById(profesor.getId());
@@ -118,7 +118,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity updateProfesor(@NotNull Long id, @Valid @NotNull ProfesorEntity profesor)throws IllegalArgumentException {
+    public ProfesorEntity updateProfesor(@NotNull Long id, @Valid @NotNull ProfesorEntity profesor) throws IllegalArgumentException {
         log.info("Actualizando un profesor");
 
         ProfesorEntity profesorExistente = profesorRepository.findById(id)
@@ -158,7 +158,7 @@ public class ProfesorService {
      * @param profesorId
      */
     @Transactional
-    public void deleteProfesor(@NotNull Long profesorId) throws IllegalArgumentException{
+    public void deleteProfesor(@NotNull Long profesorId) throws IllegalArgumentException {
         log.info("Eliminando un profesor");
 
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
@@ -175,7 +175,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity getProfesor(Long profesorId) throws IllegalArgumentException{
+    public ProfesorEntity getProfesor(Long profesorId) throws IllegalArgumentException {
         log.info("Obteniendo un profesor");
 
         Optional<ProfesorEntity> profesorExistente = profesorRepository.findById(profesorId);
@@ -194,9 +194,9 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public <T extends ProfesorEntity> Iterable<T> getProfesores() throws IllegalArgumentException{
+    public <T extends ProfesorEntity> Iterable<T> getProfesores() throws IllegalArgumentException {
         log.info("Obteniendo todos los profesores");
-        Set<T> profesores = Set.of();
+        List<T> profesores =  new ArrayList<>();
         profesores.addAll(profesorRepository.findByTipo("PROFESORVIRTUAL"));
         profesores.addAll(profesorRepository.findByTipo("PROFESOR"));
         profesores.addAll(profesorRepository.findByTipo("PROFESORPRESENCIAL"));
@@ -211,7 +211,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public <T extends ProfesorEntity> T getProfesorPorCorreo(String correo) throws IllegalArgumentException{
+    public <T extends ProfesorEntity> T getProfesorPorCorreo(String correo) throws IllegalArgumentException {
         log.info("Obteniendo un profesor por correo");
         Optional<T> profesorExistente = profesorRepository.findByCorreo(correo);
         if (profesorExistente.isEmpty()) {
@@ -229,7 +229,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public <T extends ProfesorEntity> T getProfesorPorNombre(String nombre) throws IllegalArgumentException{
+    public <T extends ProfesorEntity> T getProfesorPorNombre(String nombre) throws IllegalArgumentException {
         log.info("Obteniendo un profesor por nombre");
         Optional<T> profesorExistente = profesorRepository.findByNombre(nombre);
         if (profesorExistente.isEmpty()) {
@@ -247,9 +247,9 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica)throws IllegalArgumentException {
+    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) throws IllegalArgumentException {
         log.info("Obteniendo un profesor por tematica");
-        Set<ProfesorEntity> profesores = Set.of();
+        List<ProfesorEntity> profesores =  new ArrayList<>();
         profesores.addAll(profesorRepository.findAll());
         profesores.removeIf(
                 profesor -> profesor.getTematicas()
@@ -266,9 +266,9 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public List<ProfesorEntity> getProfesoresPorTipo(String tipo) throws IllegalArgumentException{
+    public List<ProfesorEntity> getProfesoresPorTipo(String tipo) throws IllegalArgumentException {
         log.info("Obteniendo un profesor por tipo");
-        List<ProfesorEntity> profesores = List.of();
+        List<ProfesorEntity> profesores =  new ArrayList<>();
         if (!tipos.contains(tipo)) {
             throw new IllegalArgumentException("El tipo de profesor no es valido.");
         }
@@ -285,9 +285,9 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTipoTematica(String tipo, String tematica)throws IllegalArgumentException {
+    public Iterable<ProfesorEntity> getProfesorPorTipoTematica(String tipo, String tematica) throws IllegalArgumentException {
         log.info("Obteniendo un profesor por tipo y tematica");
-        Set<ProfesorEntity> profesores = Set.of();
+        List<ProfesorEntity> profesores =  new ArrayList<>();
         if (!tipos.contains(tipo)) {
             throw new IllegalArgumentException("El tipo de profesor no es valido.");
         }
