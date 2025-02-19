@@ -93,12 +93,17 @@ public class AsesoriaService {
         return asesoriaRepository.findByCompletada(completada);
     }
     @Transactional
-    public List <AsesoriaEntity> getAsesoriasByProfesor(ProfesorEntity profesor) throws IllegalOperationException {
-        log.info("Inicia proceso de consulta de asesorias con profesor = {}", profesor);
+    public List <AsesoriaEntity> getAsesoriasByProfesorId(Long profesorId) throws IllegalOperationException {
+        log.info("Inicia proceso de consulta de asesorias con profesorId = {}", profesorId);
         
-        return asesoriaRepository.findByProfesor(profesor);
+        return asesoriaRepository.findByProfesorId(profesorId);
     }
-
+    @Transactional
+    public List <AsesoriaEntity> getAsesoriasByCalendarioId(Long calendarioId) throws IllegalOperationException {
+        log.info("Inicia proceso de consulta de asesorias con calendarioId = {}", calendarioId);
+        
+        return asesoriaRepository.findByCalendarioId(calendarioId);
+    }
     
 
     

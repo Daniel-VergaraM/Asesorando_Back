@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Data
+@Data   
 @Entity
 public class AsesoriaEntity extends BaseEntity {
 
@@ -27,11 +27,11 @@ public class AsesoriaEntity extends BaseEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "profesor_id", nullable = false)
+    @JoinColumn(name = "profesor_id")
     private ProfesorEntity profesor;
 
     @OneToOne
-    @JoinColumn(name = "calendario")
+    @JoinColumn(name = "reserva_id")
     private ReservaEntity reserva;
     
 }

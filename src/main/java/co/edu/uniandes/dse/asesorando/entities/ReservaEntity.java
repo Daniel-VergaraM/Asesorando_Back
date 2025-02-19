@@ -36,7 +36,7 @@ public class ReservaEntity extends BaseEntity {
     @JoinColumn(name = "comentario")
     private ComentarioEntity comentario;
 
-    private boolean cancelada = false;
+    private Boolean cancelada = false;
 
     private String estado = "noCompletada";
 
