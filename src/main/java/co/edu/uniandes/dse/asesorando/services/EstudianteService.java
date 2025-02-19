@@ -2,6 +2,8 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import java.util.*;
 import co.edu.uniandes.dse.asesorando.repositories.EstudianteRepository;
@@ -46,6 +48,12 @@ public class EstudianteService {
         log.info("Estudiante creado exitosamente.");
         return estudianteRepository.save(estudiante);
     }
+
+    @Transactional
+	public List<EstudianteEntity> getEstudiante() {
+		log.info("Inicia proceso de consultar todos los estudiantes");
+		return estudianteRepository.findAll();
+	}
 
     @Transactional
     public EstudianteEntity getEstudiante(Long estudianteId) {
