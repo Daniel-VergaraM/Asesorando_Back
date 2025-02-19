@@ -1,5 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -27,15 +28,15 @@ public class EstudianteEntity extends UsuarioEntity {
     public EstudianteEntity(){
         super();
         this.tipo = "ESTUDIANTE";
-        this.reservas = List.of();
-        this.comentarios = List.of();
+        this.reservas =  new ArrayList<>();
+        this.comentarios =  new ArrayList<>();
     }
 
     public EstudianteEntity(EstudianteEntity estudiante){
         super();
         this.tipo = "ESTUDIANTE";
         this.reservas = estudiante.reservas;
-        this.comentarios = List.of();
+        this.comentarios = estudiante.comentarios;
     }
 
 }

@@ -25,9 +25,9 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,9 +55,6 @@ public class TematicaProfesorServiceTest {
 
     @Autowired
     private TematicaProfesorService service;
-
-    @Autowired
-    private ProfesorService profesorService;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -117,7 +114,8 @@ public class TematicaProfesorServiceTest {
     public void getProfesoresTest() {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
-        service.agregarProfesorATematica(profesor.getId(), tematica.getId());
+        ProfesorEntity result = service.agregarProfesorATematica(profesor.getId(), tematica.getId());
+        assertNotNull(result);
         List<ProfesorEntity> profesoresTematica = service.obtenerProfesores(tematica.getId());
         assertTrue(profesoresTematica.size() == 1);
     }
@@ -127,7 +125,7 @@ public class TematicaProfesorServiceTest {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
-        Set<TematicaEntity> tematicasProfesor = service.obtenerTematicas(profesor.getId());
+        List<TematicaEntity> tematicasProfesor = service.obtenerTematicas(profesor.getId());
         assertTrue(tematicasProfesor.size() == 1);
 
         Long id = factory.manufacturePojo(Long.class);
@@ -241,7 +239,7 @@ public class TematicaProfesorServiceTest {
         Boolean si = service.profesorPoseeTematicas(profesor.getId());
         assertFalse(si);
 
-    Long id = factory.manufacturePojo(Long.class);
+        Long id = factory.manufacturePojo(Long.class);
 
         assertThrows(IllegalArgumentException.class, () -> {
             service.eliminarProfesorDeTematicas(id);

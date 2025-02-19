@@ -73,7 +73,7 @@ public class EstudianteService {
     public <T extends EstudianteEntity> Iterable<T> getEstudiantes() {
         log.info("Se están obteniendo todos los estudiantes...");
 
-        Set<T> estudiantes = Set.of();
+        List<T> estudiantes =  new ArrayList<>();
         estudiantes.addAll(estudianteRepository.findByTipo("ESTUDIANTE"));
 
         log.info("Estudiantes obtenidos exitosamente.");
