@@ -7,6 +7,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -14,6 +15,7 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class EstudianteEntity extends UsuarioEntity {
     
+    @PodamExclude
     @OneToMany(mappedBy = "estudiante", targetEntity = ReservaEntity.class)
     private List<ReservaEntity> reservas;
 

@@ -57,7 +57,7 @@ public class EstudianteService {
             throw new IllegalArgumentException("El estudiante que se quiere obtener no existe.");
         }
 
-        log.info("Profesor obtenido exitosamente.");
+        log.info("Estudiante obtenido exitosamente.");
         return estudianteExistente.get();
     }
 
@@ -68,12 +68,12 @@ public class EstudianteService {
         Set<T> estudiantes = Set.of();
         estudiantes.addAll(estudianteRepository.findByTipo("ESTUDIANTE"));
 
-        log.info("Profesores obtenidos exitosamente.");
+        log.info("Estudiantes obtenidos exitosamente.");
         return estudiantes;
     }
 
     @Transactional
-    public EstudianteEntity updateProfesorById(Long id, EstudianteEntity estudiante){
+    public EstudianteEntity updateEstudianteById(Long id, EstudianteEntity estudiante){
         log.info("Se está actualizando un estudiante...");
 
         EstudianteEntity estudianteExistente = estudianteRepository.findById(id)
