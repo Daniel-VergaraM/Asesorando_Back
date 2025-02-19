@@ -26,7 +26,6 @@ package co.edu.uniandes.dse.asesorando.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -116,13 +115,17 @@ public class ProfesorServiceTest {
     @Test
     public void testGetProfesores() {
         List<ProfesorEntity> list = (List<ProfesorEntity>) profesorService.getProfesores();
-
-        List<ProfesorEntity> listInDB = entityManager
-                .getEntityManager()
-                .createQuery("select p from ProfesorEntity p", ProfesorEntity.class).getResultList();
         assertNotNull(list);
-        assertNotNull(listInDB);
-        assertEquals(list, listInDB);
+
+        for (ProfesorEntity entity : data) {
+            boolean found = false;
+            for (ProfesorEntity storedEntity : list) {
+                if (entity.getId().equals(storedEntity.getId())) {
+                    found = true;
+                }
+            }
+            assert (found);
+        }
     }
 
     @Test

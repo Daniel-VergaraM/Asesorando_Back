@@ -26,10 +26,10 @@ package co.edu.uniandes.dse.asesorando.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,39 +37,38 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 /**
- * Clase que prueba el servicio de Usuario
+ * Clase que prueba el servicio de Tematica
  *
  * @author Daniel-VergaraM
  */
 @DataJpaTest
 @Transactional
-@Import(UsuarioService.class)
-public class UsuarioServiceTest {
+@Import(TematicaService.class)
+public class TematicaServiceTest {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private TematicaService tematicaService;
 
     @Autowired
     private TestEntityManager entityManager;
 
     private final PodamFactory factory = new PodamFactoryImpl();
 
-    private List<UsuarioEntity> data = new ArrayList<>();
+    private List<TematicaEntity> data = new ArrayList<>();
 
     private void clearData() {
-        entityManager.getEntityManager().createQuery("delete from UsuarioEntity").executeUpdate();
-        data.clear();
+        entityManager.getEntityManager().createQuery("delete from TematicaEntity").executeUpdate();
     }
 
     private void insertData() {
         for (int i = 0; i < 3; i++) {
-            UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+            TematicaEntity entity = factory.manufacturePojo(TematicaEntity.class);
             entityManager.persist(entity);
             data.add(entity);
         }
@@ -82,82 +81,73 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testCreateUsuario() {
-        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
-
-        UsuarioEntity result = usuarioService.createUsuario(entity);
-
+    public void createTematicaTest() {
+        TematicaEntity newEntity = factory.manufacturePojo(TematicaEntity.class);
+        TematicaEntity result = tematicaService.createTematica(newEntity);
         assertNotNull(result);
-
-        UsuarioEntity entityInDB = entityManager.find(UsuarioEntity.class, result.getId());
-
-        assertNotNull(entityInDB);
+        TematicaEntity entity = entityManager.find(TematicaEntity.class, result.getId());
+        assertNotNull(entity);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.createUsuario(entity);
+            tematicaService.createTematica(newEntity);
         });
     }
 
     @Test
-    public void testGetUsuarios() {
-        List<UsuarioEntity> list = usuarioService.obtenerUsuarios();
+    public void getTematicasTest() {
+        List<TematicaEntity> list = tematicaService.getTematicas();
         assertNotNull(list);
 
-        for (UsuarioEntity entity : data) {
+        for (TematicaEntity entity : data) {
             boolean found = false;
-            for (UsuarioEntity storedEntity : list) {
+            for (TematicaEntity storedEntity : list) {
                 if (entity.getId().equals(storedEntity.getId())) {
                     found = true;
                 }
             }
-            assertTrue(found);
+            assert (found);
         }
-
     }
 
     @Test
-    public void testGetUsuario() {
-        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
-        entityManager.persist(entity);
-        UsuarioEntity result = usuarioService.getUsuario(entity.getId());
-        assertNotNull(result);
+    public void getTematicaTest() {
+        TematicaEntity entity = data.get(0);
+        TematicaEntity resultEntity = tematicaService.getTematica(entity.getId());
+        assertNotNull(resultEntity);
 
+        Long id = factory.manufacturePojo(Long.class);
         assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.getUsuario(factory.manufacturePojo(Long.class));
+            tematicaService.getTematica(id);
         });
     }
 
     @Test
-    public void testUpdateUsuario() {
-        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
-        entityManager.persist(entity);
-        UsuarioEntity result = usuarioService.updateUsuario(entity.getId(), entity);
-        assertNotNull(result);
+    public void updateTematicaTest() {
+        TematicaEntity entity = data.get(0);
+        TematicaEntity pojoEntity = factory.manufacturePojo(TematicaEntity.class);
+
+        pojoEntity.setId(entity.getId());
+
+        tematicaService.updateTematica(pojoEntity.getId(), pojoEntity);
+
+        TematicaEntity resp = entityManager.find(TematicaEntity.class, entity.getId());
+
+        assertEquals(pojoEntity.getId(), resp.getId());
+        Long id = factory.manufacturePojo(Long.class);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), entity);
+            tematicaService.updateTematica(id, pojoEntity);
         });
     }
 
     @Test
-    public void testDeleteUsuario() {
-        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
-        entityManager.persist(entity);
-        usuarioService.deleteUsuario(entity.getId());
-        UsuarioEntity entityInDB = entityManager.find(UsuarioEntity.class, entity.getId());
-        assertNull(entityInDB);
-    }
-
-    @Test
-    public void testGetUsuarioByCorreo() {
-        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
-        entityManager.persist(entity);
-        UsuarioEntity result = usuarioService.getUsuarioByCorreo(entity.getCorreo());
-        assertNotNull(result);
-
+    public void deleteTematicaTest() {
+        TematicaEntity entity = data.get(0);
+        tematicaService.deleteTematica(entity.getId());
+        TematicaEntity deleted = entityManager.find(TematicaEntity.class, entity.getId());
+        assertNull(deleted);
         assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.getUsuarioByCorreo(factory.manufacturePojo(String.class));
+            tematicaService.deleteTematica(entity.getId());
         });
     }
-
 }
