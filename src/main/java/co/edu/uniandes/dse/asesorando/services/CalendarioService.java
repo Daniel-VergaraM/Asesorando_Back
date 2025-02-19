@@ -10,6 +10,8 @@ import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,18 +90,19 @@ public class CalendarioService {
     log.info("Inicia proceso de consultar el calendario con fecha de inicio mayor a {0}", fechaInicio);
     List<CalendarioEntity> calendarioEntity = calendarioRepository.findByFechaInicioGreaterThan(fechaInicio);
     log.info("Termina proceso de consultar el calendario con fecha de inicio mayor a {0}", fechaInicio);
-    return calendarioEntity;
+    return calendarioEntity != null ? calendarioEntity : new ArrayList<>(); 
 
     }
 
-@Transactional  
-    public List<CalendarioEntity> getCalendarioByFechaInicioLessThan(Date fechaInicio){
-    log.info("Inicia proceso de consultar el calendario con fecha de inicio menor a {0}", fechaInicio);
+@Transactional
+public List<CalendarioEntity> getCalendarioByFechaInicioLessThan(Date fechaInicio) {
+    log.info("Inicia proceso de consultar calendarios con fecha de inicio menor a {}", fechaInicio);
     List<CalendarioEntity> calendarioEntity = calendarioRepository.findByFechaInicioLessThan(fechaInicio);
-    log.info("Termina proceso de consultar el calendario con fecha de inicio menor a {0}", fechaInicio);
-    return calendarioEntity;
+    log.info("Finaliza proceso de consulta");
 
-    }
+    return calendarioEntity != null ? calendarioEntity : new ArrayList<>();
+}
+
 @Transactional
     public List<CalendarioEntity> getCalendarioByFechaInicioBetween(Date fechaInicio, Date fechaFin){
     log.info("Inicia proceso de consultar el calendario con fecha de inicio entre {0} y {1}", fechaInicio, fechaFin);
