@@ -84,6 +84,21 @@ public class TematicaProfesorService {
     }
 
     /**
+     * Elimina a un profesor de todas las tematicas
+     *
+     * @param profesorId
+     * @return
+     */
+    @Transactional
+    public void eliminarProfesorDeTematicas(@NotNull Long profesorId) {
+        log.info("Eliminando al profesor con id: {} de todas las tematicas", profesorId);
+        ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
+                .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
+        profesorExistente.getTematicas().forEach((tematica) -> tematica.getProfesores().remove(profesorExistente));
+        profesorExistente.getTematicas().clear();
+    }
+
+    /**
      * Agrega un profesor a una tematica existente y viceversa
      *
      * @param profesorId

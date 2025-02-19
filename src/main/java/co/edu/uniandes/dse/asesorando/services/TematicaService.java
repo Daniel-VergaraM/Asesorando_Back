@@ -103,7 +103,7 @@ public class TematicaService {
      * @return
      */
     @Transactional
-    public List<TematicaEntity> obtenerTematicas() {
+    public List<TematicaEntity> getTematicas() {
         log.info("Obteniendo todas las tematicas");
         return tematicaRepository.findAll();
     }
