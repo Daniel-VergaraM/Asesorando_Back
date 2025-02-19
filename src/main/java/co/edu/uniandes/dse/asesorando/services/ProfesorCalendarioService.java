@@ -36,7 +36,9 @@ public class ProfesorCalendarioService {
 			throw new EntityNotFoundException("No se encontró el calendario con id: " + calendarioId);
 		}
 
-		ProfesorEntity profesor = profesorRepository.findById(profesorId).get();
+		ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(()-> {
+			return new EntityNotFoundException("No se encontró el profesor con id: " + profesorId);
+		});
 		CalendarioEntity calendario = calendarioRepository.findById(calendarioId).get();
 
 		calendario.setProfesor(profesor);
