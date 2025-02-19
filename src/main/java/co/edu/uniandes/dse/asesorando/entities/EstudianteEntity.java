@@ -9,6 +9,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -16,11 +17,9 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class EstudianteEntity extends UsuarioEntity {
     
+    @PodamExclude
     @OneToMany(mappedBy = "estudiante", targetEntity = ReservaEntity.class)
     private List<ReservaEntity> reservas;
-  
-    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
-    private List<AsesoriaEntity> asesorias;
 
     @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ComentarioEntity.class)
     private List<ComentarioEntity> comentarios;
@@ -29,14 +28,14 @@ public class EstudianteEntity extends UsuarioEntity {
         super();
         this.tipo = "ESTUDIANTE";
         this.reservas = List.of();
-        this.asesorias = List.of();
+        this.comentarios = List.of();
     }
 
     public EstudianteEntity(EstudianteEntity estudiante){
         super();
         this.tipo = "ESTUDIANTE";
         this.reservas = estudiante.reservas;
-        this.asesorias = estudiante.asesorias;
+        this.comentarios = List.of();
     }
 
 }

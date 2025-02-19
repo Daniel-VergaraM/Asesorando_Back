@@ -35,6 +35,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 /**
  *
@@ -49,22 +50,37 @@ public class ProfesorEntity extends UsuarioEntity {
 
     @NotNull
     private String formacion;
+
+    @PodamExclude
     @ManyToMany
     private Set<TematicaEntity> tematicas;
 
+    @PodamExclude
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesorias;
 
+    @NotNull
     private String experiencia;
+
+    @NotNull
     private String precioHora;
+
+    @NotNull
     private String fotoUrl;
+
+    @NotNull
     private String videoUrl;
+
+    @PodamExclude
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = CalendarioEntity.class)
+    private List<CalendarioEntity> calendario;
 
     public ProfesorEntity() {
         super();
         this.tipo = "PROFESOR";
         this.asesorias = List.of();
         this.tematicas = Set.of();
+        this.calendario = List.of();
         this.formacion = "";
         this.experiencia = "";
         this.precioHora = "";
@@ -77,6 +93,7 @@ public class ProfesorEntity extends UsuarioEntity {
         this.asesorias = profesor.asesorias;
         this.tematicas = profesor.tematicas;
         this.formacion = profesor.formacion;
+        this.calendario = profesor.calendario;
         this.experiencia = profesor.experiencia;
         this.precioHora = profesor.precioHora;
         this.fotoUrl = profesor.fotoUrl;
