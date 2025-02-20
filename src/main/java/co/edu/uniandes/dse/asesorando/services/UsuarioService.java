@@ -144,7 +144,7 @@ public class UsuarioService {
                         .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
             }
         } else if (usuario instanceof EstudianteEntity && usuarioExistente instanceof EstudianteEntity) {
-            ((EstudianteEntity) usuario).setAsesorias(((EstudianteEntity) usuarioExistente).getAsesorias());
+            ((EstudianteEntity) usuario).setComentarios(((EstudianteEntity) usuarioExistente).getComentarios());
             ((EstudianteEntity) usuario).setReservas(((EstudianteEntity) usuarioExistente).getReservas());
         }
 
