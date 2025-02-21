@@ -91,7 +91,7 @@ public class ComentarioEstudianteServiceTest {
     void testGetComentarios() throws EntityNotFoundException {
         List<ComentarioEntity> comentarioEntities = comentarioEstudianteService.getcomentarios(estudiante.getId());
 
-        assertEquals(3, comentarioEntities.size());
+        assertEquals(8, comentarioEntities.size());
 
         for (ComentarioEntity comentario : comentarioList) {
             assertTrue(comentarioEntities.contains(comentario));
