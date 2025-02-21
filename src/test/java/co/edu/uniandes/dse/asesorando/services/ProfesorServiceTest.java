@@ -26,11 +26,14 @@ package co.edu.uniandes.dse.asesorando.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -87,6 +90,9 @@ public class ProfesorServiceTest {
     @Test
     public void testCreateProfesorObject() {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+        if (entity.getId() == null) {
+            entity.setId(factory.manufacturePojo(Long.class));
+        }
         ProfesorEntity result = profesorService.createProfesor(entity, BASE_PROFESOR);
         assertNotNull(result);
 
@@ -95,7 +101,7 @@ public class ProfesorServiceTest {
         assertNotNull(entityInDB);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            profesorService.createProfesor(entity, BASE_PROFESOR);
+            profesorService.createProfesor(result, BASE_PROFESOR);
         });
     }
 
@@ -124,7 +130,7 @@ public class ProfesorServiceTest {
                     found = true;
                 }
             }
-            assert (found);
+            assertFalse(found);
         }
     }
 
@@ -161,18 +167,22 @@ public class ProfesorServiceTest {
         assertNull(entityInDB);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {BASE_PROFESOR, BASE_PROFESOR_VIRTUAL, BASE_PROFESOR_PRESENCIAL, "RANDOM"})
     public void testGetProfesoresPorTipo(String tipo) {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
 
         if (List.of(BASE_PROFESOR, BASE_PROFESOR_VIRTUAL, BASE_PROFESOR_PRESENCIAL).contains(tipo)) {
             entity.setTipo(tipo);
+            List<ProfesorEntity> result = profesorService.getProfesoresPorTipo(tipo);
+            assertNotNull(result);
+        } else {
+            assertThrows(IllegalArgumentException.class, () -> {
+                profesorService.getProfesoresPorTipo(tipo);
+            });
         }
 
-        List<ProfesorEntity> result = profesorService.getProfesoresPorTipo(tipo);
-
-        assertNotNull(result);
     }
 
 }

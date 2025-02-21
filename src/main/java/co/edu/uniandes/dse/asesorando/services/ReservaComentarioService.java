@@ -62,10 +62,11 @@ public class ReservaComentarioService {
         // Encuentra la reserva y elimina el comentario asociado
         ReservaEntity reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new IllegalArgumentException("La reserva no existe"));
-
+        
         ComentarioEntity comentario = reserva.getComentario();
         if (comentario != null) {
             comentarioRepository.delete(comentario);  // Elimina el comentario
+            reserva.setComentario(null);
         } else {
             throw new IllegalArgumentException("No hay comentario asociado a esta reserva");
         }
@@ -79,7 +80,10 @@ public class ReservaComentarioService {
 
         ComentarioEntity comentario = reserva.getComentario();
         if (comentario != null) {
+            comentario.setReserva(null);
             comentarioRepository.delete(comentario);  // Elimina el comentario
+            reserva.setComentario(null);
+            reservaRepository.delete(reserva);  // Elimina la reserva
         }
 
         reservaRepository.delete(reserva);  // Elimina la reserva

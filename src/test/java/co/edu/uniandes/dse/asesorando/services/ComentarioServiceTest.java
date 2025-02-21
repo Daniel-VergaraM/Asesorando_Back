@@ -1,12 +1,13 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.transaction.Transactional;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
+import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
-import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
-import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
-import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 
 @DataJpaTest
 @Transactional
@@ -58,6 +57,9 @@ public class ComentarioServiceTest {
     @Test
     void testCrearComentario() {
         ComentarioEntity newEntity = factory.manufacturePojo(ComentarioEntity.class);
+        if (newEntity.getCalificacion() < 0 || newEntity.getCalificacion() > 5) {
+            newEntity.setCalificacion(3);
+        }
         ComentarioEntity result = comentarioService.crearComentario(newEntity);
         assertNotNull(result);
         ComentarioEntity entity = entityManager.find(ComentarioEntity.class, result.getId());
@@ -111,6 +113,10 @@ public class ComentarioServiceTest {
         ComentarioEntity pojoEntity = factory.manufacturePojo(ComentarioEntity.class);
 
         pojoEntity.setId(entity.getId());
+
+        if (pojoEntity.getCalificacion() < 0 || pojoEntity.getCalificacion() > 5) {
+            pojoEntity.setCalificacion(3);
+        }
 
         comentarioService.actualizar_comentario(entity.getId(), pojoEntity);
 

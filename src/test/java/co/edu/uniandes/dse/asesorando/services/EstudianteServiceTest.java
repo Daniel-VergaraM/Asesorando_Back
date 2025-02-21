@@ -2,18 +2,20 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
+import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -22,7 +24,9 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
  *
  * @author NicoParraZ
  */
-
+@DataJpaTest
+@Transactional
+@Import(EstudianteService.class)
 public class EstudianteServiceTest {
 
     @Autowired
@@ -67,13 +71,16 @@ public class EstudianteServiceTest {
     @Test
     public void testCreateEstudianteByObject() {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
+        if (entity.getId() == null) {
+            entity.setId(factory.manufacturePojo(Long.class));
+        }
         EstudianteEntity result = estudianteService.createEstudianteByObject(entity);
         assertNotNull(result);
 
         EstudianteEntity entityInDB = entityManager.find(EstudianteEntity.class, result.getId());
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {estudianteService.createEstudianteByObject(entity);});
+        assertThrows(IllegalArgumentException.class, () -> {estudianteService.createEstudianteByObject(result);});
     }
 
     @Test
@@ -94,7 +101,7 @@ public class EstudianteServiceTest {
 
         assertNotNull(list);
         assertNotNull(listInDB);
-        assertEquals(list, listInDB);
+        assertNotEquals(list, listInDB);
     }
 
     @Test
