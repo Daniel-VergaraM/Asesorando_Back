@@ -42,6 +42,8 @@ public class ProfesorCalendarioService {
 		CalendarioEntity calendario = calendarioRepository.findById(calendarioId).get();
 
 		calendario.setProfesor(profesor);
+		profesor.getCalendario().add(calendario);
+		profesorRepository.save(profesor);
 		calendarioRepository.save(calendario);
 
 		log.info("Termina proceso de asociar un calendario al profesor con id = {}", profesorId);
@@ -84,6 +86,10 @@ public class ProfesorCalendarioService {
 			throw new EntityNotFoundException("El calendario no está asociado a este profesor.");
 		}
 
+		if (!profesor.getCalendario().contains(calendario)) {
+			throw new EntityNotFoundException("El calendario no está asociado a este profesor.");
+		}
+
 		log.info("Termina proceso de consultar el calendario con id = {} del profesor con id = {}", calendarioId, profesorId);
 		return calendario;
 	}
@@ -109,6 +115,8 @@ public class ProfesorCalendarioService {
 		}
 
 		calendario.setProfesor(null);
+		profesor.getCalendario().remove(calendario);
+		profesorRepository.save(profesor);
 		calendarioRepository.save(calendario);
 
 		log.info("Finaliza proceso de eliminar un calendario del profesor con id = {}", profesorId);

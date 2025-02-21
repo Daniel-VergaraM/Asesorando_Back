@@ -1,7 +1,9 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +74,12 @@ public class ReservaComentarioServiceTest {
     @Test
     void testObtenerComentarioPorReserva() {
         comentario.setReserva(reserva);
+        reserva.setComentario(comentario);
+        entityManager.persist(reserva);
         entityManager.persist(comentario);
 
         ComentarioEntity obtenido = reservaComentarioService.obtenerComentarioPorReserva(reserva.getId());
+
         assertNotNull(obtenido);
         assertEquals(comentario.getComentario(), obtenido.getComentario());
     }
@@ -92,6 +97,9 @@ public class ReservaComentarioServiceTest {
         entityManager.persist(comentario);
 
         ComentarioEntity comentarioActualizado = factory.manufacturePojo(ComentarioEntity.class);
+        reserva.setComentario(comentarioActualizado);
+        entityManager.persist(reserva);
+
         ComentarioEntity resultado = reservaComentarioService.actualizarComentario(reserva.getId(), comentarioActualizado);
 
         assertNotNull(resultado);
@@ -110,6 +118,8 @@ public class ReservaComentarioServiceTest {
     @Test
     void testEliminarComentario() {
         comentario.setReserva(reserva);
+        reserva.setComentario(comentario);
+        entityManager.persist(reserva);
         entityManager.persist(comentario);
 
         reservaComentarioService.eliminarComentario(reserva.getId());
@@ -127,6 +137,8 @@ public class ReservaComentarioServiceTest {
     @Test
     void testEliminarReservaYComentario() {
         comentario.setReserva(reserva);
+        reserva.setComentario(comentario);
+        entityManager.persist(reserva);
         entityManager.persist(comentario);
 
         reservaComentarioService.eliminarReservaYComentario(reserva.getId());

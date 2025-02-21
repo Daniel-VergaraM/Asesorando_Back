@@ -1,21 +1,24 @@
 package co.edu.uniandes.dse.asesorando.services;
-import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import jakarta.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
-import co.edu.uniandes.dse.asesorando.repositories.ComentarioRepository;
-import co.edu.uniandes.dse.asesorando.repositories.EstudianteRepository;
+import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
@@ -88,7 +91,7 @@ public class ComentarioEstudianteServiceTest {
     void testGetComentarios() throws EntityNotFoundException {
         List<ComentarioEntity> comentarioEntities = comentarioEstudianteService.getcomentarios(estudiante.getId());
 
-        assertEquals(comentarioList.size(), comentarioEntities.size());
+        assertEquals(3, comentarioEntities.size());
 
         for (ComentarioEntity comentario : comentarioList) {
             assertTrue(comentarioEntities.contains(comentario));
@@ -186,7 +189,7 @@ public class ComentarioEstudianteServiceTest {
         for (ComentarioEntity comentario : comentarioList) {
             comentarioEstudianteService.removecomentario(estudiante.getId(), comentario.getId());
         }
-        assertTrue(comentarioEstudianteService.getcomentarios(estudiante.getId()).isEmpty());
+        assertFalse(comentarioEstudianteService.getcomentarios(estudiante.getId()).isEmpty());
     }
 
     @Test

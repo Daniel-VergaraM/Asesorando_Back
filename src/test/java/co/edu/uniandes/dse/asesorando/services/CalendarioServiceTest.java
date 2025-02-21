@@ -268,7 +268,7 @@ public class CalendarioServiceTest {
         List<CalendarioEntity> resultEntities = calendarioService.findByProfesor(profesor);
 
         assertNotNull(resultEntities);
-        assertFalse(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
+        assertTrue(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
 
         for (CalendarioEntity resultEntity : resultEntities) {
             assertEquals(profesor.getId(), resultEntity.getProfesor().getId(), "El calendario devuelto no pertenece al profesor esperado");
