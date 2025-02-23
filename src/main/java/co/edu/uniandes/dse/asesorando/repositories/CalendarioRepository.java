@@ -14,7 +14,6 @@ public interface CalendarioRepository extends JpaRepository<CalendarioEntity, Lo
 
 List<CalendarioEntity> findByFechaInicio(Date fechaInicio);
 List<CalendarioEntity> findByFechaFin(Date fechaFin);
-List<CalendarioEntity> findByFechaInicioGreaterThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioLessThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioBetween(Date fechaInicio, Date fechaFin);
 List<CalendarioEntity> findByProfesor(ProfesorEntity profesor);

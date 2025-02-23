@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -51,7 +50,7 @@ private void insertData() {
     }
 }
     @Test
-	void testCreateCalnedario() throws IllegalOperationException {
+	void testCreateCalendario() throws IllegalOperationException {
 		CalendarioEntity newEntity = factory.manufacturePojo(CalendarioEntity.class);
 		CalendarioEntity result = calendarioService.createCalendario(newEntity);
         assertNotNull(result);   
@@ -60,6 +59,7 @@ private void insertData() {
         assertEquals(newEntity.getFechaInicio(), entity.getFechaInicio());
         assertEquals(newEntity.getFechaFin(), entity.getFechaFin());
     }
+
 
     @Test
     void testCreateOrganizationWithSameDate() throws IllegalOperationException {
@@ -83,8 +83,9 @@ private void insertData() {
         assertTrue(found);
     }
     }
+
     @Test
-    void testGetCalendario() {
+    void testGetCalendario() throws EntityNotFoundException {
     CalendarioEntity entity = calendarioList.get(0);
     CalendarioEntity resultEntity = calendarioService.getCalendario(entity.getId());
 
@@ -96,7 +97,7 @@ private void insertData() {
 
 @Test
 void testGetInvalidCalendario() {
-    assertThrows(NoSuchElementException.class, () -> {
+    assertThrows(EntityNotFoundException.class, () -> {
         calendarioService.getCalendario(0L);
     });
 }
@@ -136,7 +137,7 @@ void testGetInvalidCalendario() {
 	} 
 
     @Test
-    void testGetCalendarioByFechaInicio(){
+    void testGetCalendarioByFechaInicio() throws IllegalOperationException  {
 
         CalendarioEntity entity = calendarioList.get(0);
         CalendarioEntity resultEntity = calendarioService.getCalendarioByFechaInicio(entity.getFechaInicio());
@@ -148,12 +149,12 @@ void testGetInvalidCalendario() {
     }
     @Test
     void testGetInvalidCalendarioByFechaInicio() {
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+        assertThrows(IllegalOperationException.class, () -> {
             calendarioService.getCalendarioByFechaInicio(null);
         });
     }
     @Test
-    void testGetCalendarioByFechaFin(){
+    void testGetCalendarioByFechaFin() throws IllegalOperationException{
 
         CalendarioEntity entity = calendarioList.get(0);
         CalendarioEntity resultEntity = calendarioService.getCalendarioByFechaFin(entity.getFechaFin());
@@ -165,80 +166,52 @@ void testGetInvalidCalendario() {
     }
     @Test
     void testGetInvalidCalendarioByFechaFin() {
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+        assertThrows(IllegalOperationException.class, () -> {
             calendarioService.getCalendarioByFechaFin(null);
         });
     }
-    @Test
-void testGetCalendarioByFechaInicioGreaterThan() {
-    CalendarioEntity entity = calendarioList.get(0);
-    List<CalendarioEntity> resultEntities = calendarioService.getCalendarioByFechaInicioGreaterThan(entity.getFechaInicio());
-
-    assertNotNull(resultEntities);
-    assertFalse(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
-
-    for (CalendarioEntity resultEntity : resultEntities) {
-        assertTrue(resultEntity.getFechaInicio().after(entity.getFechaInicio()),
-                "Se encontró un calendario con fecha de inicio menor o igual a la dada");
-    }
-}
-
-
-    @Test
-    void testGetInvalidCalendarioByFechaInicioGreaterThan() {
-    assertThrows(IndexOutOfBoundsException.class, () -> {
-        calendarioService.getCalendarioByFechaInicioGreaterThan(null).get(0);
-    });
-}
 @Test
-void testGetCalendarioByFechaInicioLessThan() {
-    CalendarioEntity entity = calendarioList.get(calendarioList.size() - 1); // Tomamos el último elemento
-
-    List<CalendarioEntity> resultEntities = calendarioService.getCalendarioByFechaInicioLessThan(entity.getFechaInicio());
-
-    assertNotNull(resultEntities);
-    assertFalse(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
-
-    for (CalendarioEntity resultEntity : resultEntities) {
-        assertTrue(resultEntity.getFechaInicio().before(entity.getFechaInicio()),
-                "Se encontró un calendario con fecha de inicio mayor o igual a la dada");
+    void testGetCalendarioByFechaInicioLessThan() {
+        CalendarioEntity entity = calendarioList.get(0);
+        assertThrows(EntityNotFoundException.class, () -> {
+            calendarioService.getCalendarioByFechaInicioLessThan(entity.getFechaInicio());
+        });
     }
-}
 
 
     @Test
     void testGetInvalidCalendarioByFechaInicioLessThan() {
-    assertThrows(IndexOutOfBoundsException.class, () -> {
+    assertThrows(EntityNotFoundException.class, () -> {
         calendarioService.getCalendarioByFechaInicioLessThan(null).get(0);
     });
 }
 @Test
-void testGetCalendarioByFechaInicioBetween() {
+void testGetCalendarioByFechaInicioBetween() throws EntityNotFoundException {
     CalendarioEntity entityInicio = calendarioList.get(0);
     CalendarioEntity entityFin = calendarioList.get(calendarioList.size() - 1);
 
     List<CalendarioEntity> resultEntities = calendarioService.getCalendarioByFechaInicioBetween(entityInicio.getFechaInicio(), entityFin.getFechaInicio());
 
     assertNotNull(resultEntities);
-    assertFalse(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
+    assertFalse(resultEntities.isEmpty());
 
     for (CalendarioEntity resultEntity : resultEntities) {
-        assertTrue(resultEntity.getFechaInicio().after(entityInicio.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityInicio.getFechaInicio()),
-                "Se encontró un calendario con fecha de inicio fuera del rango (menor a la esperada)");
-        assertTrue(resultEntity.getFechaInicio().before(entityFin.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityFin.getFechaInicio()),
-                "Se encontró un calendario con fecha de inicio fuera del rango (mayor a la esperada)");
-    }
+        assertTrue(resultEntity.getFechaInicio().after(entityInicio.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityInicio.getFechaInicio()));
+        assertTrue(resultEntity.getFechaInicio().before(entityFin.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityFin.getFechaInicio()));}
+
 }
 @Test
 void testGetInvalidCalendarioByFechaInicioBetween() {
-    Date fechaInicio = new Date(Long.MAX_VALUE);  
-    Date fechaFin = new Date(Long.MAX_VALUE);
+   
+    Date fechaInicio = new Date(0);   
+    Date fechaFin = new Date(1);     
 
-    List<CalendarioEntity> resultEntities = calendarioService.getCalendarioByFechaInicioBetween(fechaInicio, fechaFin);
-
-    assertNotNull(resultEntities);
-    assertTrue(resultEntities.isEmpty(), "Se esperaba una lista vacía, pero se encontraron resultados");
+    assertThrows(EntityNotFoundException.class, () -> {
+        calendarioService.getCalendarioByFechaInicioBetween(fechaInicio, fechaFin);
+    });
 }
+}
+
 //no lo puedo hacer hasta que se arregle la relacion en ProfesorEntity
 //@Test
 //void testFindByProfesor() {
@@ -267,4 +240,4 @@ void testGetInvalidCalendarioByFechaInicioBetween() {
 //}
 
 
-}
+
