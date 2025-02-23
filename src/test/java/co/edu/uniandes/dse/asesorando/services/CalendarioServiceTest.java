@@ -170,15 +170,14 @@ void testGetInvalidCalendario() {
             calendarioService.getCalendarioByFechaFin(null);
         });
     }
-@Test
-    void testGetCalendarioByFechaInicioLessThan() {
+
+    @Test
+    void testGetCalendarioByFechaInicioLessThan() throws EntityNotFoundException {
         CalendarioEntity entity = calendarioList.get(0);
         assertThrows(EntityNotFoundException.class, () -> {
             calendarioService.getCalendarioByFechaInicioLessThan(entity.getFechaInicio());
-        });
+        }); 
     }
-
-
     @Test
     void testGetInvalidCalendarioByFechaInicioLessThan() {
     assertThrows(EntityNotFoundException.class, () -> {

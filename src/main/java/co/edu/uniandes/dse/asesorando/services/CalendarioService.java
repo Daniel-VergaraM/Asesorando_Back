@@ -10,6 +10,8 @@ import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,7 +94,7 @@ public class CalendarioService {
     return calendarioEntity;
 
     }
-    
+  
 @Transactional
     public List<CalendarioEntity> getCalendarioByFechaInicioLessThan(Date fechaInicio) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar calendarios con fecha de inicio menor a {}", fechaInicio);
