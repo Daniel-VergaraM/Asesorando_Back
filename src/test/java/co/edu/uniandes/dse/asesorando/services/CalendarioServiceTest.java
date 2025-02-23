@@ -292,19 +292,3 @@ void testGetInvalidCalendarioByFechaInicioBetween() {
     });
 }
 }
-
-        for (CalendarioEntity resultEntity : resultEntities) {
-            assertEquals(profesor.getId(), resultEntity.getProfesor().getId(), "El calendario devuelto no pertenece al profesor esperado");
-        }
-    }
-
-
-    @Test
-    void testFindByInvalidProfesor() {
-        ProfesorEntity profesorInexistente = new ProfesorEntity();
-        profesorInexistente.setId(999L);
-        List<CalendarioEntity> resultEntities = calendarioService.findByProfesor(profesorInexistente);
-        assertNotNull(resultEntities);
-        assertTrue(resultEntities.isEmpty(), "Se esperaba una lista vacía, pero se encontraron resultados");
-    }
-}
