@@ -37,6 +37,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.co.jemos.podam.common.PodamExclude;
 
 /**
  *
@@ -65,6 +66,7 @@ public class UsuarioEntity extends BaseEntity {
     @NotNull
     private String contrasena;
 
+    @PodamExclude
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesoriasCompletadas;
 

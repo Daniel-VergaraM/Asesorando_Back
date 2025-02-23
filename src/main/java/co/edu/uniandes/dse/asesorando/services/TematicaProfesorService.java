@@ -24,7 +24,6 @@ SOFTWARE.
 package co.edu.uniandes.dse.asesorando.services;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -58,11 +57,11 @@ public class TematicaProfesorService {
      * Obtiene todas las tematicas de un profesor
      *
      * @param profesorId
-     * @return Set<TematicaEntity>
+     * @return List<TematicaEntity>
      *
      */
     @Transactional
-    public Set<TematicaEntity> obtenerTematicas(@NotNull Long profesorId) {
+    public List<TematicaEntity> obtenerTematicas(@NotNull Long profesorId) {
         log.info("Obteniendo todas las tematicas del profesor con id: {}", profesorId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
@@ -84,6 +83,22 @@ public class TematicaProfesorService {
     }
 
     /**
+     * Elimina a un profesor de todas las tematicas
+     *
+     * @param profesorId
+     * @return
+     */
+    @Transactional
+    public ProfesorEntity eliminarProfesorDeTematicas(@NotNull Long profesorId) {
+        log.info("Eliminando al profesor con id: {} de todas las tematicas", profesorId);
+        ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
+                .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
+        profesorExistente.getTematicas().forEach((tematica) -> tematica.getProfesores().remove(profesorExistente));
+        profesorExistente.getTematicas().clear();
+        return profesorExistente;
+    }
+
+    /**
      * Agrega un profesor a una tematica existente y viceversa
      *
      * @param profesorId
@@ -91,7 +106,7 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public void agregarProfesorATematica(@NotNull Long profesorId, @NotNull Long tematicaId) {
+    public ProfesorEntity agregarProfesorATematica(@NotNull Long profesorId, @NotNull Long tematicaId) {
         log.info("Agregando el profesor con id: {} a la tematica con id: {}", profesorId, tematicaId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
@@ -100,6 +115,7 @@ public class TematicaProfesorService {
 
         profesorExistente.getTematicas().add(tematicaExistente);
         tematicaExistente.getProfesores().add(profesorExistente);
+        return profesorExistente;
     }
 
     /**
@@ -110,7 +126,7 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public void eliminarProfesorDeTematica(@NotNull Long profesorId, @NotNull Long tematicaId) {
+    public ProfesorEntity eliminarProfesorDeTematica(@NotNull Long profesorId, @NotNull Long tematicaId) {
         log.info("Eliminando el profesor con id: {} de la tematica con id: {}", profesorId, tematicaId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
@@ -118,6 +134,7 @@ public class TematicaProfesorService {
                 .orElseThrow(() -> new IllegalArgumentException("La tematica no existe."));
         profesorExistente.getTematicas().remove(tematicaExistente);
         tematicaExistente.getProfesores().remove(profesorExistente);
+        return profesorExistente;
     }
 
     /**
@@ -127,13 +144,14 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public void eliminarProfesoresDeTematica(@NotNull Long tematicaId) {
+    public TematicaEntity eliminarProfesoresDeTematica(@NotNull Long tematicaId) {
         log.info("Eliminando todos los profesores de la tematica con id: {}", tematicaId);
         TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
                 .orElseThrow(() -> new IllegalArgumentException("La tematica no existe."));
 
         tematicaExistente.getProfesores().forEach((profesor) -> profesor.getTematicas().remove(tematicaExistente));
         tematicaExistente.getProfesores().clear();
+        return tematicaExistente;
     }
 
     /**
@@ -143,13 +161,14 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public void eliminarTematicasDeProfesor(@NotNull Long profesorId) {
+    public ProfesorEntity eliminarTematicasDeProfesor(@NotNull Long profesorId) {
         log.info("Eliminando todas las tematicas del profesor con id: {}", profesorId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
 
         profesorExistente.getTematicas().forEach((tematica) -> tematica.getProfesores().remove(profesorExistente));
         profesorExistente.getTematicas().clear();
+        return profesorExistente;
     }
 
     /**
@@ -160,7 +179,7 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public void eliminarTematicaProfesor(@NotNull Long profesorId, @NotNull Long tematicaId) {
+    public ProfesorEntity eliminarTematicaProfesor(@NotNull Long profesorId, @NotNull Long tematicaId) {
         log.info("Eliminando el profesor con id: {} de la tematica con id: {}", profesorId, tematicaId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe."));
@@ -168,6 +187,7 @@ public class TematicaProfesorService {
                 .orElseThrow(() -> new IllegalArgumentException("La tematica no existe."));
         profesorExistente.getTematicas().remove(tematicaExistente);
         tematicaExistente.getProfesores().remove(profesorExistente);
+        return profesorExistente;
     }
 
     /**

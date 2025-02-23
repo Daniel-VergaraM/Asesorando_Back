@@ -13,5 +13,6 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
     List<ReservaEntity> findByfechaReserva(LocalDate fecha);
     List<ReservaEntity> findByEstado(String estado);
     List<ReservaEntity> findByCalendarioId(Long calendarioId);
+    List<ReservaEntity> findByEstudianteId(Long estudianteId);
     
 }

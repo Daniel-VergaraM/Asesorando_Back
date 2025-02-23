@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
@@ -45,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Daniel-VergaraM
  */
+
 @Slf4j
 @Service
 public class UsuarioService {
@@ -56,7 +58,7 @@ public class UsuarioService {
      * Crea un usuario por medio de un objeto usuario
      */
     @Transactional
-    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) {
+    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) throws IllegalArgumentException {
         log.info("Creando un usuario nuevo");
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
 
@@ -87,7 +89,7 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity getUsuario(@NotNull Long id) {
+    public UsuarioEntity getUsuario(@NotNull Long id) throws IllegalArgumentException {
         log.info("Obteniendo un profesor");
 
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findById(id);
@@ -141,6 +143,9 @@ public class UsuarioService {
                 ((ProfesorPresencialEntity) profesorExistente)
                         .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
             }
+        } else if (usuario instanceof EstudianteEntity && usuarioExistente instanceof EstudianteEntity) {
+            ((EstudianteEntity) usuario).setComentarios(((EstudianteEntity) usuarioExistente).getComentarios());
+            ((EstudianteEntity) usuario).setReservas(((EstudianteEntity) usuarioExistente).getReservas());
         }
 
         log.info("Usuario actualizado");
@@ -162,6 +167,26 @@ public class UsuarioService {
 
         log.info("Usuario eliminado");
         usuarioRepository.deleteById(usuarioExistente.getId());
+    }
+
+    /**
+     * Obtiene un usuario por su correo
+     *
+     * @param correo
+     * @return
+     */
+    @Transactional
+    public UsuarioEntity getUsuarioByCorreo(@NotNull String correo) {
+        log.info("Obteniendo un usuario por correo");
+
+        Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(correo);
+
+        if (usuarioExistente.isEmpty()) {
+            throw new IllegalArgumentException("El usuario no existe.");
+        }
+
+        log.info("Usuario obtenido");
+        return usuarioExistente.get();
     }
 
 }

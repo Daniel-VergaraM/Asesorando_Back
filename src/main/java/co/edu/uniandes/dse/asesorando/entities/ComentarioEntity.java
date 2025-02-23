@@ -7,6 +7,7 @@ import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @NoArgsConstructor
@@ -19,10 +20,12 @@ public class ComentarioEntity extends BaseEntity {
 
     private Integer calificacion;
 
+    @PodamExclude
     @ManyToOne
     @JoinColumn(name = "estudiante")
     private EstudianteEntity estudiante;
 
+    @PodamExclude
     @OneToOne(mappedBy = "comentario")
     private ReservaEntity reserva;
    

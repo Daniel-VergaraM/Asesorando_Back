@@ -9,6 +9,7 @@ import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 
@@ -20,23 +21,27 @@ public class ReservaEntity extends BaseEntity {
 
     private LocalDate fechaReserva;
 
+    @PodamExclude
     @ManyToOne
     @JoinColumn(name = "estudiante")
     private EstudianteEntity estudiante;
 
+    @PodamExclude
     @ManyToOne
     @JoinColumn(name = "calendario")
     private CalendarioEntity calendario;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(name = "asesoria")
     private AsesoriaEntity asesoria;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(name = "comentario")
     private ComentarioEntity comentario;
 
-    private boolean cancelada = false;
+    private Boolean cancelada = false;
 
     private String estado = "noCompletada";
 

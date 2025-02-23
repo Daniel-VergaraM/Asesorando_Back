@@ -37,9 +37,9 @@ import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
  */
 public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> {
 
-
     /**
      * Obtiene todos los profesores de un tipo en particular
+     *
      * @param tipo
      * @return
      */
@@ -47,6 +47,7 @@ public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> 
 
     /**
      * Obtiene un profesor por correo electrónico
+     *
      * @param correo
      * @return
      */
@@ -54,6 +55,7 @@ public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> 
 
     /**
      * Obtiene un profesor por su nombre
+     *
      * @param nombre
      * @return
      */

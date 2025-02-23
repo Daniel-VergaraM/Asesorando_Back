@@ -2,6 +2,8 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import java.util.*;
 import co.edu.uniandes.dse.asesorando.repositories.EstudianteRepository;
@@ -48,6 +50,12 @@ public class EstudianteService {
     }
 
     @Transactional
+	public List<EstudianteEntity> getEstudiante() {
+		log.info("Inicia proceso de consultar todos los estudiantes");
+		return estudianteRepository.findAll();
+	}
+
+    @Transactional
     public EstudianteEntity getEstudiante(Long estudianteId) {
         log.info("Se está obteniendo un estudiante...");
 
@@ -57,7 +65,7 @@ public class EstudianteService {
             throw new IllegalArgumentException("El estudiante que se quiere obtener no existe.");
         }
 
-        log.info("Profesor obtenido exitosamente.");
+        log.info("Estudiante obtenido exitosamente.");
         return estudianteExistente.get();
     }
 
@@ -65,15 +73,15 @@ public class EstudianteService {
     public <T extends EstudianteEntity> Iterable<T> getEstudiantes() {
         log.info("Se están obteniendo todos los estudiantes...");
 
-        Set<T> estudiantes = Set.of();
+        List<T> estudiantes =  new ArrayList<>();
         estudiantes.addAll(estudianteRepository.findByTipo("ESTUDIANTE"));
 
-        log.info("Profesores obtenidos exitosamente.");
+        log.info("Estudiantes obtenidos exitosamente.");
         return estudiantes;
     }
 
     @Transactional
-    public EstudianteEntity updateProfesorById(Long id, EstudianteEntity estudiante){
+    public EstudianteEntity updateEstudianteById(Long id, EstudianteEntity estudiante){
         log.info("Se está actualizando un estudiante...");
 
         EstudianteEntity estudianteExistente = estudianteRepository.findById(id)
