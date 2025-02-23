@@ -14,11 +14,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
-//import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
+
+/**
+ * Pruebas de logica de Calendario
+ * 
+ * @author jmrojasp1
+ */
 
 @DataJpaTest
 @Transactional
@@ -34,14 +40,24 @@ public class CalendarioServiceTest {
 
 	private List<CalendarioEntity> calendarioList = new ArrayList<>();
 
+	/**
+	 * Configuración inicial de la prueba.
+	 */
     @BeforeEach
 	void setUp() {
 		clearData();
 		insertData();
 }
+/**
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 private void clearData() {
     entityManager.getEntityManager().createQuery("delete from CalendarioEntity").executeUpdate();
 }
+
+	/**
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 private void insertData() {
     for (int i = 0; i < 3; i++) {
         CalendarioEntity entity = factory.manufacturePojo(CalendarioEntity.class);
@@ -49,6 +65,9 @@ private void insertData() {
         calendarioList.add(entity);
     }
 }
+/**
+	 * Prueba para crear un Calendario.
+	 */
     @Test
 	void testCreateCalendario() throws IllegalOperationException {
 		CalendarioEntity newEntity = factory.manufacturePojo(CalendarioEntity.class);
@@ -61,6 +80,9 @@ private void insertData() {
     }
 
 
+	/**
+	 * Prueba para crear un Calendario con fechaInicio repetida.
+	 */
     @Test
     void testCreateOrganizationWithSameDate() throws IllegalOperationException {
          {
@@ -69,6 +91,10 @@ private void insertData() {
             calendarioService.createCalendario(newEntity);
         };
     }
+    
+	/**
+	 * Prueba para consultar la lista de Calendarios.
+	 */
     @Test
     void testGetCalendarios(){
     List<CalendarioEntity> list = calendarioService.getCalendarios();
@@ -83,7 +109,9 @@ private void insertData() {
         assertTrue(found);
     }
     }
-
+/**
+	 * Prueba para consultar un Calendario
+	 */
     @Test
     void testGetCalendario() throws EntityNotFoundException {
     CalendarioEntity entity = calendarioList.get(0);
@@ -94,13 +122,18 @@ private void insertData() {
     assertEquals(entity.getFechaInicio(), resultEntity.getFechaInicio());
     assertEquals(entity.getFechaFin(), resultEntity.getFechaFin());
 }
-
+/**
+	 * Prueba para consultar un Calendario que no existe.
+	 */
 @Test
 void testGetInvalidCalendario() {
     assertThrows(EntityNotFoundException.class, () -> {
         calendarioService.getCalendario(0L);
     });
 }
+/**
+	 * Prueba para actualizar un Calendario.
+	 */
 @Test
 	void testUpdateCalendario() throws EntityNotFoundException, IllegalOperationException {
 		CalendarioEntity entity = calendarioList.get(0);
@@ -113,6 +146,9 @@ void testGetInvalidCalendario() {
         assertEquals(entity.getFechaFin(), resp.getFechaFin());
 		
 	}
+    /**
+	 * Prueba para actualizar un Calendario que no existe.
+	 */
     @Test
     void testUpdateCalendarioInvalid() {
         assertThrows(IllegalOperationException.class, () -> {
@@ -122,6 +158,9 @@ void testGetInvalidCalendario() {
             calendarioService.updateCalendario(entity);
         });
     }  
+    /**
+	 * Prueba para eliminar un Calendario.
+	 */
     @Test
     void testDeleteCalendario() throws EntityNotFoundException {
         CalendarioEntity entity = calendarioList.get(0);
@@ -129,13 +168,18 @@ void testGetInvalidCalendario() {
         CalendarioEntity deleted = entityManager.find(CalendarioEntity.class, entity.getId());
         assertNull(deleted);
     }
+    /**
+	 * Prueba para eliminar un Calendario que no existe.
+	 */
     @Test
 	void testDeleteInvalidCalendario(){
 		assertThrows(EntityNotFoundException.class, ()->{
 			calendarioService.deleteCalendario(0L);
 		});
 	} 
-
+    /**
+	 * Prueba para buscar un Calendario por su fecha de inicio.
+	 */
     @Test
     void testGetCalendarioByFechaInicio() throws IllegalOperationException  {
 
@@ -147,12 +191,18 @@ void testGetInvalidCalendario() {
         assertEquals(entity.getFechaInicio(), resultEntity.getFechaInicio());
         assertEquals(entity.getFechaFin(), resultEntity.getFechaFin());
     }
+    /**
+	 * Prueba para buscar un Calendario por su fecha de inicio invalida.
+	 */
     @Test
     void testGetInvalidCalendarioByFechaInicio() {
         assertThrows(IllegalOperationException.class, () -> {
             calendarioService.getCalendarioByFechaInicio(null);
         });
     }
+    /**
+	 * Prueba para buscar un Calendario por su fecha final
+	 */
     @Test
     void testGetCalendarioByFechaFin() throws IllegalOperationException{
 
@@ -164,13 +214,18 @@ void testGetInvalidCalendario() {
         assertEquals(entity.getFechaInicio(), resultEntity.getFechaInicio());
         assertEquals(entity.getFechaFin(), resultEntity.getFechaFin());
     }
+    /**
+	 * Prueba para buscar un Calendario por su fecha de fin invalida.
+	 */
     @Test
     void testGetInvalidCalendarioByFechaFin() {
         assertThrows(IllegalOperationException.class, () -> {
             calendarioService.getCalendarioByFechaFin(null);
         });
     }
-
+    /**
+	 * Prueba para buscar un Calendario por su fecha de inicio menor a la dada.
+	 */
     @Test
     void testGetCalendarioByFechaInicioLessThan() throws EntityNotFoundException {
         CalendarioEntity entity = calendarioList.get(0);
@@ -178,12 +233,18 @@ void testGetInvalidCalendario() {
             calendarioService.getCalendarioByFechaInicioLessThan(entity.getFechaInicio());
         }); 
     }
+    /**
+	 * Prueba para buscar un Calendario por su fecha de inicio menor a la dada invalida.
+	 */
     @Test
     void testGetInvalidCalendarioByFechaInicioLessThan() {
     assertThrows(EntityNotFoundException.class, () -> {
         calendarioService.getCalendarioByFechaInicioLessThan(null).get(0);
     });
 }
+/**
+	 * Prueba para buscar un Calendario por su fecha de inicio y fecha de fin dadas.
+	 */
 @Test
 void testGetCalendarioByFechaInicioBetween() throws EntityNotFoundException {
     CalendarioEntity entityInicio = calendarioList.get(0);
@@ -199,6 +260,9 @@ void testGetCalendarioByFechaInicioBetween() throws EntityNotFoundException {
         assertTrue(resultEntity.getFechaInicio().before(entityFin.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityFin.getFechaInicio()));}
 
 }
+/**
+	 * Prueba para buscar un Calendario por su fecha de inicio y fecha de fin invalidas dadas.
+	 */
 @Test
 void testGetInvalidCalendarioByFechaInicioBetween() {
    
@@ -210,33 +274,6 @@ void testGetInvalidCalendarioByFechaInicioBetween() {
     });
 }
 }
-
-//no lo puedo hacer hasta que se arregle la relacion en ProfesorEntity
-//@Test
-//void testFindByProfesor() {
-   // ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
-    //entityManager.persist(profesor);
-
-    //List<CalendarioEntity> resultEntities = calendarioService.findByProfesor(profesor);
-
-    //assertNotNull(resultEntities);
-   //assertFalse(resultEntities.isEmpty(), "La lista de calendarios devuelta está vacía");
-
-   // for (CalendarioEntity resultEntity : resultEntities) {
-    //    assertEquals(profesor.getId(), resultEntity.getProfesor().getId(), "El calendario devuelto no pertenece al profesor esperado");
-    //}
-//}
-
-//@Test
-//void testFindByInvalidProfesor() {
-    //ProfesorEntity profesorInexistente = new ProfesorEntity();
-    //profesorInexistente.setId(999L);  
-
-    //List<CalendarioEntity> resultEntities = calendarioService.findByProfesor(profesorInexistente);
-
-   // assertNotNull(resultEntities);
-    //assertTrue(resultEntities.isEmpty(), "Se esperaba una lista vacía, pero se encontraron resultados");
-//}
 
 
 

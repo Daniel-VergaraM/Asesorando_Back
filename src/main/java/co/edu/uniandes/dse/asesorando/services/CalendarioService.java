@@ -10,10 +10,9 @@ import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Slf4j
 @Service
