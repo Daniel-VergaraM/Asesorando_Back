@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "5ad2a338-7ce0-4fcf-86d3-c14492428598",
+		"name": "Tematica Test",
+		"description": "### Temática\n\n##### GET\n\n- ById: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters:\n        \n        - id: Stands for the `tematica` id in the database.\n            \n    - Return:\n        \n        - A JSON Object with the `tematica` information.\n            \n- All: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - POST\n            \n- Create `Tematica`: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### PUT\n\n- Update `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body:\n        \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### DELETE\n\n- Delete `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41366766"
+	},
+	"item": [
+		{
+			"name": "Get Tematica by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/tematicas/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tematicas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tematicas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/tematicas/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tematicas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Tematica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/tematicas/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tematicas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Tematica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/tematicas/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tematicas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/tematicas/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"tematicas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
