@@ -53,7 +53,7 @@ public class ProfesorService {
     @Autowired
     private ProfesorRepository profesorRepository;
 
-    private static List<String> tipos = List.of("PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL");
+    private static final List<String> tipos = List.of("PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL");
 
     /**
      * Metodo para registrar un profesor por medio de sus atributos base

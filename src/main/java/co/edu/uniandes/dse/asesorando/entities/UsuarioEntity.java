@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -47,7 +48,6 @@ import uk.co.jemos.podam.common.PodamExclude;
  */
 @Data
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
@@ -70,7 +70,17 @@ public class UsuarioEntity extends BaseEntity {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesoriasCompletadas;
 
+    public UsuarioEntity() {
+        super();
+        this.asesoriasCompletadas = new ArrayList<>();
+        this.contrasena = "";
+        this.correo = "";
+        this.telefono = "";
+        this.nombre = "";
+        this.tipo = "";
+    }
     public UsuarioEntity(UsuarioEntity usuario) {
+        super();
         this.asesoriasCompletadas = usuario.asesoriasCompletadas;
         this.contrasena = usuario.contrasena;
         this.correo = usuario.correo;
