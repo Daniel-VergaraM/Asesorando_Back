@@ -37,6 +37,7 @@ import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -58,13 +59,13 @@ public class UsuarioService {
      * Crea un usuario por medio de un objeto usuario
      */
     @Transactional
-    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) throws IllegalArgumentException {
+    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) throws EntityNotFoundException {
         log.info("Creando un usuario nuevo");
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
 
         if (usuarioExistente.isPresent()) {
             log.error("El usuario con correo {} ya existe", usuario.getCorreo());
-            throw new IllegalArgumentException("El usuario con correo " + usuario.getCorreo() + " ya existe");
+            throw new EntityNotFoundException("El usuario con correo " + usuario.getCorreo() + " ya existe");
         }
 
         log.info("Usuario creado");
@@ -89,13 +90,13 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity getUsuario(@NotNull Long id) throws IllegalArgumentException {
+    public UsuarioEntity getUsuario(@NotNull Long id) throws EntityNotFoundException {
         log.info("Obteniendo un profesor");
 
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findById(id);
 
         if (usuarioExistente.isEmpty()) {
-            throw new IllegalArgumentException("El profesor no existe.");
+            throw new EntityNotFoundException("El profesor no existe.");
         }
 
         log.info("Profesor obtenido");
@@ -110,11 +111,11 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity updateUsuario(@NotNull Long id, @Valid @NotNull UsuarioEntity usuario) {
+    public UsuarioEntity updateUsuario(@NotNull Long id, @Valid @NotNull UsuarioEntity usuario) throws EntityNotFoundException {
         log.info("Actualizando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
 
         usuarioExistente.setContrasena(usuario.getContrasena());
         usuarioExistente.setCorreo(usuario.getCorreo());
@@ -159,11 +160,11 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public void deleteUsuario(@NotNull Long id) {
+    public void deleteUsuario(@NotNull Long id) throws EntityNotFoundException {
         log.info("Eliminando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
 
         log.info("Usuario eliminado");
         usuarioRepository.deleteById(usuarioExistente.getId());
@@ -176,13 +177,13 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity getUsuarioByCorreo(@NotNull String correo) {
+    public UsuarioEntity getUsuarioByCorreo(@NotNull String correo) throws EntityNotFoundException {
         log.info("Obteniendo un usuario por correo");
 
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(correo);
 
         if (usuarioExistente.isEmpty()) {
-            throw new IllegalArgumentException("El usuario no existe.");
+            throw new EntityNotFoundException("El usuario no existe.");
         }
 
         log.info("Usuario obtenido");

@@ -38,6 +38,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -82,7 +83,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testCreateUsuario() {
+    public void testCreateUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
 
         UsuarioEntity result = usuarioService.createUsuario(entity);
@@ -93,7 +94,7 @@ public class UsuarioServiceTest {
 
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             usuarioService.createUsuario(entity);
         });
     }
@@ -116,31 +117,31 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testGetUsuario() {
+    public void testGetUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.getUsuario(entity.getId());
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             usuarioService.getUsuario(factory.manufacturePojo(Long.class));
         });
     }
 
     @Test
-    public void testUpdateUsuario() {
+    public void testUpdateUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.updateUsuario(entity.getId(), entity);
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             usuarioService.updateUsuario(factory.manufacturePojo(Long.class), entity);
         });
     }
 
     @Test
-    public void testDeleteUsuario() {
+    public void testDeleteUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         usuarioService.deleteUsuario(entity.getId());
@@ -149,13 +150,13 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testGetUsuarioByCorreo() {
+    public void testGetUsuarioByCorreo() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.getUsuarioByCorreo(entity.getCorreo());
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             usuarioService.getUsuarioByCorreo(factory.manufacturePojo(String.class));
         });
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import lombok.Data;
@@ -26,9 +27,9 @@ public class ReservaCalendarioService {
     private CalendarioRepository calendarioRepository;
 
     @Transactional
-    public ReservaEntity crearReservaEnCalendario(Long calendarioId, ReservaEntity reserva) {
+    public ReservaEntity crearReservaEnCalendario(Long calendarioId, ReservaEntity reserva) throws EntityNotFoundException {
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new IllegalArgumentException("El calendario no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("El calendario no existe"));
 
         reserva.setCalendario(calendario);
         return reservaRepository.save(reserva);
@@ -40,12 +41,12 @@ public class ReservaCalendarioService {
     }
 
     @Transactional
-    public ReservaEntity actualizarReservaEnCalendario(Long calendarioId, Long reservaId, ReservaEntity nuevaReserva) {
+    public ReservaEntity actualizarReservaEnCalendario(Long calendarioId, Long reservaId, ReservaEntity nuevaReserva) throws EntityNotFoundException {
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new IllegalArgumentException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
 
         if (!reserva.getCalendario().getId().equals(calendarioId)) {
-            throw new IllegalArgumentException("La reserva no pertenece a este calendario");
+            throw new EntityNotFoundException("La reserva no pertenece a este calendario");
         }
 
         reserva.setFechaReserva(nuevaReserva.getFechaReserva());
@@ -53,12 +54,12 @@ public class ReservaCalendarioService {
     }
 
     @Transactional
-    public void eliminarReservaDeCalendario(Long calendarioId, Long reservaId) {
+    public void eliminarReservaDeCalendario(Long calendarioId, Long reservaId) throws EntityNotFoundException {
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new IllegalArgumentException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
 
         if (!reserva.getCalendario().getId().equals(calendarioId)) {
-            throw new IllegalArgumentException("La reserva no pertenece a este calendario");
+            throw new EntityNotFoundException("La reserva no pertenece a este calendario");
         }
 
         reservaRepository.delete(reserva);

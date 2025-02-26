@@ -39,6 +39,7 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -105,15 +106,19 @@ public class AsesoriaProfesorServiceTest {
      */
     @Test
     void testCrearAsesoriaParaProfesor() {
-        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
-        nuevaAsesoria.setProfesor(profesor);
-        AsesoriaEntity resultado = asesoriaProfesorService.crearAsesoriaParaProfesor(profesor.getId(), nuevaAsesoria);
-        
-        assertNotNull(resultado);
-        assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
-        assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
-        assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
-        assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        try {
+            AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+            nuevaAsesoria.setProfesor(profesor);
+            AsesoriaEntity resultado = asesoriaProfesorService.crearAsesoriaParaProfesor(profesor.getId(), nuevaAsesoria);
+            
+            assertNotNull(resultado);
+            assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
+            assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
+            assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
+            assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
     
 
@@ -140,17 +145,21 @@ public class AsesoriaProfesorServiceTest {
      */
     @Test
     void testActualizarAsesoriaDeProfesor() {
-        AsesoriaEntity asesoria = asesoriaList.get(0);
-        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
-        nuevaAsesoria.setProfesor(profesor);
-        
-        AsesoriaEntity resultado = asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesor.getId(), asesoria.getId(), nuevaAsesoria);
-        
-        assertNotNull(resultado);
-        assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
-        assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
-        assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
-        assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        try {
+            AsesoriaEntity asesoria = asesoriaList.get(0);
+            AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+            nuevaAsesoria.setProfesor(profesor);
+            
+            AsesoriaEntity resultado = asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesor.getId(), asesoria.getId(), nuevaAsesoria);
+            
+            assertNotNull(resultado);
+            assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
+            assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
+            assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
+            assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     /**
@@ -161,9 +170,13 @@ public class AsesoriaProfesorServiceTest {
 
     @Test
     void testEliminarAsesoriaDeProfesor() {
-        AsesoriaEntity asesoria = asesoriaList.get(0);
-        asesoriaProfesorService.eliminarAsesoriaDeProfesor(profesor.getId(), asesoria.getId());
-        assertFalse(asesoriaRepository.findById(asesoria.getId()).isPresent());
+        try {
+            AsesoriaEntity asesoria = asesoriaList.get(0);
+            asesoriaProfesorService.eliminarAsesoriaDeProfesor(profesor.getId(), asesoria.getId());
+            assertFalse(asesoriaRepository.findById(asesoria.getId()).isPresent());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 }
 

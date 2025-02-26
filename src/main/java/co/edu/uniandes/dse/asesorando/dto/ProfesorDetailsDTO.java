@@ -26,15 +26,18 @@ package co.edu.uniandes.dse.asesorando.dto;
 import java.util.List;
 
 import lombok.Data;
+
 /**
- * ProfesorDetailsDTO Objeto de transferencia de datos de Profesores con sus asesorias.
- * 
+ * ProfesorDetailsDTO Objeto de transferencia de datos de Profesores con sus
+ * asesorias, tematicas y calendarios.
+ *
  * @author Daniel-VergaraM
  */
 @Data
 public class ProfesorDetailsDTO extends ProfesorDTO {
+
     private List<AsesoriaDTO> asesorias;
     private List<TematicaDTO> tematicas;
     private List<CalendarioDTO> calendarios;
-    
+
 }

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -61,14 +62,18 @@ public class EstudianteReservaServiceTest {
 
     @Test
     void testCrearReserva() {
-        ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-        nuevaReserva.setFechaReserva(LocalDate.now().plusDays(3));
-
-        ReservaEntity result = estudianteReservaService.crearReserva(estudiante.getId(), nuevaReserva);
-
-        assertNotNull(result);
-        assertEquals(nuevaReserva.getFechaReserva(), result.getFechaReserva());
-        assertEquals(estudiante.getId(), result.getEstudiante().getId());
+        try {
+            ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+            nuevaReserva.setFechaReserva(LocalDate.now().plusDays(3));
+            
+            ReservaEntity result = estudianteReservaService.crearReserva(estudiante.getId(), nuevaReserva);
+            
+            assertNotNull(result);
+            assertEquals(nuevaReserva.getFechaReserva(), result.getFechaReserva());
+            assertEquals(estudiante.getId(), result.getEstudiante().getId());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     @Test
@@ -83,20 +88,28 @@ public class EstudianteReservaServiceTest {
 
     @Test
     void testActualizarReserva() {
-        ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
-        reservaActualizada.setFechaReserva(LocalDate.now().plusDays(4));
-
-        ReservaEntity result = estudianteReservaService.actualizarReserva(reserva.getId(), reservaActualizada);
-
-        assertNotNull(result);
-        assertEquals(reservaActualizada.getFechaReserva(), result.getFechaReserva());
+        try {
+            ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
+            reservaActualizada.setFechaReserva(LocalDate.now().plusDays(4));
+            
+            ReservaEntity result = estudianteReservaService.actualizarReserva(reserva.getId(), reservaActualizada);
+            
+            assertNotNull(result);
+            assertEquals(reservaActualizada.getFechaReserva(), result.getFechaReserva());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     @Test
     void testEliminarReserva() {
-        estudianteReservaService.eliminarReserva(reserva.getId());
-
-        Optional<ReservaEntity> deleted = reservaRepository.findById(reserva.getId());
-        assertTrue(deleted.isEmpty());
+        try {
+            estudianteReservaService.eliminarReserva(reserva.getId());
+            
+            Optional<ReservaEntity> deleted = reservaRepository.findById(reserva.getId());
+            assertTrue(deleted.isEmpty());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 }

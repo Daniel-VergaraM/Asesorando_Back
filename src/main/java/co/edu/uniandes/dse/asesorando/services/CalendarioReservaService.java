@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
@@ -33,9 +34,9 @@ public class CalendarioReservaService {
     }
 
     @Transactional
-    public CalendarioEntity actualizarCalendario(Long calendarioId, CalendarioEntity nuevoCalendario) {
+    public CalendarioEntity actualizarCalendario(Long calendarioId, CalendarioEntity nuevoCalendario) throws EntityNotFoundException {
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new IllegalArgumentException("El calendario no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("El calendario no existe"));
 
         calendario.setFechaFin(nuevoCalendario.getFechaFin());
         calendario.setFechaInicio(nuevoCalendario.getFechaInicio());
@@ -43,9 +44,9 @@ public class CalendarioReservaService {
     }
 
     @Transactional
-    public void eliminarCalendarioYReservas(Long calendarioId) {
+    public void eliminarCalendarioYReservas(Long calendarioId) throws EntityNotFoundException {
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new IllegalArgumentException("El calendario no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("El calendario no existe"));
 
         List<ReservaEntity> reservas = reservaRepository.findByCalendarioId(calendarioId);
         reservaRepository.deleteAll(reservas);

@@ -1,11 +1,13 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -53,7 +56,7 @@ public class ReservaCalendarioServiceTest {
     }
 
     @Test
-    void testCrearReservaEnCalendario() {
+    void testCrearReservaEnCalendario() throws EntityNotFoundException {
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
         nuevaReserva.setFechaReserva(LocalDate.now().plusDays(5));
         
@@ -65,7 +68,7 @@ public class ReservaCalendarioServiceTest {
     }
 
     @Test
-    void testListarReservasDeCalendario() {
+    void testListarReservasDeCalendario() throws EntityNotFoundException {
         List<ReservaEntity> reservas = reservaCalendarioService.listarReservasDeCalendario(calendario.getId());
 
         assertNotNull(reservas);
@@ -75,7 +78,7 @@ public class ReservaCalendarioServiceTest {
     }
 
     @Test
-    void testActualizarReservaEnCalendario() {
+    void testActualizarReservaEnCalendario() throws EntityNotFoundException {
         ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
         reservaActualizada.setFechaReserva(LocalDate.now().plusDays(6));
 
@@ -86,7 +89,7 @@ public class ReservaCalendarioServiceTest {
     }
 
     @Test
-    void testEliminarReservaDeCalendario() {
+    void testEliminarReservaDeCalendario() throws EntityNotFoundException {
         reservaCalendarioService.eliminarReservaDeCalendario(calendario.getId(), reserva.getId());
 
         Optional<ReservaEntity> deleted = reservaRepository.findById(reserva.getId());
