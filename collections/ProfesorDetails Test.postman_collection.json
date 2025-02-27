@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "3e38d4b5-bb0c-4276-9a5c-95511366f908",
+		"name": "ProfesorDetails Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41366766"
+	},
+	"item": [
+		{
+			"name": "Get All Asesorias",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/asesorias",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"asesorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Asesoria By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/asesorias/{{asesoria_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"asesorias",
+						"{{asesoria_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar/Eliminar asesoriaPendiente de profesor",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"duracion\": \"String\",\r\n        \"tematica\": \"String\",\r\n        \"tipo\": \"String\",\r\n        \"area\": \"String\",\r\n        \"completada\": \"Boolean\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/asesorias",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"asesorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tematicas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"tematicas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tematica By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas/{{tematica_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"tematicas",
+						"{{tematica_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar/Eliminar Tematica de profesor",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"area\": \"String\",\r\n        \"tema\": \"String\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"tematicas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Calendarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/calendarios",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"calendarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Calendario By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/calendarios/{{calendario_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"calendarios",
+						"{{calendario_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar/Eliminar Tematica de profesor Copy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"fechaInicio\": \"Date\",\r\n        \"fechaFin\": \"DDate\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/calendarios",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"calendarios"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

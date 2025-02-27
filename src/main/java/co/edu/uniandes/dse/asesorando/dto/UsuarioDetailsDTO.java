@@ -28,11 +28,11 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * Clase que representa una estructura para JSON de un usuario
+ * Clase que representa una estructura para JSON de los detalles de un usuario
  *
  * @author Daniel-VergaraM
  */
 @Data
 public class UsuarioDetailsDTO extends UsuarioDTO {
-    private List<AsesoriaDTO> asesorias;
+    private List<AsesoriaDTO> asesoriasCompletadas;
 }

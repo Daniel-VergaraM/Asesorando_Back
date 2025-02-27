@@ -12,13 +12,32 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/usuarios/",
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"usuarios",
-						""
+						"{{tipo_usuario}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}/{{usuario_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}",
+						"{{usuario_id}}"
 					]
 				}
 			},

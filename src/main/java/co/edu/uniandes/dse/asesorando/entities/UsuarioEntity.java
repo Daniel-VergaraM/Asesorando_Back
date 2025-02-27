@@ -37,7 +37,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
