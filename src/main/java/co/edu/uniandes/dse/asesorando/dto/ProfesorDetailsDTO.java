@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -36,8 +37,8 @@ import lombok.Data;
 @Data
 public class ProfesorDetailsDTO extends ProfesorDTO {
 
-    private List<AsesoriaDTO> asesorias;
-    private List<TematicaDTO> tematicas;
-    private List<CalendarioDTO> calendarios;
+    private List<AsesoriaDTO> asesorias = new ArrayList<>();
+    private List<TematicaDTO> tematicas = new ArrayList<>();
+    private List<CalendarioDTO> calendarios = new ArrayList<>();
 
 }
