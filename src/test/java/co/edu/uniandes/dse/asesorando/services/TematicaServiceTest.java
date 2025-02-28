@@ -38,6 +38,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -81,14 +82,14 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void createTematicaTest() {
+    public void createTematicaTest() throws EntityNotFoundException {
         TematicaEntity newEntity = factory.manufacturePojo(TematicaEntity.class);
         TematicaEntity result = tematicaService.createTematica(newEntity);
         assertNotNull(result);
         TematicaEntity entity = entityManager.find(TematicaEntity.class, result.getId());
         assertNotNull(entity);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             tematicaService.createTematica(newEntity);
         });
     }
@@ -110,19 +111,19 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void getTematicaTest() {
+    public void getTematicaTest() throws EntityNotFoundException {
         TematicaEntity entity = data.get(0);
         TematicaEntity resultEntity = tematicaService.getTematica(entity.getId());
         assertNotNull(resultEntity);
 
         Long id = factory.manufacturePojo(Long.class);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             tematicaService.getTematica(id);
         });
     }
 
     @Test
-    public void updateTematicaTest() {
+    public void updateTematicaTest() throws EntityNotFoundException{
         TematicaEntity entity = data.get(0);
         TematicaEntity pojoEntity = factory.manufacturePojo(TematicaEntity.class);
 
@@ -135,18 +136,18 @@ public class TematicaServiceTest {
         assertEquals(pojoEntity.getId(), resp.getId());
         Long id = factory.manufacturePojo(Long.class);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             tematicaService.updateTematica(id, pojoEntity);
         });
     }
 
     @Test
-    public void deleteTematicaTest() {
+    public void deleteTematicaTest() throws EntityNotFoundException {
         TematicaEntity entity = data.get(0);
         tematicaService.deleteTematica(entity.getId());
         TematicaEntity deleted = entityManager.find(TematicaEntity.class, entity.getId());
         assertNull(deleted);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             tematicaService.deleteTematica(entity.getId());
         });
     }

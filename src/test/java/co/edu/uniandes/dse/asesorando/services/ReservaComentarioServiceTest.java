@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ComentarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
@@ -53,7 +54,7 @@ public class ReservaComentarioServiceTest {
     }
 
     @Test
-    void testCrearComentario() {
+    void testCrearComentario() throws EntityNotFoundException {
         ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
         ComentarioEntity resultado = reservaComentarioService.crearComentario(reserva.getId(), nuevoComentario);
 
@@ -64,15 +65,15 @@ public class ReservaComentarioServiceTest {
     }
 
     @Test
-    void testCrearComentarioReservaNoExiste() {
+    void testCrearComentarioReservaNoExiste() throws EntityNotFoundException {
         ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.crearComentario(999L, nuevoComentario);
         });
     }
 
     @Test
-    void testObtenerComentarioPorReserva() {
+    void testObtenerComentarioPorReserva() throws EntityNotFoundException {
         comentario.setReserva(reserva);
         reserva.setComentario(comentario);
         entityManager.persist(reserva);
@@ -86,13 +87,13 @@ public class ReservaComentarioServiceTest {
 
     @Test
     void testObtenerComentarioReservaNoExiste() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.obtenerComentarioPorReserva(999L);
         });
     }
 
     @Test
-    void testActualizarComentario() {
+    void testActualizarComentario() throws EntityNotFoundException {
         comentario.setReserva(reserva);
         entityManager.persist(comentario);
 
@@ -110,13 +111,13 @@ public class ReservaComentarioServiceTest {
     @Test
     void testActualizarComentarioReservaNoExiste() {
         ComentarioEntity comentarioActualizado = factory.manufacturePojo(ComentarioEntity.class);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.actualizarComentario(999L, comentarioActualizado);
         });
     }
 
     @Test
-    void testEliminarComentario() {
+    void testEliminarComentario() throws EntityNotFoundException {
         comentario.setReserva(reserva);
         reserva.setComentario(comentario);
         entityManager.persist(reserva);
@@ -129,13 +130,13 @@ public class ReservaComentarioServiceTest {
 
     @Test
     void testEliminarComentarioNoExiste() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.eliminarComentario(999L);
         });
     }
 
     @Test
-    void testEliminarReservaYComentario() {
+    void testEliminarReservaYComentario() throws EntityNotFoundException {
         comentario.setReserva(reserva);
         reserva.setComentario(comentario);
         entityManager.persist(reserva);
@@ -149,7 +150,7 @@ public class ReservaComentarioServiceTest {
 
     @Test
     void testEliminarReservaYComentarioReservaNoExiste() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.eliminarReservaYComentario(999L);
         });
     }

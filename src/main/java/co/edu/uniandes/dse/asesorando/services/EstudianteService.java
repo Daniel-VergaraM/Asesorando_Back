@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
+
 import java.util.*;
 import co.edu.uniandes.dse.asesorando.repositories.EstudianteRepository;
 import jakarta.transaction.Transactional;
@@ -18,7 +20,7 @@ public class EstudianteService {
     private EstudianteRepository estudianteRepository;
 
     @Transactional
-    public EstudianteEntity createEstudianteByAtributes(String nombre, String correo, String contrasena){
+    public EstudianteEntity createEstudianteByAtributes(String nombre, String correo, String contrasena) throws EntityNotFoundException {
         EstudianteEntity estudiante = new EstudianteEntity();
         estudiante.setNombre(nombre);
         estudiante.setCorreo(correo);
@@ -27,7 +29,7 @@ public class EstudianteService {
         Optional<EstudianteEntity> estudianteExistente = estudianteRepository.findByCorreo(correo);
 
         if (estudianteExistente.isPresent()) {
-            throw new IllegalArgumentException("El estudiante ya se encuentra registrado.");
+            throw new EntityNotFoundException("El estudiante ya se encuentra registrado.");
         }
 
         log.info("Estudiante creado exitosamente.");
@@ -35,14 +37,14 @@ public class EstudianteService {
     }
 
     @Transactional
-    public EstudianteEntity createEstudianteByObject(EstudianteEntity estudiante){
+    public EstudianteEntity createEstudianteByObject(EstudianteEntity estudiante) throws EntityNotFoundException {
         log.info("Se está registrando un estudiante nuevo...");
 
         Optional<EstudianteEntity> estudianteExistente = estudianteRepository.findById(estudiante.getId());
 
         if (estudianteExistente.isPresent()) {
             log.error("El estudiante ya se encuentra registrado.");
-            throw new IllegalArgumentException("El estudiante ya se encuentra registrado.");
+            throw new EntityNotFoundException("El estudiante ya se encuentra registrado.");
         }
 
         log.info("Estudiante creado exitosamente.");
@@ -56,13 +58,13 @@ public class EstudianteService {
 	}
 
     @Transactional
-    public EstudianteEntity getEstudiante(Long estudianteId) {
+    public EstudianteEntity getEstudiante(Long estudianteId) throws EntityNotFoundException {
         log.info("Se está obteniendo un estudiante...");
 
         Optional<EstudianteEntity> estudianteExistente = estudianteRepository.findById(estudianteId);
 
         if (estudianteExistente.isEmpty()) {
-            throw new IllegalArgumentException("El estudiante que se quiere obtener no existe.");
+            throw new EntityNotFoundException("El estudiante que se quiere obtener no existe.");
         }
 
         log.info("Estudiante obtenido exitosamente.");
@@ -81,11 +83,11 @@ public class EstudianteService {
     }
 
     @Transactional
-    public EstudianteEntity updateEstudianteById(Long id, EstudianteEntity estudiante){
+    public EstudianteEntity updateEstudianteById(Long id, EstudianteEntity estudiante) throws EntityNotFoundException{
         log.info("Se está actualizando un estudiante...");
 
         EstudianteEntity estudianteExistente = estudianteRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El estudiante que se quiere actualizar no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El estudiante que se quiere actualizar no existe."));
 
         estudianteExistente.setNombre(estudiante.getNombre());
         estudianteExistente.setCorreo(estudiante.getCorreo());
@@ -96,11 +98,11 @@ public class EstudianteService {
     }
 
     @Transactional
-    public void deleteEstudiante(Long estudianteId) {
+    public void deleteEstudiante(Long estudianteId) throws EntityNotFoundException {
         log.info("Se está eliminando un estudiante...");
 
         EstudianteEntity estudianteExistente = estudianteRepository.findById(estudianteId)
-                .orElseThrow(() -> new IllegalArgumentException("El estudiante que se quiere eliminar no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El estudiante que se quiere eliminar no existe."));
 
         log.info("Estudiante eliminado exitosamente.");
         estudianteRepository.deleteById(estudianteExistente.getId());
