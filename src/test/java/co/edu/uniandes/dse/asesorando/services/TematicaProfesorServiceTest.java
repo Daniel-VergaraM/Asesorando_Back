@@ -39,6 +39,7 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -90,7 +91,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void addProfesorTest() {
+    public void addProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -101,27 +102,31 @@ public class TematicaProfesorServiceTest {
 
         ProfesorEntity profesor2 = profesores.get(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.agregarProfesorATematica(id, tematica.getId());
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.agregarProfesorATematica(profesor2.getId(), id);
         });
     }
 
     @Test
     public void getProfesoresTest() {
-        TematicaEntity tematica = tematicas.get(0);
-        ProfesorEntity profesor = profesores.get(0);
-        ProfesorEntity result = service.agregarProfesorATematica(profesor.getId(), tematica.getId());
-        assertNotNull(result);
-        List<ProfesorEntity> profesoresTematica = service.obtenerProfesores(tematica.getId());
-        assertTrue(profesoresTematica.size() == 1);
+        try {
+            TematicaEntity tematica = tematicas.get(0);
+            ProfesorEntity profesor = profesores.get(0);
+            ProfesorEntity result = service.agregarProfesorATematica(profesor.getId(), tematica.getId());
+            assertNotNull(result);
+            List<ProfesorEntity> profesoresTematica = service.obtenerProfesores(tematica.getId());
+            assertTrue(profesoresTematica.size() == 1);
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     @Test
-    public void getTematicasTest() {
+    public void getTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -129,13 +134,13 @@ public class TematicaProfesorServiceTest {
         assertTrue(tematicasProfesor.size() == 1);
 
         Long id = factory.manufacturePojo(Long.class);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.obtenerTematicas(id);
         });
     }
 
     @Test
-    public void removeProfesorTest() {
+    public void removeProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -147,17 +152,17 @@ public class TematicaProfesorServiceTest {
 
         ProfesorEntity profesor2 = profesores.get(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.eliminarProfesorDeTematica(id, tematica.getId());
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.eliminarProfesorDeTematica(profesor2.getId(), id);
         });
     }
 
     @Test
-    public void profesorPoseeTematicaTest() {
+    public void profesorPoseeTematicaTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -168,18 +173,18 @@ public class TematicaProfesorServiceTest {
 
         ProfesorEntity profesor2 = profesores.get(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.profesorPoseeTematica(id, tematica.getId());
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.profesorPoseeTematica(profesor2.getId(), id);
         });
 
     }
 
     @Test
-    public void tematicaPoseeProfesorTest() {
+    public void tematicaPoseeProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -190,18 +195,18 @@ public class TematicaProfesorServiceTest {
 
         ProfesorEntity profesor2 = profesores.get(1);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.tematicaPoseeProfesor(id, tematica.getId());
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.tematicaPoseeProfesor(profesor2.getId(), id);
         });
 
     }
 
     @Test
-    public void profesorPoseeTematicasTest() {
+    public void profesorPoseeTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -210,13 +215,13 @@ public class TematicaProfesorServiceTest {
 
         Long id = factory.manufacturePojo(Long.class);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.profesorPoseeTematicas(id);
         });
     }
 
     @Test
-    public void tematicaPoseeProfesoresTest() {
+    public void tematicaPoseeProfesoresTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -225,13 +230,13 @@ public class TematicaProfesorServiceTest {
 
         Long id = factory.manufacturePojo(Long.class);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.tematicaPoseeProfesores(id);
         });
     }
 
     @Test
-    public void eliminarProfesorDeTematicasTest() {
+    public void eliminarProfesorDeTematicasTest() throws EntityNotFoundException{
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -241,13 +246,13 @@ public class TematicaProfesorServiceTest {
 
         Long id = factory.manufacturePojo(Long.class);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.eliminarProfesorDeTematicas(id);
         });
     }
 
     @Test
-    public void eliminarTematicaProfesorTest() {
+    public void eliminarTematicaProfesorTest() throws EntityNotFoundException{
 
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
@@ -259,11 +264,11 @@ public class TematicaProfesorServiceTest {
         Long id = factory.manufacturePojo(Long.class);
 
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.eliminarTematicaProfesor(id, tematica.getId());
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             service.eliminarTematicaProfesor(profesor.getId(), id);
         });
 

@@ -40,6 +40,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -88,7 +89,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testCreateProfesorObject() {
+    public void testCreateProfesorObject() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         if (entity.getId() == null) {
             entity.setId(factory.manufacturePojo(Long.class));
@@ -100,26 +101,26 @@ public class ProfesorServiceTest {
 
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             profesorService.createProfesor(result, BASE_PROFESOR);
         });
     }
 
     @Test
-    public void testCreateProfesorParams() {
+    public void testCreateProfesorParams() throws EntityNotFoundException {
         ProfesorEntity entity = profesorService.createProfesor("nombre", "correo", "contrasena", BASE_PROFESOR);
 
         ProfesorEntity entityInDB = entityManager.find(ProfesorEntity.class, entity.getId());
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             profesorService.createProfesor("nombre", "correo", "contrasena", BASE_PROFESOR);
         });
 
     }
 
     @Test
-    public void testGetProfesores() {
+    public void testGetProfesores() throws EntityNotFoundException {
         List<ProfesorEntity> list = (List<ProfesorEntity>) profesorService.getProfesores();
         assertNotNull(list);
 
@@ -135,31 +136,31 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesor() {
+    public void testGetProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         ProfesorEntity result = profesorService.getProfesor(entity.getId());
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             profesorService.getProfesor(factory.manufacturePojo(Long.class));
         });
     }
 
     @Test
-    public void testUpdateProfesor() {
+    public void testUpdateProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         ProfesorEntity result = profesorService.updateProfesor(entity.getId(), entity);
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(EntityNotFoundException.class, () -> {
             profesorService.updateProfesor(factory.manufacturePojo(Long.class), entity);
         });
     }
 
     @Test
-    public void testDeleteProfesor() {
+    public void testDeleteProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         profesorService.deleteProfesor(entity.getId());
@@ -169,7 +170,7 @@ public class ProfesorServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {BASE_PROFESOR, BASE_PROFESOR_VIRTUAL, BASE_PROFESOR_PRESENCIAL, "RANDOM"})
-    public void testGetProfesoresPorTipo(String tipo) {
+    public void testGetProfesoresPorTipo(String tipo) throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
 
@@ -178,7 +179,7 @@ public class ProfesorServiceTest {
             List<ProfesorEntity> result = profesorService.getProfesoresPorTipo(tipo);
             assertNotNull(result);
         } else {
-            assertThrows(IllegalArgumentException.class, () -> {
+            assertThrows(EntityNotFoundException.class, () -> {
                 profesorService.getProfesoresPorTipo(tipo);
             });
         }

@@ -1,4 +1,3 @@
-
 /*
 MIT License
 
@@ -21,17 +20,31 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 package co.edu.uniandes.dse.asesorando.dto;
 
 import lombok.Data;
 
+/**
+ * ProfesorDTO Objeto de transferencia de datos de Profesores.
+ * 
+ * @author Daniel-VergaraM
+ */
 @Data
-public class AsesoriaDTO {
+public class ProfesorDTO {
+    // Usuario
     private Long id;
-    private String duracion;
-    private String tematica;
+    private String nombre;
+    private String correo;
+    private String telefono;
+    private String contrasena;
+    // Profesor
     private String tipo;
-    private String area;
-    private Boolean completada;
+    private String formacion;
+    // ProfesorVirtual
+    private String enlaceReunion = null;
+    // ProfesorPresencial
+    private Integer codigoPostal = null;
+    private Double latitud = null;
+    private Double longitud = null;
 }

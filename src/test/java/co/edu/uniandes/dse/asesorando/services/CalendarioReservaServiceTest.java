@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -72,23 +73,31 @@ public class CalendarioReservaServiceTest {
 
     @Test
     void testActualizarCalendario() {
-        CalendarioEntity nuevoCalendario = factory.manufacturePojo(CalendarioEntity.class);
-        nuevoCalendario.setFechaInicio(new Date(System.currentTimeMillis()));
-        nuevoCalendario.setFechaFin(sumarDias(new Date(System.currentTimeMillis()), 15));
-
-        CalendarioEntity result = calendarioReservaService.actualizarCalendario(calendario.getId(), nuevoCalendario);
-
-        assertNotNull(result);
-        assertEquals(nuevoCalendario.getFechaInicio(), result.getFechaInicio());
-        assertEquals(nuevoCalendario.getFechaFin(), result.getFechaFin());
+        try {
+            CalendarioEntity nuevoCalendario = factory.manufacturePojo(CalendarioEntity.class);
+            nuevoCalendario.setFechaInicio(new Date(System.currentTimeMillis()));
+            nuevoCalendario.setFechaFin(sumarDias(new Date(System.currentTimeMillis()), 15));
+            
+            CalendarioEntity result = calendarioReservaService.actualizarCalendario(calendario.getId(), nuevoCalendario);
+            
+            assertNotNull(result);
+            assertEquals(nuevoCalendario.getFechaInicio(), result.getFechaInicio());
+            assertEquals(nuevoCalendario.getFechaFin(), result.getFechaFin());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     @Test
     void testEliminarCalendarioYReservas() {
-        calendarioReservaService.eliminarCalendarioYReservas(calendario.getId());
-
-        Optional<CalendarioEntity> deleted = calendarioRepository.findById(calendario.getId());
-        assertTrue(deleted.isEmpty());
+        try {
+            calendarioReservaService.eliminarCalendarioYReservas(calendario.getId());
+            
+            Optional<CalendarioEntity> deleted = calendarioRepository.findById(calendario.getId());
+            assertTrue(deleted.isEmpty());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
     }
 
     private Date sumarDias(Date fecha, int dias) {

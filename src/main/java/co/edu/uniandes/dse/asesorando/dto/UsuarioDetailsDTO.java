@@ -1,4 +1,3 @@
-
 /*
 MIT License
 
@@ -21,17 +20,20 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 package co.edu.uniandes.dse.asesorando.dto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 
+/**
+ * Clase que representa una estructura para JSON de los detalles de un usuario
+ *
+ * @author Daniel-VergaraM
+ */
 @Data
-public class AsesoriaDTO {
-    private Long id;
-    private String duracion;
-    private String tematica;
-    private String tipo;
-    private String area;
-    private Boolean completada;
+public class UsuarioDetailsDTO extends UsuarioDTO {
+    private List<AsesoriaDTO> asesoriasCompletadas = new ArrayList<>();
 }

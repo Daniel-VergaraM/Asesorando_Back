@@ -1,0 +1,583 @@
+{
+	"info": {
+		"_postman_id": "9616d2ec-63cb-4cf0-abfd-7a137336975c",
+		"name": "Tematica Detail Test",
+		"description": "### Temática\n\n##### GET\n\n- ById: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters:\n        \n        - id: Stands for the `tematica` id in the database.\n            \n    - Return:\n        \n        - A JSON Object with the `tematica` information.\n            \n- All: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - POST\n            \n- Create `Tematica`: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### PUT\n\n- Update `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body:\n        \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### DELETE\n\n- Delete `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41408474"
+	},
+	"item": [
+		{
+			"name": "Create Tematica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Profesor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nombre\": \"String\", \r\n        \"correo\": \"String\", \r\n        \"telefono\": \"String\",\r\n        \"contraseña\": \"String\",\r\n        \"formacion\": \"String\",    \r\n        \"experiencia\": \"String\", \r\n        \"precioHora\": \"String\", \r\n        \"fotoUrl\": \"String\",   \r\n        \"videoUrl\": \"String\",  \r\n        // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n        \"codigoPostal\": \"Integer\",  \r\n        \"latitud\": \"Double\",    \r\n        \"longitud\": \"Double\",  \r\n        // Las propiedades que siguen son para PROFESORVIRTUAL \r\n        \"enlaceReunion\": \"String\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Profesor 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nombre\": \"String\", \r\n        \"correo\": \"String\", \r\n        \"telefono\": \"String\",\r\n        \"contraseña\": \"String\",\r\n        \"formacion\": \"String\",    \r\n        \"experiencia\": \"String\", \r\n        \"precioHora\": \"String\", \r\n        \"fotoUrl\": \"String\",   \r\n        \"videoUrl\": \"String\",  \r\n        // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n        \"codigoPostal\": \"Integer\",  \r\n        \"latitud\": \"Double\",    \r\n        \"longitud\": \"Double\",  \r\n        // Las propiedades que siguen son para PROFESORVIRTUAL \r\n        \"enlaceReunion\": \"String\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar una Profesor a una tematica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar una Profesor a una tematica que no existe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/0/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"0",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociar un profesores a una Tematica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\": {{Profesor_Id_1}}\r\n    },\r\n    {\r\n\r\n        \"id\": {{Profesor_Id_1}}\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociar un profesores que no existe a una Tematica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\":0\r\n    }\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un profesor de una Tematica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un profesor que no existe de una Tematica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The book with the given id was not found\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"0"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro que no existe de un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error.\r\n\r\n**Código http esperado: 404**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un profesor no asociado de de una tematica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The book is not associated to the author\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/{{Profesor_Id_2}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"{{Profesor_Id_2}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro que no esta asociado a un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El libro no está asociado al autor\".\r\n\r\n**Código http esperado: 412**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener los profesores de una Tematica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Number of books > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/Tematica/{{Tematica_Id}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematica",
+						"{{Tematica_Id}}",
+						"Profesores"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta los libros de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y el del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle un Profesor  a una Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle un Profesor 2 a una Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle un Profesor que no existe a una Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/{{Tematica_Id}}/Profesores/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"{{Tematica_Id}}",
+						"Profesores",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle un Profesora una Tematica  que no existe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematicas/0/Profesores/{{Profesor_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematicas",
+						"0",
+						"Profesores",
+						"{{Profesor_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un Profesor",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un Profesor 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Profesores",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Profesores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/Tematica",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"Tematica"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

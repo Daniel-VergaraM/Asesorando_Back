@@ -1,4 +1,3 @@
-
 /*
 MIT License
 
@@ -21,17 +20,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 package co.edu.uniandes.dse.asesorando.dto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 
+/**
+ * ProfesorDetailsDTO Objeto de transferencia de datos de Profesores con sus
+ * asesorias, tematicas y calendarios.
+ *
+ * @author Daniel-VergaraM
+ */
 @Data
-public class AsesoriaDTO {
-    private Long id;
-    private String duracion;
-    private String tematica;
-    private String tipo;
-    private String area;
-    private Boolean completada;
+public class ProfesorDetailsDTO extends ProfesorDTO {
+
+    private List<AsesoriaDTO> asesorias = new ArrayList<>();
+    private List<TematicaDTO> tematicas = new ArrayList<>();
+    private List<CalendarioDTO> calendarios = new ArrayList<>();
+
 }
