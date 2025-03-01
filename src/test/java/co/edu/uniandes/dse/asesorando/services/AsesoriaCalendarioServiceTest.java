@@ -40,9 +40,8 @@ import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
-import co.edu.uniandes.dse.asesorando.services.AsesoriaCalendarioService;
+
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
-import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -60,8 +59,6 @@ public class AsesoriaCalendarioServiceTest {
     @Autowired
     private AsesoriaRepository asesoriaRepository;
     
-    @Autowired
-    private CalendarioRepository calendarioRepository;
     
     @Autowired  
     private TestEntityManager entityManager;
