@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "2e9ceb44-bbd7-42ef-9337-cfff6666eee9",
+		"name": "Asesoria Tests",
+		"description": "Colección de las pruebas sobre el recurso Asesoria",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42585443"
+	},
+	"item": [
+		{
+			"name": "Crear una asesoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"author_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 1,\n  \"duracion\": \"60 minutos\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false\n}\n\n"
+				},
+				"url": {
+					"raw": "{{baseUrl}}asesoria",
+					"host": [
+						"{{baseUrl}}asesoria"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nCrea un nuevo autor. El Id es inicializado por la BD y se debe ver en la respuesta.\r\nPara la prueba, se guarda el id en una variable que será utilizada en otras peticiones de la colección.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todas las asesorias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Number of authors > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta todos los autores de la aplicacion. \r\nLa petición no tiene cuerpo.\r\n\r\nPara la prueba, se verifica que el conjunto de autores en la respuesta tenga mas de uno.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asesorias por tematica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/tematica/Matematicas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"tematica",
+						"Matematicas"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asesorias por profesor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"profesor",
+						"{{profesorId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asesorias por area",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"profesor",
+						"{{profesorId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asesorias por Calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"profesor",
+						"{{profesorId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asesorias por Completada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"profesor",
+						"{{profesorId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Editar una asesoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n  \"duracion\": \"90 minutos\",\n  \"tematica\": \"Física\",\n  \"modalidad\": \"Grupal\",\n  \"area\": \"Ciencias\",\n  \"profesorId\": 2\n}\n\n\n\n"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/{{asesoriaId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"{{asesoriaId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nActualiza un autor existente. \r\nse envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar una asesoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/asesoria/{{asesoriaId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"asesoria",
+						"{{asesoriaId}}"
+					]
+				},
+				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}
