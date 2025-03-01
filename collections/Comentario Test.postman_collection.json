@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "353136ac-dc4f-41ab-9e57-b2b684e43dda",
+		"name": "Comentario Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41408474"
+	},
+	"item": [
+		{
+			"name": "obtener todos los comentarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \r\n\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener un comentario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/comentarios /{{comentario_id_1}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios ",
+						"{{comentario_id_1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener un comentario que no existe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/comentarios /0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios ",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear comentario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es muy buena monitoria y es muy chevere...\",\r\n    \"calificacion\" : 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear comentario 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es una muy mala monitoria y es muy deprimente...\",\r\n    \"calificacion\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear comentario con un valor mayor al permitido",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es muy divertido pero no se sabe que toca hacer...\",\r\n    \"calificacion\" : 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar un comentario",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es muy buena  y es muy chevere...\",\r\n    \"calificacion\" : 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios/{{comentario_id_1}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios",
+						"{{comentario_id_1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar un comentario que no exite",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es una muy mala  y es muy deprimente...\",\r\n    \"calificacion\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar un comentario con un valor mayor al permitido",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comentario\" : \"Es muy divertido pero no se sabe que toca hacer...\",\r\n    \"calificacion\" : 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios/{{comentario_id_2}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios",
+						"{{comentario_id_2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrar un comentario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios/{{comentario_id_1}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios",
+						"{{comentario_id_1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrar comentario 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios{{comentario_id_2}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios{{comentario_id_2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrar un comentario que no existe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/comentarios/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comentarios",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
