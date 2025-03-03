@@ -238,7 +238,7 @@
 						"{{Profesor_Id}}"
 					]
 				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un profesor de un tematica en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del tematica y del profesor a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
 			},
 			"response": []
 		},
@@ -255,7 +255,7 @@
 							"",
 							"pm.test(\"Get expected error message\", function () {",
 							"   var data = pm.response.json();",
-							"   pm.expect(data.apierror.message).to.eql(\"The book with the given id was not found\");",
+							"   pm.expect(data.apierror.message).to.eql(\"The profesor with the given id was not found\");",
 							"});",
 							""
 						],
@@ -286,7 +286,7 @@
 						"0"
 					]
 				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro que no existe de un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error.\r\n\r\n**Código http esperado: 404**"
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un profesor que no existe de un tematica en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error.\r\n\r\n**Código http esperado: 404**"
 			},
 			"response": []
 		},
@@ -303,7 +303,7 @@
 							"",
 							"pm.test(\"Get expected error message\", function () {",
 							"   var data = pm.response.json();",
-							"   pm.expect(data.apierror.message).to.eql(\"The book is not associated to the author\");",
+							"   pm.expect(data.apierror.message).to.eql(\"The profesor is not associated to the tematic\");",
 							"});",
 							""
 						],
@@ -334,7 +334,7 @@
 						"{{Profesor_Id_2}}"
 					]
 				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro que no esta asociado a un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El libro no está asociado al autor\".\r\n\r\n**Código http esperado: 412**"
+				"description": "**Release: Paso-5**\r\n\r\nConsulta un profesor que no esta asociado a un tematica en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El profesor no está asociado al tematica\".\r\n\r\n**Código http esperado: 412**"
 			},
 			"response": []
 		},
@@ -345,7 +345,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test('Number of books > ' + 0, function () {",
+							"pm.test('Number of profesors > ' + 0, function () {",
 							"   var data = pm.response.json()",
 							"   pm.expect(data.length).to.greaterThan(0)",
 							"});",
@@ -381,7 +381,7 @@
 						"Profesores"
 					]
 				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta los libros de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y el del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
+				"description": "**Release: Paso-5**\r\n\r\nConsulta los profesors de un tematica en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del tematica y el del profesor a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
 			},
 			"response": []
 		},
