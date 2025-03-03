@@ -3,6 +3,6 @@ package co.edu.uniandes.dse.asesorando.dto;
 import lombok.Data;
 @Data
 
-public class EstudianteDTO{
+public class EstudianteDTO extends UsuarioDTO{
 
 }
