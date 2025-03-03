@@ -32,10 +32,12 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Daniel-VergaraM
  */
+
 @Slf4j
 @Service
 public class UsuarioService {
@@ -56,13 +59,13 @@ public class UsuarioService {
      * Crea un usuario por medio de un objeto usuario
      */
     @Transactional
-    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) {
+    public UsuarioEntity createUsuario(@Valid @NotNull UsuarioEntity usuario) throws EntityNotFoundException {
         log.info("Creando un usuario nuevo");
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
 
         if (usuarioExistente.isPresent()) {
             log.error("El usuario con correo {} ya existe", usuario.getCorreo());
-            throw new IllegalArgumentException("El usuario con correo " + usuario.getCorreo() + " ya existe");
+            throw new EntityNotFoundException("El usuario con correo " + usuario.getCorreo() + " ya existe");
         }
 
         log.info("Usuario creado");
@@ -87,13 +90,13 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity getUsuario(@NotNull Long id) {
+    public UsuarioEntity getUsuario(@NotNull Long id) throws EntityNotFoundException {
         log.info("Obteniendo un profesor");
 
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findById(id);
 
         if (usuarioExistente.isEmpty()) {
-            throw new IllegalArgumentException("El profesor no existe.");
+            throw new EntityNotFoundException("El profesor no existe.");
         }
 
         log.info("Profesor obtenido");
@@ -108,11 +111,11 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public UsuarioEntity updateUsuario(@NotNull Long id, @Valid @NotNull UsuarioEntity usuario) {
+    public UsuarioEntity updateUsuario(@NotNull Long id, @Valid @NotNull UsuarioEntity usuario) throws EntityNotFoundException {
         log.info("Actualizando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
 
         usuarioExistente.setContrasena(usuario.getContrasena());
         usuarioExistente.setCorreo(usuario.getCorreo());
@@ -141,6 +144,9 @@ public class UsuarioService {
                 ((ProfesorPresencialEntity) profesorExistente)
                         .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
             }
+        } else if (usuario instanceof EstudianteEntity && usuarioExistente instanceof EstudianteEntity) {
+            ((EstudianteEntity) usuario).setComentarios(((EstudianteEntity) usuarioExistente).getComentarios());
+            ((EstudianteEntity) usuario).setReservas(((EstudianteEntity) usuarioExistente).getReservas());
         }
 
         log.info("Usuario actualizado");
@@ -154,14 +160,34 @@ public class UsuarioService {
      * @return
      */
     @Transactional
-    public void deleteUsuario(@NotNull Long id) {
+    public void deleteUsuario(@NotNull Long id) throws EntityNotFoundException {
         log.info("Eliminando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
 
         log.info("Usuario eliminado");
         usuarioRepository.deleteById(usuarioExistente.getId());
+    }
+
+    /**
+     * Obtiene un usuario por su correo
+     *
+     * @param correo
+     * @return
+     */
+    @Transactional
+    public UsuarioEntity getUsuarioByCorreo(@NotNull String correo) throws EntityNotFoundException {
+        log.info("Obteniendo un usuario por correo");
+
+        Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(correo);
+
+        if (usuarioExistente.isEmpty()) {
+            throw new EntityNotFoundException("El usuario no existe.");
+        }
+
+        log.info("Usuario obtenido");
+        return usuarioExistente.get();
     }
 
 }

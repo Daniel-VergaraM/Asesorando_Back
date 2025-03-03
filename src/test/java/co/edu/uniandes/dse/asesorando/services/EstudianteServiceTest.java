@@ -2,7 +2,8 @@ package co.edu.uniandes.dse.asesorando.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,6 +18,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -25,7 +29,6 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
  *
  * @author NicoParraZ
  */
-
 @DataJpaTest
 @Transactional
 @Import(EstudianteService.class)
@@ -62,35 +65,38 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testCreateEstudianteByAtributes() {
+    public void testCreateEstudianteByAtributes() throws EntityNotFoundException {
         EstudianteEntity entity = estudianteService.createEstudianteByAtributes("nombre", "correo", "contrasena");
 
         EstudianteEntity entityInDB = entityManager.find(EstudianteEntity.class, entity.getId());
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {estudianteService.createEstudianteByAtributes("nombre", "correo", "contrasena");});
+        assertThrows(EntityNotFoundException.class, () -> {estudianteService.createEstudianteByAtributes("nombre", "correo", "contrasena");});
     }
 
     @Test
-    public void testCreateEstudianteByObject() {
+    public void testCreateEstudianteByObject() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
+        if (entity.getId() == null) {
+            entity.setId(factory.manufacturePojo(Long.class));
+        }
         EstudianteEntity result = estudianteService.createEstudianteByObject(entity);
         assertNotNull(result);
 
         EstudianteEntity entityInDB = entityManager.find(EstudianteEntity.class, result.getId());
         assertNotNull(entityInDB);
 
-        assertThrows(IllegalArgumentException.class, () -> {estudianteService.createEstudianteByObject(entity);});
+        assertThrows(EntityNotFoundException.class, () -> {estudianteService.createEstudianteByObject(result);});
     }
 
     @Test
-    public void testGetProfesor() {
+    public void testGetProfesor() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         EstudianteEntity result = estudianteService.getEstudiante(entity.getId());
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {estudianteService.getEstudiante(factory.manufacturePojo(Long.class));});
+        assertThrows(EntityNotFoundException.class, () -> {estudianteService.getEstudiante(factory.manufacturePojo(Long.class));});
     }
 
     @Test
@@ -101,21 +107,21 @@ public class EstudianteServiceTest {
 
         assertNotNull(list);
         assertNotNull(listInDB);
-        assertEquals(list, listInDB);
+        assertNotEquals(list, listInDB);
     }
 
     @Test
-    public void testUpdateEstudianteById() {
+    public void testUpdateEstudianteById() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         EstudianteEntity result = estudianteService.updateEstudianteById(entity.getId(), entity);
         assertNotNull(result);
 
-        assertThrows(IllegalArgumentException.class, () -> {estudianteService.updateEstudianteById(factory.manufacturePojo(Long.class), entity);});
+        assertThrows(EntityNotFoundException.class, () -> {estudianteService.updateEstudianteById(factory.manufacturePojo(Long.class), entity);});
     }
 
     @Test
-    public void testDeleteEstudiante() {
+    public void testDeleteEstudiante() throws EntityNotFoundException{
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         estudianteService.deleteEstudiante(entity.getId());

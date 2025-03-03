@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +24,16 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
         @Transactional
-        public ReservaEntity crearReserva(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria){ 
+        public ReservaEntity crearReserva(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException { 
                
             if (fechaReserva == null) {
-                throw new IllegalArgumentException("La fecha de la reserva no puede ser nula");
+                throw new EntityNotFoundException("La fecha de la reserva no puede ser nula");
             }
             if (estudiante == null) {
-                throw new IllegalArgumentException("El estudiante no puede ser nulo");
+                throw new EntityNotFoundException("El estudiante no puede ser nulo");
             }
             if (asesoria == null) {
-                throw new IllegalArgumentException("La asesoría no puede ser nula");
+                throw new EntityNotFoundException("La asesoría no puede ser nula");
             }
     
             ReservaEntity reserva = new ReservaEntity();
@@ -47,7 +48,7 @@ public class ReservaService {
         }
     
         @Transactional
-        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) {
+        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {
             return "ReservaEntity{" +
                 "fechaReserva='" + fechaReserva + '\'' +
                 ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
@@ -61,26 +62,26 @@ public class ReservaService {
         }   
 
         @Transactional
-        public void eliminarReserva(Long Id) {
+        public void eliminarReserva(Long Id) throws EntityNotFoundException {
 
             if (Id == null) {
-                throw new IllegalArgumentException("El ID de la reserva no puede ser nulo");
+                throw new EntityNotFoundException("El ID de la reserva no puede ser nulo");
             }
 
-            ReservaEntity reservaEliminar = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
+            ReservaEntity reservaEliminar = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
             reservaRepository.delete(reservaEliminar);
     }
 
 
         @Transactional
-        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva){
+        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
             
-            ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new IllegalArgumentException("Este id no existe."));
+            ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
 
-            if (Id == null) {throw new IllegalArgumentException("El ID de la reserva no puede ser nulo");}
-            if (fechaReservaNueva == null) {throw new IllegalArgumentException("La nueva fecha de la reserva no puede ser nula");}
-            if (estudianteNuevo == null) {throw new IllegalArgumentException("El nuevo estudiante no puede ser nulo");}
-            if (asesoriaNueva == null) {throw new IllegalArgumentException("La nueva asesoría no puede ser nula");}
+            if (Id == null) {throw new EntityNotFoundException("El ID de la reserva no puede ser nulo");}
+            if (fechaReservaNueva == null) {throw new EntityNotFoundException("La nueva fecha de la reserva no puede ser nula");}
+            if (estudianteNuevo == null) {throw new EntityNotFoundException("El nuevo estudiante no puede ser nulo");}
+            if (asesoriaNueva == null) {throw new EntityNotFoundException("La nueva asesoría no puede ser nula");}
 
             reservaUpdate.setFechaReserva(fechaReservaNueva);
             reservaUpdate.setEstudiante(estudianteNuevo);

@@ -31,7 +31,8 @@ SOFTWARE.
  
  import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
  import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
- import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
  import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
  import lombok.Data;
  import lombok.extern.slf4j.Slf4j;
@@ -59,16 +60,16 @@ SOFTWARE.
       * @return Asesoría creada y asignada al profesor.
       */
      @Transactional
-     public AsesoriaEntity crearAsesoriaParaProfesor(Long profesorId, AsesoriaEntity asesoria) {
+     public AsesoriaEntity crearAsesoriaParaProfesor(Long profesorId, AsesoriaEntity asesoria) throws EntityNotFoundException {
          ProfesorEntity profesor = profesorRepository.findById(profesorId)
-                 .orElseThrow(() -> new IllegalArgumentException("El profesor no existe"));
+                 .orElseThrow(() -> new EntityNotFoundException("El profesor no existe"));
  
          asesoria.setProfesor(profesor);
          return asesoriaRepository.save(asesoria);
      }
  
      /**
-      * Lista todas las asesorías asignadas a un profesor.
+      * Lista todas las asesorías asignadas a un profesor,en este cso seria el get.
       *
       * @param profesorId ID del profesor.
       * @return Lista de asesorías del profesor.
@@ -87,12 +88,12 @@ SOFTWARE.
       * @return Asesoría actualizada.
       */
      @Transactional
-     public AsesoriaEntity actualizarAsesoriaDeProfesor(Long profesorId, Long asesoriaId, AsesoriaEntity nuevaAsesoria) {
+     public AsesoriaEntity actualizarAsesoriaDeProfesor(Long profesorId, Long asesoriaId, AsesoriaEntity nuevaAsesoria) throws EntityNotFoundException {
          AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
-                 .orElseThrow(() -> new IllegalArgumentException("La asesoría no existe"));
+                 .orElseThrow(() -> new EntityNotFoundException("La asesoría no existe"));
  
          if (!asesoria.getProfesor().getId().equals(profesorId)) {
-             throw new IllegalArgumentException("La asesoría no pertenece a este profesor");
+             throw new EntityNotFoundException("La asesoría no pertenece a este profesor");
          }
  
          asesoria.setDuracion(nuevaAsesoria.getDuracion());
@@ -109,12 +110,12 @@ SOFTWARE.
       * @param asesoriaId ID de la asesoría a eliminar.
       */
      @Transactional
-     public void eliminarAsesoriaDeProfesor(Long profesorId, Long asesoriaId) {
+     public void eliminarAsesoriaDeProfesor(Long profesorId, Long asesoriaId) throws EntityNotFoundException{
          AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
-                 .orElseThrow(() -> new IllegalArgumentException("La asesoría no existe"));
+                 .orElseThrow(() -> new EntityNotFoundException("La asesoría no existe"));
  
          if (!asesoria.getProfesor().getId().equals(profesorId)) {
-             throw new IllegalArgumentException("La asesoría no pertenece a este profesor");
+             throw new EntityNotFoundException("La asesoría no pertenece a este profesor");
          }
  
          asesoriaRepository.delete(asesoria);

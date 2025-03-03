@@ -1,0 +1,183 @@
+package co.edu.uniandes.dse.asesorando.services;
+/*
+MIT License
+
+Copyright (c) 2021 Universidad de los Andes - ISIS2603
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.transaction.Transactional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+
+import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
+import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
+
+/**
+ * Pruebas de lógica de AsesoriaProfesorService
+ */
+@DataJpaTest
+@Transactional
+@Import({AsesoriaProfesorService.class})
+public class AsesoriaProfesorServiceTest {
+    
+    @Autowired
+    private AsesoriaProfesorService asesoriaProfesorService;
+    
+    @Autowired
+    private AsesoriaRepository asesoriaRepository;
+    
+    @Autowired
+    private ProfesorRepository profesorRepository;
+    
+    @Autowired  
+    private TestEntityManager entityManager;
+    
+    private PodamFactory factory = new PodamFactoryImpl();
+    
+    private ProfesorEntity profesor;
+    private List<AsesoriaEntity> asesoriaList = new ArrayList<>();
+
+    @BeforeEach
+    void setUp() {
+        clearData();
+        insertData();
+    }
+    
+    /**
+     * Limpia las tablas que están implicadas en la prueba.
+     */
+    private void clearData() {
+        entityManager.getEntityManager().createQuery("DELETE FROM AsesoriaEntity");
+        entityManager.getEntityManager().createQuery("DELETE FROM ProfesorEntity");
+    }
+
+    /**
+     * Inserta los datos iniciales para el correcto funcionamiento de las pruebas yy persiste al profesor
+     */
+    private void insertData() {
+        profesor = factory.manufacturePojo(ProfesorEntity.class);
+        entityManager.persist(profesor);
+
+        for (int i = 0; i < 3; i++) {
+            AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);
+            asesoria.setProfesor(profesor);
+            entityManager.persist(asesoria);
+            asesoriaList.add(asesoria);
+        }
+    }
+    /**
+     * Método para crear una asesoría y asignarla a un profesor.
+     *
+     * Verifica que la asesoría se cree correctamente y que sus atributos 
+     * (temática, duración, tipo y área) coincidan con los valores esperados.
+     */
+    @Test
+    void testCrearAsesoriaParaProfesor() {
+        try {
+            AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+            nuevaAsesoria.setProfesor(profesor);
+            AsesoriaEntity resultado = asesoriaProfesorService.crearAsesoriaParaProfesor(profesor.getId(), nuevaAsesoria);
+            
+            assertNotNull(resultado);
+            assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
+            assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
+            assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
+            assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
+    }
+    
+
+
+    /**
+     * Método para listar todas las asesorías de un profesor.
+     *
+     * Verifica que la cantidad de asesorías obtenidas coincida con el número 
+     * de asesorías creadas en la base de datos para el profesor.
+     */
+
+    @Test
+    void testListarAsesoriasDeProfesor() {
+        List<AsesoriaEntity> resultado = asesoriaProfesorService.listarAsesoriasDeProfesor(profesor.getId());
+        assertEquals(asesoriaList.size(), resultado.size());
+    }
+
+    /**
+     * Método para actualizar una asesoría de un profesor.
+     *
+     * Verifica que la asesoría actualizada mantenga la relación con el profesor 
+     * y que sus atributos (temática, duración, tipo y área) coincidan con los valores 
+     * de la asesoría modificada.
+     */
+    @Test
+    void testActualizarAsesoriaDeProfesor() {
+        try {
+            AsesoriaEntity asesoria = asesoriaList.get(0);
+            AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+            nuevaAsesoria.setProfesor(profesor);
+            
+            AsesoriaEntity resultado = asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesor.getId(), asesoria.getId(), nuevaAsesoria);
+            
+            assertNotNull(resultado);
+            assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
+            assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
+            assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
+            assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
+    }
+
+    /**
+     * Método para eliminar una asesoría de un profesor.
+     *
+     * Verifica que la asesoría sea eliminada correctamente y que no se encuentre en la base de datos.
+     */
+
+    @Test
+    void testEliminarAsesoriaDeProfesor() {
+        try {
+            AsesoriaEntity asesoria = asesoriaList.get(0);
+            asesoriaProfesorService.eliminarAsesoriaDeProfesor(profesor.getId(), asesoria.getId());
+            assertFalse(asesoriaRepository.findById(asesoria.getId()).isPresent());
+        } catch (EntityNotFoundException ex) {
+            assertNotNull(ex);
+        }
+    }
+}
+
+

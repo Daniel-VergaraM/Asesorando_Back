@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "176fbc13-2319-4112-a6d6-90caf1d49cf4",
+		"name": "Usuario Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41366766"
+	},
+	"item": [
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}/{{usuario_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}",
+						"{{usuario_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
