@@ -6,4 +6,6 @@ import lombok.Data;
 
 public class EstudianteDetailDTO extends EstudianteDTO{
 
+    private List<ComentarioDTO> comentarios = new ArrayList<>();
+    private List<ReservaDTO> reservas = new ArrayList<>();
 }
