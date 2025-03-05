@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.asesorando.services.CalendarioService;
 
-public class CalendarioController {
-    @RestController
+@RestController
 @RequestMapping("/calendars")
-public class BookController {
-
+public class CalendarioController {
         @Autowired
         private CalendarioService calendarioService;
 
         @Autowired
         private ModelMapper modelMapper;
-}
 }
