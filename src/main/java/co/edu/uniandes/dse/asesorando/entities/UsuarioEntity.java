@@ -52,6 +52,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
+    @NotNull
     protected String tipo;
 
     @NotNull
