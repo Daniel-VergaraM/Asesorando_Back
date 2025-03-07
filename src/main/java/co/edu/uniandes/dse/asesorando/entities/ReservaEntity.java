@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -19,7 +20,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class ReservaEntity extends BaseEntity {
 
-    private LocalDate fechaReserva;
+    private Date fechaReserva;
 
     @PodamExclude
     @ManyToOne
