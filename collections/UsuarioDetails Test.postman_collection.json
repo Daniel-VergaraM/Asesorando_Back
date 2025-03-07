@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "52698916-0ea5-421c-b5a4-34f98cd87aed",
+		"name": "UsuarioDetails Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41366766"
+	},
+	"item": [
+		{
+			"name": "Get Asesorias Completadas para un Usuario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}/{{usuario_id}}/asesoriasCompletadas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}",
+						"{{usuario_id}}",
+						"asesoriasCompletadas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get AsesoriaCompletada by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}/{{usuario_id}}/asesoriasCompletadas/{{asesoria_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}",
+						"{{usuario_id}}",
+						"asesoriasCompletadas",
+						"{{asesoria_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar/Eliminar AsesoriaCompletada de Lista",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"duracion\": \"String\",\r\n        \"tematica\": \"String\",\r\n        \"tipo\": \"String\",\r\n        \"area\": \"String\",\r\n        \"completada\": \"Boolean\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/usuarios/{{tipo_usuario}}/{{usuario_id}}/asesoriasCompletadas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"usuarios",
+						"{{tipo_usuario}}",
+						"{{usuario_id}}",
+						"asesoriasCompletadas"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

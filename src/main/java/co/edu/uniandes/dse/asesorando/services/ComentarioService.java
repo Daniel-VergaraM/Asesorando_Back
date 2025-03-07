@@ -1,75 +1,89 @@
 package co.edu.uniandes.dse.asesorando.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ComentarioRepository;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@MappedSuperclass
-public class ComentarioService{
+@Slf4j
+public class ComentarioService {
 
     @Autowired
     private ComentarioRepository comentarioRepository;
-@Transactional    
-public ComentarioEntity crearComentario(ComentarioEntity comentario) throws IllegalArgumentException{
- 
-    if( comentario.getComentario() == null || comentario.getComentario().isEmpty() 
-    || comentario.getCalificacion() == null) {
-        throw new IllegalArgumentException("El comentario no puede ser nulo o vacio");
+
+    @Transactional
+    public ComentarioEntity crearComentario(ComentarioEntity comentario) throws EntityNotFoundException {
+        log.info("Inicia proceso de creación de comentario");
+        if (comentario.getComentario() == null || comentario.getComentario().isEmpty() || comentario.getCalificacion() == null) {
+            throw new EntityNotFoundException("El comentario no puede ser nulo o vacío");
+        }
+
+        if (comentario.getCalificacion() < 0 || comentario.getCalificacion() > 5) {
+            throw new EntityNotFoundException("La calificación debe estar entre 0 y 5");
+        }
+
+        log.info("Termina proceso de creación de comentario");
+        return comentarioRepository.save(comentario);
     }
 
-    if(comentario.getCalificacion() < 0 || comentario.getCalificacion() > 5){
-        throw new IllegalArgumentException("La calificacion debe estar entre 0 y 5");
-}
+    @Transactional
+    public ComentarioEntity leer_comentario(Long comentarioId) throws EntityNotFoundException {
+        log.info("Inicia proceso de lectura de comentario con id = {}", comentarioId);
+        if (comentarioId == null) {
+            throw new EntityNotFoundException("El id del comentario no puede ser nulo");
+        }
 
-    return comentarioRepository.save(comentario);
-}
+        Optional<ComentarioEntity> comentarioEntity = comentarioRepository.findById(comentarioId);
+        if (comentarioEntity.isEmpty()) {
+            throw new EntityNotFoundException("El comentario no existe");
+        }
 
-@Transactional
-public ComentarioEntity leer_comentario(ComentarioEntity comentario){
-
-    if (comentario.getId() == null){
-        throw new IllegalArgumentException("El id del comentario no puede ser nulo");
-    }
-    
-    if(( !comentarioRepository.existsById(comentario.getId()))){
-        throw new IllegalArgumentException("El comentario no existe");
-    }
-    
-    return comentarioRepository.findById(comentario.getId()).orElse(null);
-}
-
-@Transactional
-public ComentarioEntity actualizar_comentario(ComentarioEntity comentario){
-    if( comentario.getComentario() == null || comentario.getComentario().isEmpty() 
-    || comentario.getCalificacion() == null) {
-        throw new IllegalArgumentException("El comentario no puede ser nulo o vacio");
+        log.info("Termina proceso de lectura de comentario con id = {}", comentarioId);
+        return comentarioEntity.get();
     }
 
-    if(comentario.getCalificacion() < 0 || comentario.getCalificacion() > 5){
-        throw new IllegalArgumentException("La calificacion debe estar entre 0 y 5");
-
+    @Transactional
+    public List<ComentarioEntity> getComentarios() {
+        log.info("Inicia proceso de consultar todos los comentarios");
+        return comentarioRepository.findAll();
     }
 
-    
-    return comentarioRepository.save(comentario);
-}
+    @Transactional
+    public ComentarioEntity actualizar_comentario(Long comentarioId, ComentarioEntity comentario) throws EntityNotFoundException {
+        log.info("Inicia proceso de actualización de comentario con id = {}", comentarioId);
+        if (comentario.getComentario() == null || comentario.getComentario().isEmpty() || comentario.getCalificacion() == null) {
+            throw new EntityNotFoundException("El comentario no puede ser nulo o vacío");
+        }
 
+        if (comentario.getCalificacion() < 0 || comentario.getCalificacion() > 5) {
+            throw new EntityNotFoundException("La calificación debe estar entre 0 y 5");
+        }
 
-@Transactional
-public void  eliminar_comentario(ComentarioEntity comentario){
-    if(comentario.getId() == null){
-        throw new IllegalArgumentException("El id del comentario no puede ser nulo");
+        comentario.setId(comentarioId);
+        log.info("Termina proceso de actualización de comentario con id = {}", comentarioId);
+        return comentarioRepository.save(comentario);
     }
-    if(( !comentarioRepository.existsById(comentario.getId()))){
-        throw new IllegalArgumentException("El comentario no existe");
-    }   
-    comentarioRepository.deleteById(comentario.getId());
-}
 
+    @Transactional
+    public void eliminar_comentario(Long comentarioId) throws EntityNotFoundException {
+        log.info("Inicia proceso de eliminación de comentario con id = {}", comentarioId);
+        if (comentarioId == null) {
+            throw new EntityNotFoundException("El id del comentario no puede ser nulo");
+        }
 
+        if (!comentarioRepository.existsById(comentarioId)) {
+            throw new EntityNotFoundException("El comentario no existe");
+        }
+
+        comentarioRepository.deleteById(comentarioId);
+        log.info("Termina proceso de eliminación de comentario con id = {}", comentarioId);
+    }
 }

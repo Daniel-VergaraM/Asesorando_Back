@@ -1,10 +1,13 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +20,13 @@ public class ComentarioEntity extends BaseEntity {
 
     private Integer calificacion;
 
-    @OneToMany(mappedBy = "comentar")
+    @PodamExclude
+    @ManyToOne
+    @JoinColumn(name = "estudiante")
     private EstudianteEntity estudiante;
 
+    @PodamExclude
+    @OneToOne(mappedBy = "comentario")
+    private ReservaEntity reserva;
    
 }

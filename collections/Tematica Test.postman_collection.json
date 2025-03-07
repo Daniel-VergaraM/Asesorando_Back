@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "d1874fe6-94a5-4a56-86ab-d03464204826",
+		"name": "Tematica Test",
+		"description": "### Temática\n\n##### GET\n\n- ById: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters:\n        \n        - id: Stands for the `tematica` id in the database.\n            \n    - Return:\n        \n        - A JSON Object with the `tematica` information.\n            \n- All: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - POST\n            \n- Create `Tematica`: [http://localhost:8080/api/tematicas/](http://localhost:8080/api/tematicas/)\n    \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### PUT\n\n- Update `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body:\n        \n    - {\"tema\": \"String\",\"area\": \"String\"}\n        \n- ‎\n    \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.\n            \n\n##### DELETE\n\n- Delete `tematica`: [http://localhost:8080/api/tematicas/:id](http://localhost:8080/api/tematicas/:id)\n    \n    - Body: {}\n        \n    - Parameters: \\[\\]\n        \n    - Return:\n        \n        - A JSON Object with the HTTP Status of the operation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41408474"
+	},
+	"item": [
+		{
+			"name": "Get Tematica by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/{{comentario_id_1}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						"{{comentario_id_1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tematica by Id que no exista",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tematicas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Tematica",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Tematica",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/:id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Tematica que no exista",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tema\": \"String\",\r\n    \"area\": \"String\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tematica",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/:id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tematica que no exista",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tematicas/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tematicas",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

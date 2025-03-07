@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+
 import java.util.List;
 import java.util.Date;
 
@@ -12,8 +14,9 @@ public interface CalendarioRepository extends JpaRepository<CalendarioEntity, Lo
 
 List<CalendarioEntity> findByFechaInicio(Date fechaInicio);
 List<CalendarioEntity> findByFechaFin(Date fechaFin);
-List<CalendarioEntity> findByFechaInicioGreaterThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioLessThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioBetween(Date fechaInicio, Date fechaFin);
+List<CalendarioEntity> findByProfesor(ProfesorEntity profesor);
+
 
 }
