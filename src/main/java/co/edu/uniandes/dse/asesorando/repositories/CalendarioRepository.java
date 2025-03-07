@@ -16,6 +16,4 @@ List<CalendarioEntity> findByFechaInicioGreaterThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioLessThan(Date fechaInicio);
 List<CalendarioEntity> findByFechaInicioBetween(Date fechaInicio, Date fechaFin);
 
-
-
 }
