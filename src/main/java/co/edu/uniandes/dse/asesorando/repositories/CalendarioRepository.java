@@ -19,6 +19,4 @@ List<CalendarioEntity> findByFechaInicioBetween(Date fechaInicio, Date fechaFin)
 List<CalendarioEntity> findByProfesor(ProfesorEntity profesor);
 
 
-
-
 }
