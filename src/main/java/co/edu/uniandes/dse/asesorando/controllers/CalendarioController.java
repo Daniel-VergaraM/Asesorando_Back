@@ -21,12 +21,12 @@ import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.CalendarioService;
+
 import org.modelmapper.TypeToken;
 
-public class CalendarioController {
 @RestController
 @RequestMapping("/calendars")
-public class BookController {
+public class CalendarioController {
 
     @Autowired
     private CalendarioService calendarioService;
@@ -34,38 +34,38 @@ public class BookController {
     @Autowired
     private ModelMapper modelMapper;
 
-@GetMapping
-@ResponseStatus(code = HttpStatus.OK)
-public List<CalendarioDetailDTO> findAll() {
+    @GetMapping
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<CalendarioDetailDTO> findAll() {
         List<CalendarioEntity> calendars = calendarioService.getCalendarios();
         return modelMapper.map(calendars, new TypeToken<List<CalendarioDetailDTO>>() {
         }.getType());
     }
 
-@GetMapping(value = "/{id}")
-@ResponseStatus(code = HttpStatus.OK)
-public CalendarioDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public CalendarioDetailDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
         CalendarioEntity calendarioEntity = calendarioService.getCalendario(id);
         return modelMapper.map(calendarioEntity, CalendarioDetailDTO.class);
-      
-}
-@PostMapping
-@ResponseStatus(code = HttpStatus.CREATED)
-public CalendarioDTO create(@RequestBody CalendarioDTO CalendarioDTO) throws IllegalOperationException, EntityNotFoundException {
-    CalendarioEntity calendarioEntity = calendarioService.createCalendario(modelMapper.map(CalendarioDTO, CalendarioEntity.class));
-        return modelMapper.map(calendarioEntity, CalendarioDTO.class);
-}
-@PutMapping(value = "/{id}")
-@ResponseStatus(code = HttpStatus.OK)
-public CalendarioDTO update(@PathVariable Long id, @RequestBody CalendarioDTO CalendarioDTO)throws EntityNotFoundException, IllegalOperationException {
-    CalendarioEntity calendarioEntity = calendarioService.updateCalendario( modelMapper.map(CalendarioDTO, CalendarioEntity.class));
-        return modelMapper.map(calendarioEntity, CalendarioDTO.class);
-}
-@DeleteMapping(value = "/{id}")
-@ResponseStatus(code = HttpStatus.NO_CONTENT)
-public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
-        calendarioService.deleteCalendario(id);
-}
+    }
 
-}
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public CalendarioDTO create(@RequestBody CalendarioDTO CalendarioDTO) throws IllegalOperationException, EntityNotFoundException {
+        CalendarioEntity calendarioEntity = calendarioService.createCalendario(modelMapper.map(CalendarioDTO, CalendarioEntity.class));
+        return modelMapper.map(calendarioEntity, CalendarioDTO.class);
+    }
+
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public CalendarioDTO update(@PathVariable Long id, @RequestBody CalendarioDTO CalendarioDTO) throws EntityNotFoundException, IllegalOperationException {
+        CalendarioEntity calendarioEntity = calendarioService.updateCalendario(modelMapper.map(CalendarioDTO, CalendarioEntity.class));
+        return modelMapper.map(calendarioEntity, CalendarioDTO.class);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        calendarioService.deleteCalendario(id);
+    }
 }

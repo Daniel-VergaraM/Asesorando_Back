@@ -93,54 +93,6 @@
 			"response": []
 		},
 		{
-			"name": "Get Tematica By Id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas/{{tematica_id}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"profesores",
-						"{{usuario_id}}",
-						"tematicas",
-						"{{tematica_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Agregar/Eliminar Tematica de profesor",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"area\": \"String\",\r\n        \"tema\": \"String\"\r\n    }\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"profesores",
-						"{{usuario_id}}",
-						"tematicas"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get All Calendarios",
 			"request": {
 				"method": "GET",
@@ -186,7 +138,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"fechaInicio\": \"Date\",\r\n        \"fechaFin\": \"DDate\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"fechaInicio\": \"Date\",\r\n        \"fechaFin\": \"Date\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -202,6 +154,54 @@
 						"profesores",
 						"{{usuario_id}}",
 						"calendarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tematica By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas/{{tematica_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"tematicas",
+						"{{tematica_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar/Eliminar Tematica de profesor",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"method\": \"add\", // Or \"remove\"\r\n    \"data\": {\r\n        \"area\": \"String\",\r\n        \"tema\": \"String\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/profesores/{{usuario_id}}/tematicas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"profesores",
+						"{{usuario_id}}",
+						"tematicas"
 					]
 				}
 			},

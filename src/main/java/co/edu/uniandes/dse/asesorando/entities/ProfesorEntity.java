@@ -90,6 +90,7 @@ public class ProfesorEntity extends UsuarioEntity {
 
     public ProfesorEntity(ProfesorEntity profesor) {
         super();
+        this.tipo = "PROFESOR";
         this.asesorias = profesor.asesorias;
         this.tematicas = profesor.tematicas;
         this.formacion = profesor.formacion;
