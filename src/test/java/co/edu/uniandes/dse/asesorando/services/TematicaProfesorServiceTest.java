@@ -274,4 +274,38 @@ public class TematicaProfesorServiceTest {
 
     }
 
+    @Test
+    public void getProfesoresDeTematicaTest() throws EntityNotFoundException {
+        TematicaEntity tematica = tematicas.get(0);
+        ProfesorEntity profesor = profesores.get(0);
+        service.agregarProfesorATematica(profesor.getId(), tematica.getId());
+        List<ProfesorEntity> profesoresTematica = service.getProfesoresDeTematica(tematica.getId());
+        assertNotNull(profesoresTematica);
+        assertTrue(profesoresTematica.size() == 1);
+
+        Long id = factory.manufacturePojo(Long.class);
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getProfesoresDeTematica(id);
+        });
+    }
+
+    @Test
+    public void actualizarTematicaProfesorTest() throws EntityNotFoundException {
+        TematicaEntity tematica = tematicas.get(0);
+        List<ProfesorEntity> nuevosProfesores = new ArrayList<>();
+        nuevosProfesores.add(profesores.get(1));
+        nuevosProfesores.add(profesores.get(2));
+        List<ProfesorEntity> profesoresActualizados = service.actualizarTematicaProfesor(tematica.getId(), nuevosProfesores);
+        assertNotNull(profesoresActualizados);
+        assertTrue(profesoresActualizados.size() == 2);
+        assertTrue(profesoresActualizados.containsAll(nuevosProfesores));
+
+        Long id = factory.manufacturePojo(Long.class);
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.actualizarTematicaProfesor(id, nuevosProfesores);
+        });
+    }
+
+
+
 }
