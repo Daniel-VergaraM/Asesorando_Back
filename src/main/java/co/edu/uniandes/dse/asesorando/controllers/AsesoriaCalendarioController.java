@@ -26,14 +26,20 @@ package co.edu.uniandes.dse.asesorando.controllers;
 
 import java.util.List;
 
+<<<<<<< HEAD
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+=======
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
+=======
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
@@ -45,13 +51,20 @@ import co.edu.uniandes.dse.asesorando.services.AsesoriaCalendarioService;
  * @author ISIS2603
  */
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/asesorias")
+=======
+@RequestMapping("/asesorias/calendario")
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 public class AsesoriaCalendarioController {
 
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
+<<<<<<< HEAD
     @Autowired
     private ModelMapper modelMapper;
+=======
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 
     /**
      * Obtiene todas las asesorías asociadas a un calendario específico.
@@ -60,6 +73,7 @@ public class AsesoriaCalendarioController {
      * @return Lista de asesorías asociadas al calendario.
      * @throws EntityNotFoundException Si el calendario no existe.
      */
+<<<<<<< HEAD
     @GetMapping("/calendario/{calendarioId}")
     @ResponseStatus(code = HttpStatus.OK)
     public List<AsesoriaDetail> listarAsesoriasDeCalendario(@PathVariable Long calendarioId) throws EntityNotFoundException {
@@ -67,6 +81,13 @@ public class AsesoriaCalendarioController {
         return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDetail>>() {}.getType());
     }
     
+=======
+    @GetMapping("/{calendarioId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<AsesoriaEntity> listarAsesoriasDeCalendario(@PathVariable Long calendarioId) throws EntityNotFoundException {
+        return asesoriaCalendarioService.listarAsesoriasDeCalendario(calendarioId);
+    }
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 
     /**
      * Crea una nueva asesoría dentro de un calendario.
@@ -77,6 +98,7 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException   Si el calendario no existe.
      * @throws IllegalOperationException Si la asesoría ya está asignada a otro calendario.
      */
+<<<<<<< HEAD
     @PostMapping("/{asesoriaId}/calendario/{calendarioId}")
     @ResponseStatus(code = HttpStatus.CREATED)
     public AsesoriaDetail crearAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
@@ -86,6 +108,16 @@ public class AsesoriaCalendarioController {
     }
 
    /**
+=======
+    @PostMapping("/{calendarioId}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public AsesoriaEntity crearAsesoriaEnCalendario(@PathVariable Long calendarioId, @RequestBody AsesoriaEntity asesoria)
+            throws EntityNotFoundException, IllegalOperationException {
+        return asesoriaCalendarioService.crearAsesoriaEnCalendario(calendarioId, asesoria);
+    }
+
+    /**
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
      * Actualiza una asesoría dentro de un calendario.
      *
      * @param calendarioId ID del calendario.
@@ -95,12 +127,20 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
+<<<<<<< HEAD
     @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
     public AsesoriaDetail actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId,
             @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesorias = asesoriaCalendarioService.updateAsesoriaInCalendario(calendarioId, asesoriaId,asesoria);
         return modelMapper.map(asesorias, AsesoriaDetail.class);
+=======
+    @PutMapping("/{calendarioId}/{asesoriaId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AsesoriaEntity actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId,
+            @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
+        return asesoriaCalendarioService.actualizarAsesoriaEnCalendario(calendarioId, asesoriaId, asesoria);
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
     }
 
     /**
@@ -111,6 +151,7 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
+<<<<<<< HEAD
     @DeleteMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void eliminarAsesoriaDeCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
@@ -118,4 +159,12 @@ public class AsesoriaCalendarioController {
     asesoriaCalendarioService.deleteAsesoriaFromCalendario(calendarioId, asesoriaId);
 }
 
+=======
+    @DeleteMapping("/{calendarioId}/{asesoriaId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void eliminarAsesoriaDeCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
+            throws EntityNotFoundException, IllegalOperationException {
+        asesoriaCalendarioService.eliminarAsesoriaDeCalendario(calendarioId, asesoriaId);
+    }
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 }

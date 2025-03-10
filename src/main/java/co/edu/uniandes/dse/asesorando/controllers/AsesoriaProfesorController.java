@@ -26,6 +26,7 @@ package co.edu.uniandes.dse.asesorando.controllers;
 
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -34,11 +35,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.AsesoriaProfesorService;
+<<<<<<< HEAD
 import org.modelmapper.TypeToken;
+=======
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 
 /**
  * Clase que implementa el recurso "asesorias/profesor".
@@ -51,8 +61,11 @@ public class AsesoriaProfesorController {
 
     @Autowired
     private AsesoriaProfesorService asesoriaProfesorService;
+<<<<<<< HEAD
     @Autowired
     private ModelMapper modelMapper;
+=======
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 
     /**
      * Obtiene todas las asesorías de un profesor específico.
@@ -63,6 +76,7 @@ public class AsesoriaProfesorController {
      */
     @GetMapping("/{profesorId}")
     @ResponseStatus(code = HttpStatus.OK)
+<<<<<<< HEAD
     public List<AsesoriaDetail> listarAsesoriasDeProfesor(@PathVariable Long profesorId) throws EntityNotFoundException {
         List<AsesoriaEntity> asesorias =asesoriaProfesorService.listarAsesoriasDeProfesor(profesorId);
         return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDetail>>() {}.getType());
@@ -70,6 +84,11 @@ public class AsesoriaProfesorController {
     }
         
     
+=======
+    public List<AsesoriaEntity> listarAsesoriasDeProfesor(@PathVariable Long profesorId) throws EntityNotFoundException {
+        return asesoriaProfesorService.listarAsesoriasDeProfesor(profesorId);
+    }
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
 
     /**
      * Crea una nueva asesoría y la asigna a un profesor.
@@ -81,10 +100,16 @@ public class AsesoriaProfesorController {
      */
     @PostMapping("/{profesorId}")
     @ResponseStatus(code = HttpStatus.CREATED)
+<<<<<<< HEAD
     public AsesoriaDetail crearAsesoriaParaProfesor(@PathVariable Long profesorId, @Valid @RequestBody AsesoriaEntity asesoria)
             throws EntityNotFoundException {
         AsesoriaEntity asesorias = asesoriaProfesorService.crearAsesoriaParaProfesor(profesorId, asesoria.getId());
         return modelMapper.map(asesorias, AsesoriaDetail.class);
+=======
+    public AsesoriaEntity crearAsesoriaParaProfesor(@PathVariable Long profesorId, @RequestBody AsesoriaEntity asesoria)
+            throws EntityNotFoundException {
+        return asesoriaProfesorService.crearAsesoriaParaProfesor(profesorId, asesoria);
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
     }
 
     /**
@@ -98,6 +123,7 @@ public class AsesoriaProfesorController {
      */
     @PutMapping("/{profesorId}/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
+<<<<<<< HEAD
     public AsesoriaDetail actualizarAsesoriaDeProfesor(@PathVariable Long profesorId, @PathVariable Long asesoriaId,
             @Valid @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
         AsesoriaEntity asesorias = asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesorId, asesoriaId, asesoria);
@@ -106,6 +132,15 @@ public class AsesoriaProfesorController {
 
     /**
     * Elimina una asesoría de un profesor.
+=======
+    public AsesoriaEntity actualizarAsesoriaDeProfesor(@PathVariable Long profesorId, @PathVariable Long asesoriaId,
+            @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
+        return asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesorId, asesoriaId, asesoria);
+    }
+
+    /**
+     * Elimina una asesoría de un profesor.
+>>>>>>> 91c0214 (Borrador asesoria controller, implementacion de)
      *
      * @param profesorId ID del profesor.
      * @param asesoriaId ID de la asesoría a eliminar.
