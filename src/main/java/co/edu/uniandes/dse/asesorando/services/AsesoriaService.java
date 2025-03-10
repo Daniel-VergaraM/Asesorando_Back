@@ -260,6 +260,13 @@ public class AsesoriaService {
         }
         return asesorias;
     }
+
+
+
+    public List<AsesoriaEntity> getAllAsesorias() {
+
+        return asesoriaRepository.findAll();
+    }
     
 
     
