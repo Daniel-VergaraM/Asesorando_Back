@@ -77,7 +77,7 @@ public class UsuarioController {
      */
     @GetMapping(value = "/tipo/{tipo_usuario}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<UsuarioDTO> findAll(@PathVariable String tipo_usuario) throws IllegalArgumentException {
+    public List<UsuarioDTO> findByType(@PathVariable String tipo_usuario) throws IllegalArgumentException {
         if (!tiposValidos.contains(tipo_usuario)) {
             throw new IllegalArgumentException("El tipo de usuario " + tipo_usuario + " no es válido.");
         }
