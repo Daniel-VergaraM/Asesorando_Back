@@ -32,6 +32,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
+
 @Data   
 @Entity
 public class AsesoriaEntity extends BaseEntity {
@@ -46,6 +47,7 @@ public class AsesoriaEntity extends BaseEntity {
     @PodamExclude
     @ManyToOne(targetEntity = UsuarioEntity.class)
     private UsuarioEntity usuario;
+
 
     @PodamExclude
     @ManyToOne
