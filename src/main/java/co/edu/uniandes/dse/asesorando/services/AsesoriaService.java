@@ -22,7 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.services;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,11 +35,15 @@ import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
+import java.util.stream.Collectors;
 
  /**
  * Clase que implementa la conexión con el repositorio de Servicio
@@ -56,44 +63,21 @@ public class AsesoriaService {
     ProfesorRepository profesorRepository;
 
         /**
-     * Crea una nueva asesoría en el servicio.
-     *Parametros: con base a los atributos de la clase
-     * @param duracion   Duración de la asesoría (no puede ser nula ni vacía).
-     * @param tematica   Temática de la asesoría (no puede ser nula ni vacía).
-     * @param tipo       Tipo de la asesoría (no puede ser nula ni vacía).
-     * @param area       Área de conocimiento de la asesoría (no puede ser nula ni vacía).
-     * @param profesorId ID del profesor asociado (no puede ser nulo).
-     * @return La entidad de la asesoría creada.
-     * @throws IllegalOperationException Si algún campo obligatorio está vacío o si el profesor no existe.
-     */
-
-    @Transactional
-    public AsesoriaEntity createAsesoria(@Valid @NotNull String duracion,@Valid @NotNull String tematica,@Valid @NotNull String tipo,@Valid @NotNull String area,@Valid @NotNull Long profesorId) throws IllegalOperationException {
-
-    log.info("Iniciando creación de asesoría con temática '{}'", tematica);
-
-    ProfesorEntity profesor = profesorRepository.findById(profesorId)
-            .orElseThrow(() -> new IllegalOperationException("El profesor con ID " + profesorId + " no existe."));
-
-   
-    AsesoriaEntity asesoria = new AsesoriaEntity();
-    asesoria.setDuracion(duracion);
-    asesoria.setTematica(tematica);
-    asesoria.setTipo(tipo);
-    asesoria.setArea(area);
-    asesoria.setCompletada(false); 
-    asesoria.setProfesor(profesor);
-
-    
-    AsesoriaEntity creada = asesoriaRepository.save(asesoria);
-
-    log.info("Asesoría creada con éxito con ID = {}", creada.getId());
-
-    return creada;
-    }
-
-    
-    
+         * Crea una nueva asesoría en el servicio.
+         * @param asesoria   Entidad de la asesoría a crear.
+         * @param profesorId ID del profesor asociado (no puede ser nulo).
+         * @return La entidad de la asesoría creada.
+         * @throws IllegalOperationException Si algún campo obligatorio está vacío o si el profesor no existe.
+         */
+        @Transactional
+        public AsesoriaEntity createAsesoria(@Valid @NotNull AsesoriaEntity asesoria, @NotNull Long profesorId) throws IllegalOperationException {
+            log.info("Iniciando creación de asesoría");
+            ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(() -> new IllegalOperationException("El profesor con ID " + profesorId + " no existe."));
+            asesoria.setProfesor(profesor);
+            asesoria.setCompletada(false);
+            return asesoriaRepository.save(asesoria);
+            
+        }
     /**
      * Obtiene todas las asesoría con base a su id
      * @param asesoriaId id de la asesoría
@@ -116,24 +100,20 @@ public class AsesoriaService {
      * @param asesoria   Objeto asesoría con los datos actualizados.
      * @return La asesoría actualizada.
      * @throws IllegalOperationException Si la asesoría no existe o si los datos son inválidos.
-     */
+     **/
 
-    @Transactional
-    public AsesoriaEntity updateAsesoriaEntity(@NotNull Long asesoriaId, @Valid @NotNull AsesoriaEntity asesoria)
-            throws IllegalOperationException {
-        log.info("Iniciando actualización de asesoría con ID = {}", asesoriaId);
-
-        AsesoriaEntity asesoriaEntity = asesoriaRepository.findById(asesoriaId)
-                .orElseThrow(() -> new IllegalOperationException("La asesoría con el ID proporcionado no está en el sistema."));
-
-        asesoriaEntity.setDuracion(asesoria.getDuracion());
-        asesoriaEntity.setTematica(asesoria.getTematica());
-        asesoriaEntity.setTipo(asesoria.getTipo());
-        asesoriaEntity.setArea(asesoria.getArea());
-
-        log.info("Asesoría actualizada con éxito.");
-        return asesoriaRepository.save(asesoriaEntity);
-    }
+     @Transactional
+     public AsesoriaEntity updateAsesoriaEntity(Long asesoriaId, AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
+         log.info("Inicia proceso de actualizar la asesoría con id = {}", asesoriaId);
+     
+         Optional<AsesoriaEntity> optionalAsesoria = asesoriaRepository.findById(asesoriaId);
+         if (optionalAsesoria.isEmpty()) {throw new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema.");}
+        
+         asesoria.setId(asesoriaId);
+         log.info("Termina proceso de actualizar la asesoría con id = {}", asesoriaId);
+         return asesoriaRepository.save(asesoria);
+}
+     
     
     /**
      * Elimina una asesoría con base a su id
@@ -153,28 +133,6 @@ public class AsesoriaService {
         return asesoriaEntity;
     }
 
-    /**
-     * Obtiene todas las asesorías con base a su temática
-     * @param tematica temática de la asesoría
-     * @return Lista de asesorías
-     * @throws IllegalOperationException si no se encuentran asesorías con la temática proporcionada
-     */
-    @Transactional
-    public List<AsesoriaEntity> getAsesoriasByTematica(String tematica) throws IllegalOperationException {
-    log.info("Inicia proceso de consulta de asesorías con temática = {}", tematica);
-    
-    if (tematica == null || tematica.isBlank()) {
-        throw new IllegalOperationException("La temática no puede estar vacía.");
-    }
-
-    List<AsesoriaEntity> asesorias = asesoriaRepository.findByTematica(tematica);
-
-    if (asesorias == null || asesorias.isEmpty()) {
-        throw new IllegalOperationException("No se encontraron asesorías con la temática proporcionada.");
-    }
-
-    return asesorias;
-    }
 
     /**
      * Obtiene todas las asesorías con base a su área
@@ -196,27 +154,30 @@ public class AsesoriaService {
         return asesorias;
     }
 
-
-    /**
-     * Obtiene todas las asesorías con base a su completada
-     * @param completada completada de la asesoría
-     * @return Lista de asesorías
-     * @throws IllegalOperationException si no se encuentran asesorías con el estado de completada proporcionado
-     */
     @Transactional
-    public List <AsesoriaEntity> getAsesoriasByCompletada(Boolean completada) throws IllegalOperationException {
-        log.info("Inicia proceso de consulta de asesorias con completada = {}", completada);
-
+    public List<AsesoriaEntity> getAsesoriasByCompletada(Boolean completada, long profesorId) throws IllegalOperationException {
+        log.info("Inicia consulta de asesorías con completada = {} y profesorId = {}", completada, profesorId);
+    
         if (completada == null) {
             throw new IllegalOperationException("El valor de completada no puede ser nulo.");
         }
-        List<AsesoriaEntity> asesorias = asesoriaRepository.findByCompletada(completada);
-        if(asesorias==null || asesorias.isEmpty()){
-            throw new IllegalOperationException("No se encontraron asesorías con el estado de completada proporcionado");
-
+    
+        List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
+        
+        if (asesorias == null || asesorias.isEmpty()) {
+            throw new IllegalOperationException("No se encontraron asesorías para el profesor con ID " + profesorId);
         }
-        return asesorias;
+    
+        // Filtrar asesorías por estado de completada
+        List<AsesoriaEntity> asesoriasFiltradas = asesorias.stream().filter(asesoria -> Boolean.TRUE.equals(asesoria.getCompletada()) == completada).collect(Collectors.toCollection(ArrayList::new));
+    
+        if (asesoriasFiltradas.isEmpty()) {
+            throw new IllegalOperationException("No se encontraron asesorías con estado " + completada + " para el profesor con ID " + profesorId);
+        }
+    
+        return asesoriasFiltradas;
     }
+    
     
     /**
      * Obtiene todas las asesorías con base a su profesorId

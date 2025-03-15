@@ -26,14 +26,19 @@ package co.edu.uniandes.dse.asesorando.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
+import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.AsesoriaProfesorService;
+import org.modelmapper.TypeToken;
 
 /**
  * Clase que implementa el recurso "asesorias/profesor".
@@ -46,6 +51,8 @@ public class AsesoriaProfesorController {
 
     @Autowired
     private AsesoriaProfesorService asesoriaProfesorService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Obtiene todas las asesorías de un profesor específico.
@@ -56,9 +63,13 @@ public class AsesoriaProfesorController {
      */
     @GetMapping("/{profesorId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaEntity> listarAsesoriasDeProfesor(@PathVariable Long profesorId) throws EntityNotFoundException {
-        return asesoriaProfesorService.listarAsesoriasDeProfesor(profesorId);
+    public List<AsesoriaDetail> listarAsesoriasDeProfesor(@PathVariable Long profesorId) throws EntityNotFoundException {
+        List<AsesoriaEntity> asesorias =asesoriaProfesorService.listarAsesoriasDeProfesor(profesorId);
+        return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDetail>>() {}.getType());
+        
     }
+        
+    
 
     /**
      * Crea una nueva asesoría y la asigna a un profesor.
@@ -70,9 +81,10 @@ public class AsesoriaProfesorController {
      */
     @PostMapping("/{profesorId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public AsesoriaEntity crearAsesoriaParaProfesor(@PathVariable Long profesorId, @RequestBody AsesoriaEntity asesoria)
+    public AsesoriaDetail crearAsesoriaParaProfesor(@PathVariable Long profesorId, @Valid @RequestBody AsesoriaEntity asesoria)
             throws EntityNotFoundException {
-        return asesoriaProfesorService.crearAsesoriaParaProfesor(profesorId, asesoria);
+        AsesoriaEntity asesorias = asesoriaProfesorService.crearAsesoriaParaProfesor(profesorId, asesoria.getId());
+        return modelMapper.map(asesorias, AsesoriaDetail.class);
     }
 
     /**
@@ -86,13 +98,14 @@ public class AsesoriaProfesorController {
      */
     @PutMapping("/{profesorId}/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AsesoriaEntity actualizarAsesoriaDeProfesor(@PathVariable Long profesorId, @PathVariable Long asesoriaId,
-            @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
-        return asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesorId, asesoriaId, asesoria);
+    public AsesoriaDetail actualizarAsesoriaDeProfesor(@PathVariable Long profesorId, @PathVariable Long asesoriaId,
+            @Valid @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
+        AsesoriaEntity asesorias = asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesorId, asesoriaId, asesoria);
+        return modelMapper.map(asesorias, AsesoriaDetail.class);
     }
 
     /**
-     * Elimina una asesoría de un profesor.
+    * Elimina una asesoría de un profesor.
      *
      * @param profesorId ID del profesor.
      * @param asesoriaId ID de la asesoría a eliminar.

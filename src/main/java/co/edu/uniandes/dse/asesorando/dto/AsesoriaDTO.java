@@ -34,4 +34,5 @@ public class AsesoriaDTO {
     private String tipo;
     private String area;
     private Boolean completada;
+    private Long profesorId;
 }
