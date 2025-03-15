@@ -28,22 +28,16 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-<<<<<<< HEAD
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
-<<<<<<< HEAD
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
@@ -56,21 +50,15 @@ import co.edu.uniandes.dse.asesorando.services.AsesoriaCalendarioService;
  */
 @RestController
 @RequestMapping("/asesorias")
-<<<<<<< HEAD
 @RequestMapping("/asesorias")
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
 public class AsesoriaCalendarioController {
 
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
     @Autowired
     private ModelMapper modelMapper;
-<<<<<<< HEAD
     @Autowired
     private ModelMapper modelMapper;
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
 
     /**
      * Obtiene todas las asesorías asociadas a un calendario específico.
@@ -80,10 +68,7 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException Si el calendario no existe.
      */
     @GetMapping("/calendario/{calendarioId}")
-<<<<<<< HEAD
     @GetMapping("/calendario/{calendarioId}")
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
     @ResponseStatus(code = HttpStatus.OK)
     public List<AsesoriaDetail> listarAsesoriasDeCalendario(@PathVariable Long calendarioId) throws EntityNotFoundException {
         List<AsesoriaEntity> asesorias = asesoriaCalendarioService.getAsesoriasByCalendarioId(calendarioId);
@@ -101,10 +86,6 @@ public class AsesoriaCalendarioController {
      * @throws IllegalOperationException Si la asesoría ya está asignada a otro calendario.
      */
     @PostMapping("/{asesoriaId}/calendario/{calendarioId}")
-<<<<<<< HEAD
-    @PostMapping("/{asesoriaId}/calendario/{calendarioId}")
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
     @ResponseStatus(code = HttpStatus.CREATED)
     public AsesoriaDetail crearAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
             throws EntityNotFoundException, IllegalOperationException {
@@ -123,10 +104,6 @@ public class AsesoriaCalendarioController {
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
-<<<<<<< HEAD
-    @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
     @ResponseStatus(code = HttpStatus.OK)
     public AsesoriaDetail actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId,
             @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
@@ -143,10 +120,6 @@ public class AsesoriaCalendarioController {
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @DeleteMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
-<<<<<<< HEAD
-    @DeleteMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
-=======
->>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void eliminarAsesoriaDeCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
         throws EntityNotFoundException, IllegalOperationException {

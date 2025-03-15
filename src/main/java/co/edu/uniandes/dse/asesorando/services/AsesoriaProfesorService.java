@@ -44,10 +44,14 @@ import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
 @Service
 public class AsesoriaProfesorService {
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**LAS CONEXIONES RESPECTIVAS */
 =======
 
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+    /**LAS CONEXIONES RESPECTIVAS */
+>>>>>>> 0041730 (documentando)
     @Autowired
     private AsesoriaRepository asesoriaRepository;
 
@@ -65,6 +69,7 @@ public class AsesoriaProfesorService {
     @Transactional
     public AsesoriaEntity crearAsesoriaParaProfesor(Long profesorId, Long asesoriaId) throws EntityNotFoundException {
         log.info("Asignando asesoría ID {} al profesor ID {}", asesoriaId, profesorId);
+<<<<<<< HEAD
 <<<<<<< HEAD
          ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(() -> new EntityNotFoundException("El profesor con ID " + profesorId + " no existe."));
          AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
@@ -84,6 +89,12 @@ public class AsesoriaProfesorService {
         }
 
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+         ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(() -> new EntityNotFoundException("El profesor con ID " + profesorId + " no existe."));
+         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+        // Validar si la asesoría ya tiene un profesor asignado
+        if (asesoria.getProfesor() != null) {throw new EntityNotFoundException("La asesoría ya está asignada a un profesor.");}
+>>>>>>> 0041730 (documentando)
         asesoria.setProfesor(profesor);
         return asesoriaRepository.save(asesoria);
     }
@@ -100,6 +111,7 @@ public class AsesoriaProfesorService {
     public List<AsesoriaEntity> listarAsesoriasDeProfesor(Long profesorId) throws EntityNotFoundException {
         log.info("Listando asesorías del profesor ID {}", profesorId);
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (!profesorRepository.existsById(profesorId)) {throw new EntityNotFoundException("El profesor con ID " + profesorId + " no existe.");}
 =======
 
@@ -108,6 +120,9 @@ public class AsesoriaProfesorService {
         }
 
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+        if (!profesorRepository.existsById(profesorId)) {throw new EntityNotFoundException("El profesor con ID " + profesorId + " no existe.");}
+>>>>>>> 0041730 (documentando)
         return asesoriaRepository.findByProfesorId(profesorId);
     }
 
@@ -123,6 +138,7 @@ public class AsesoriaProfesorService {
     @Transactional
     public AsesoriaEntity actualizarAsesoriaDeProfesor(Long profesorId, Long asesoriaId, AsesoriaEntity nuevaAsesoria) throws EntityNotFoundException {
         log.info("Actualizando asesoría ID {} del profesor ID {}", asesoriaId, profesorId);
+<<<<<<< HEAD
 <<<<<<< HEAD
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
         if (!asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
@@ -140,12 +156,19 @@ public class AsesoriaProfesorService {
         }
 
         // Asignar el ID correcto a la nueva asesoría
+=======
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+        if (!asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
+        // Asignar el ID  nueva asesoría
+>>>>>>> 0041730 (documentando)
         nuevaAsesoria.setId(asesoriaId);
         nuevaAsesoria.setProfesor(asesoria.getProfesor()); // Mantener el mismo profesor
-
         AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(nuevaAsesoria);
+<<<<<<< HEAD
 
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+>>>>>>> 0041730 (documentando)
         log.info("Asesoría ID {} actualizada correctamente.", asesoriaId);
         return asesoriaActualizada;
     }
@@ -161,6 +184,7 @@ public class AsesoriaProfesorService {
     public void eliminarAsesoriaDeProfesor(Long profesorId, Long asesoriaId) throws EntityNotFoundException {
         log.info("Eliminando asesoría ID {} del profesor ID {}", asesoriaId, profesorId);
 <<<<<<< HEAD
+<<<<<<< HEAD
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
         if (asesoria.getProfesor() == null || !asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
 =======
@@ -173,6 +197,10 @@ public class AsesoriaProfesorService {
         }
 
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+        if (asesoria.getProfesor() == null || !asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
+>>>>>>> 0041730 (documentando)
         asesoriaRepository.delete(asesoria);
         log.info("Asesoría ID {} eliminada correctamente.", asesoriaId);
     }

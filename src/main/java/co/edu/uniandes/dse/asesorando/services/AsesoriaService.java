@@ -106,6 +106,7 @@ public class AsesoriaService {
      public AsesoriaEntity updateAsesoriaEntity(Long asesoriaId, AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
          log.info("Inicia proceso de actualizar la asesoría con id = {}", asesoriaId);
 <<<<<<< HEAD
+<<<<<<< HEAD
          Optional<AsesoriaEntity> optionalAsesoria = asesoriaRepository.findById(asesoriaId);
          if (optionalAsesoria.isEmpty()) {throw new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema.");}
 =======
@@ -114,6 +115,10 @@ public class AsesoriaService {
          if (optionalAsesoria.isEmpty()) {throw new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema.");}
         
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+         Optional<AsesoriaEntity> optionalAsesoria = asesoriaRepository.findById(asesoriaId);
+         if (optionalAsesoria.isEmpty()) {throw new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema.");}
+>>>>>>> 0041730 (documentando)
          asesoria.setId(asesoriaId);
          log.info("Termina proceso de actualizar la asesoría con id = {}", asesoriaId);
          return asesoriaRepository.save(asesoria);
@@ -156,6 +161,7 @@ public class AsesoriaService {
     public List<AsesoriaEntity> getAsesoriasByCompletada(Boolean completada, long profesorId) throws IllegalOperationException {
         log.info("Inicia consulta de asesorías con completada = {} y profesorId = {}", completada, profesorId);
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (completada == null) {throw new IllegalOperationException("El valor de completada no puede ser nulo.");}
         
         List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
@@ -171,18 +177,24 @@ public class AsesoriaService {
         }
     
         List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
+=======
+        if (completada == null) {throw new IllegalOperationException("El valor de completada no puede ser nulo.");}
+>>>>>>> 0041730 (documentando)
         
-        if (asesorias == null || asesorias.isEmpty()) {
-            throw new IllegalOperationException("No se encontraron asesorías para el profesor con ID " + profesorId);
-        }
+        List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
+        if (asesorias == null || asesorias.isEmpty()) {throw new IllegalOperationException("No se encontraron asesorías para el profesor con ID " + profesorId);}
     
-        // Filtrar asesorías por estado de completada
+        // Filtrar asesorias  completadaS
         List<AsesoriaEntity> asesoriasFiltradas = asesorias.stream().filter(asesoria -> Boolean.TRUE.equals(asesoria.getCompletada()) == completada).collect(Collectors.toCollection(ArrayList::new));
+<<<<<<< HEAD
     
         if (asesoriasFiltradas.isEmpty()) {
             throw new IllegalOperationException("No se encontraron asesorías con estado " + completada + " para el profesor con ID " + profesorId);
         }
 >>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
+=======
+        if (asesoriasFiltradas.isEmpty()) {throw new IllegalOperationException("No se encontraron asesorías con estado " + completada + " para el profesor con ID " + profesorId);}
+>>>>>>> 0041730 (documentando)
     
         return asesoriasFiltradas;
     }
