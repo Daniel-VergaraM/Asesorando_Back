@@ -50,13 +50,11 @@ import co.edu.uniandes.dse.asesorando.services.AsesoriaCalendarioService;
  */
 @RestController
 @RequestMapping("/asesorias")
-@RequestMapping("/asesorias")
 public class AsesoriaCalendarioController {
 
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
-    @Autowired
-    private ModelMapper modelMapper;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -67,7 +65,6 @@ public class AsesoriaCalendarioController {
      * @return Lista de asesorías asociadas al calendario.
      * @throws EntityNotFoundException Si el calendario no existe.
      */
-    @GetMapping("/calendario/{calendarioId}")
     @GetMapping("/calendario/{calendarioId}")
     @ResponseStatus(code = HttpStatus.OK)
     public List<AsesoriaDetail> listarAsesoriasDeCalendario(@PathVariable Long calendarioId) throws EntityNotFoundException {
@@ -85,7 +82,7 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException   Si el calendario no existe.
      * @throws IllegalOperationException Si la asesoría ya está asignada a otro calendario.
      */
-    @PostMapping("/{asesoriaId}/calendario/{calendarioId}")
+    
     @PostMapping("/{asesoriaId}/calendario/{calendarioId}")
     @ResponseStatus(code = HttpStatus.CREATED)
     public AsesoriaDetail crearAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
@@ -105,7 +102,6 @@ public class AsesoriaCalendarioController {
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
-    @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
     public AsesoriaDetail actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId,
             @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
@@ -121,7 +117,7 @@ public class AsesoriaCalendarioController {
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
-    @DeleteMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
+    
     @DeleteMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void eliminarAsesoriaDeCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId)
