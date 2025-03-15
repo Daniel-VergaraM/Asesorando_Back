@@ -43,7 +43,11 @@ import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
 @Slf4j
 @Service
 public class AsesoriaProfesorService {
+<<<<<<< HEAD
     /**LAS CONEXIONES RESPECTIVAS */
+=======
+
+>>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
     @Autowired
     private AsesoriaRepository asesoriaRepository;
 
@@ -61,10 +65,25 @@ public class AsesoriaProfesorService {
     @Transactional
     public AsesoriaEntity crearAsesoriaParaProfesor(Long profesorId, Long asesoriaId) throws EntityNotFoundException {
         log.info("Asignando asesoría ID {} al profesor ID {}", asesoriaId, profesorId);
+<<<<<<< HEAD
          ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(() -> new EntityNotFoundException("El profesor con ID " + profesorId + " no existe."));
          AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
         // Validar si la asesoría ya tiene un profesor asignado
         if (asesoria.getProfesor() != null) {throw new EntityNotFoundException("La asesoría ya está asignada a un profesor.");}
+=======
+
+        ProfesorEntity profesor = profesorRepository.findById(profesorId)
+                .orElseThrow(() -> new EntityNotFoundException("El profesor con ID " + profesorId + " no existe."));
+
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
+                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+
+        // Validar si la asesoría ya tiene un profesor asignado
+        if (asesoria.getProfesor() != null) {
+            throw new EntityNotFoundException("La asesoría ya está asignada a un profesor.");
+        }
+
+>>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
         asesoria.setProfesor(profesor);
         return asesoriaRepository.save(asesoria);
     }
@@ -80,7 +99,15 @@ public class AsesoriaProfesorService {
     @Transactional
     public List<AsesoriaEntity> listarAsesoriasDeProfesor(Long profesorId) throws EntityNotFoundException {
         log.info("Listando asesorías del profesor ID {}", profesorId);
+<<<<<<< HEAD
         if (!profesorRepository.existsById(profesorId)) {throw new EntityNotFoundException("El profesor con ID " + profesorId + " no existe.");}
+=======
+
+        if (!profesorRepository.existsById(profesorId)) {
+            throw new EntityNotFoundException("El profesor con ID " + profesorId + " no existe.");
+        }
+
+>>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
         return asesoriaRepository.findByProfesorId(profesorId);
     }
 
@@ -96,12 +123,29 @@ public class AsesoriaProfesorService {
     @Transactional
     public AsesoriaEntity actualizarAsesoriaDeProfesor(Long profesorId, Long asesoriaId, AsesoriaEntity nuevaAsesoria) throws EntityNotFoundException {
         log.info("Actualizando asesoría ID {} del profesor ID {}", asesoriaId, profesorId);
+<<<<<<< HEAD
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
         if (!asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
         // Asignar el ID  nueva asesoría
         nuevaAsesoria.setId(asesoriaId);
         nuevaAsesoria.setProfesor(asesoria.getProfesor()); // Mantener el mismo profesor
         AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(nuevaAsesoria);
+=======
+
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
+                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+
+        if (!asesoria.getProfesor().getId().equals(profesorId)) {
+            throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");
+        }
+
+        // Asignar el ID correcto a la nueva asesoría
+        nuevaAsesoria.setId(asesoriaId);
+        nuevaAsesoria.setProfesor(asesoria.getProfesor()); // Mantener el mismo profesor
+
+        AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(nuevaAsesoria);
+
+>>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
         log.info("Asesoría ID {} actualizada correctamente.", asesoriaId);
         return asesoriaActualizada;
     }
@@ -116,8 +160,19 @@ public class AsesoriaProfesorService {
     @Transactional
     public void eliminarAsesoriaDeProfesor(Long profesorId, Long asesoriaId) throws EntityNotFoundException {
         log.info("Eliminando asesoría ID {} del profesor ID {}", asesoriaId, profesorId);
+<<<<<<< HEAD
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
         if (asesoria.getProfesor() == null || !asesoria.getProfesor().getId().equals(profesorId)) {throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");}
+=======
+
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
+                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
+
+        if (asesoria.getProfesor() == null || !asesoria.getProfesor().getId().equals(profesorId)) {
+            throw new EntityNotFoundException("La asesoría no pertenece a este profesor.");
+        }
+
+>>>>>>> cb2b401 (AJUSTES A SERVICIOS DE Asesoria)
         asesoriaRepository.delete(asesoria);
         log.info("Asesoría ID {} eliminada correctamente.", asesoriaId);
     }
