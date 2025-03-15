@@ -25,6 +25,8 @@ SOFTWARE.
 package co.edu.uniandes.dse.asesorando.controllers;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -74,25 +76,15 @@ public class AsesoriaController {
      * @param id Identificador de la asesoría que se está buscando.
      * @return JSON {@link AsesoriaEntity} - La asesoría encontrada.
      */
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id:[0-9]+}") // Solo acepta números como ID
     @ResponseStatus(code = HttpStatus.OK)
     public AsesoriaDTO findOne(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesorias =  asesoriaService.getAsesoriaEntity(id);
-        return modelMapper.map(asesorias, AsesoriaDTO.class);
-    }
+            return modelMapper.map(asesorias, AsesoriaDTO.class);
+        }
+    
 
-    /**
-     * Busca las asesorías con la temática indicada en la URL.
-     *
-     * @param tematica Temática de la asesoría.
-     * @return Lista de asesorías con la temática indicada.
-     */
-    @GetMapping(value = "/tematica/{tematica}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaEntity> findByTematica(@PathVariable String tematica) throws IllegalOperationException {
-        return asesoriaService.getAsesoriasByTematica(tematica);
-    }
-
+   
     /**
      * Busca las asesorías por área de conocimiento.
      *
@@ -101,22 +93,30 @@ public class AsesoriaController {
      */
     @GetMapping(value = "/area/{area}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaEntity> findByArea(@PathVariable String area) throws IllegalOperationException {
-        return asesoriaService.getAsesoriasByArea(area);
+    public List<AsesoriaDTO> findByArea(@PathVariable String area) throws IllegalOperationException {
+        List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByArea(area);
+        return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDTO>>() {}.getType());
     }
 
-    /**
-     * Busca asesorías filtradas por su estado de completada.
+        /**
+     * Busca asesorías filtradas por su estado de completada y profesorId.
      *
      * @param estado Estado de completada (true o false).
+     * @param profesorId Identificador del profesor.
      * @return Lista de asesorías según el estado proporcionado.
      */
-    @GetMapping(value = "/completada/{estado}")
+    @GetMapping(value = "/completada")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaEntity> findByCompletada(@PathVariable boolean estado) throws IllegalOperationException {
-        return asesoriaService.getAsesoriasByCompletada(estado);
+    public List<AsesoriaDTO> findByCompletada(@RequestParam(required = false) Boolean estado, @RequestParam long profesorId) throws IllegalOperationException {
+        if (estado == null) {
+            throw new IllegalArgumentException("El parámetro 'estado' es obligatorio.");
+        }
+    
+        List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByCompletada(estado, profesorId);
+    
+        return modelMapper.map(Optional.ofNullable(asesorias).orElse(Collections.emptyList()), new TypeToken<List<AsesoriaDTO>>() {}.getType());
     }
-
+    
     
     /**
      * Crea una nueva asesoría con la información recibida en el cuerpo de la petición.
@@ -126,14 +126,10 @@ public class AsesoriaController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public AsesoriaEntity create(@RequestBody AsesoriaEntity asesoria) throws IllegalOperationException {
-        return asesoriaService.createAsesoria(
-            asesoria.getDuracion(),
-            asesoria.getTematica(),
-            asesoria.getTipo(),
-            asesoria.getArea(),
-            asesoria.getProfesor().getId()
-        );
+    public AsesoriaDTO create(@RequestBody AsesoriaDTO asesoria) throws IllegalOperationException {
+        AsesoriaEntity convertirDTO = modelMapper.map(asesoria, AsesoriaEntity.class);
+        AsesoriaEntity createdAsesoria = asesoriaService.createAsesoria(convertirDTO, asesoria.getProfesorId());
+        return modelMapper.map(createdAsesoria, AsesoriaDTO.class);
     }
 
     /**
@@ -143,11 +139,12 @@ public class AsesoriaController {
      * @param asesoria {@link AsesoriaEntity} - La asesoría con los datos actualizados.
      * @return La asesoría actualizada.
      */
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id:[0-9]+}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AsesoriaEntity update(@PathVariable Long id, @RequestBody AsesoriaEntity asesoria)
+    public AsesoriaDTO update(@PathVariable Long id, @RequestBody AsesoriaDTO asesoria)
             throws EntityNotFoundException, IllegalOperationException {
-        return asesoriaService.updateAsesoriaEntity(id, asesoria);
+        AsesoriaEntity asesorias = asesoriaService.updateAsesoriaEntity(id, modelMapper.map(asesoria, AsesoriaEntity.class));
+        return modelMapper.map(asesorias, AsesoriaDTO.class);
     }
 
     /**
@@ -159,5 +156,6 @@ public class AsesoriaController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
         asesoriaService.deleteAsesoriaEntity(id);
-    }
-}
+        
+    
+}}
