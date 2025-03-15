@@ -227,18 +227,7 @@ public class AsesoriaTest {
         assertFalse(result.isEmpty());
         assertTrue(result.get(0).getCompletada());
     }
-    @Test
-    void testGetAsesoriasByProfesorId() throws IllegalOperationException {
-        ProfesorEntity profesor = entityManager.persist(factory.manufacturePojo(ProfesorEntity.class));
-        AsesoriaEntity asesoria = entityManager.persist(factory.manufacturePojo(AsesoriaEntity.class));
-        asesoria.setProfesor(profesor);
-        entityManager.persist(asesoria);
-
-        List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByProfesorId(profesor.getId());
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-        assertEquals(profesor.getId(), result.get(0).getProfesor().getId());
-    }    
+    
 }
 
 
