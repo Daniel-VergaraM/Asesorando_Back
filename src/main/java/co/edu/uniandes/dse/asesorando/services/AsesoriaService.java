@@ -105,10 +105,8 @@ public class AsesoriaService {
      @Transactional
      public AsesoriaEntity updateAsesoriaEntity(Long asesoriaId, AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
          log.info("Inicia proceso de actualizar la asesoría con id = {}", asesoriaId);
-     
          Optional<AsesoriaEntity> optionalAsesoria = asesoriaRepository.findById(asesoriaId);
          if (optionalAsesoria.isEmpty()) {throw new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema.");}
-        
          asesoria.setId(asesoriaId);
          log.info("Termina proceso de actualizar la asesoría con id = {}", asesoriaId);
          return asesoriaRepository.save(asesoria);
@@ -125,11 +123,9 @@ public class AsesoriaService {
     public AsesoriaEntity deleteAsesoriaEntity(@NotNull Long asesoriaId) throws IllegalOperationException {
         log.info("Inicia proceso de eliminación de asesoria con id = {}", asesoriaId);
         
-        AsesoriaEntity asesoriaEntity = asesoriaRepository.findById(asesoriaId).orElseThrow(() 
-        -> new IllegalOperationException("La asesoria con el id proporcionado no esta en el sistema"));
+        AsesoriaEntity asesoriaEntity = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new IllegalOperationException("La asesoria con el id proporcionado no esta en el sistema"));
         
         asesoriaRepository.deleteById(asesoriaEntity.getId());
-        
         return asesoriaEntity;
     }
 
@@ -143,37 +139,23 @@ public class AsesoriaService {
     @Transactional
     public List <AsesoriaEntity> getAsesoriasByArea(String area) throws IllegalOperationException {
         log.info("Inicia proceso de consulta de asesorias con area = {}", area);
-        if (area == null || area.isBlank()) {
-            throw new IllegalOperationException("El area no puede estar vacía.");
-        }
+        if (area == null || area.isBlank()) {throw new IllegalOperationException("El area no puede estar vacía.");}
         List<AsesoriaEntity> asesorias = asesoriaRepository.findByArea(area);
-        if(asesorias==null || asesorias.isEmpty()){
-            throw new IllegalOperationException("No se encontraron asesorias con el area proporcionada.");
-        }
-        
+        if(asesorias==null || asesorias.isEmpty()){throw new IllegalOperationException("No se encontraron asesorias con el area proporcionada.");}
         return asesorias;
     }
 
     @Transactional
     public List<AsesoriaEntity> getAsesoriasByCompletada(Boolean completada, long profesorId) throws IllegalOperationException {
         log.info("Inicia consulta de asesorías con completada = {} y profesorId = {}", completada, profesorId);
-    
-        if (completada == null) {
-            throw new IllegalOperationException("El valor de completada no puede ser nulo.");
-        }
-    
-        List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
+        if (completada == null) {throw new IllegalOperationException("El valor de completada no puede ser nulo.");}
         
-        if (asesorias == null || asesorias.isEmpty()) {
-            throw new IllegalOperationException("No se encontraron asesorías para el profesor con ID " + profesorId);
-        }
+        List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
+        if (asesorias == null || asesorias.isEmpty()) {throw new IllegalOperationException("No se encontraron asesorías para el profesor con ID " + profesorId);}
     
-        // Filtrar asesorías por estado de completada
+        // Filtrar asesorias  completadaS
         List<AsesoriaEntity> asesoriasFiltradas = asesorias.stream().filter(asesoria -> Boolean.TRUE.equals(asesoria.getCompletada()) == completada).collect(Collectors.toCollection(ArrayList::new));
-    
-        if (asesoriasFiltradas.isEmpty()) {
-            throw new IllegalOperationException("No se encontraron asesorías con estado " + completada + " para el profesor con ID " + profesorId);
-        }
+        if (asesoriasFiltradas.isEmpty()) {throw new IllegalOperationException("No se encontraron asesorías con estado " + completada + " para el profesor con ID " + profesorId);}
     
         return asesoriasFiltradas;
     }
@@ -188,14 +170,9 @@ public class AsesoriaService {
     @Transactional
     public List <AsesoriaEntity> getAsesoriasByProfesorId(Long profesorId) throws IllegalOperationException {
         log.info("Inicia proceso de consulta de asesorias con profesorId = {}", profesorId);
-
-        if (profesorId == null) {
-            throw new IllegalOperationException("El id del profesor no puede ser nulo.");
-        }
+        if (profesorId == null) {throw new IllegalOperationException("El id del profesor no puede ser nulo.");}
         List<AsesoriaEntity> asesorias = asesoriaRepository.findByProfesorId(profesorId);
-        if(asesorias==null || asesorias.isEmpty()){
-            throw new IllegalOperationException("No se encontraron asesorías con el profesor proporcionado");
-        }
+        if(asesorias==null || asesorias.isEmpty()){throw new IllegalOperationException("No se encontraron asesorías con el profesor proporcionado");}
         
         return asesorias;
     }
@@ -204,7 +181,7 @@ public class AsesoriaService {
      * Obtiene todas las asesorías con base a su calendarioId
      * @param calendarioId calendarioId de la asesoría
      * @return Lista de asesorías
-     * @throws IllegalOperationException si no se encuentran asesorías con el calendarioId proporcionado
+     * @throws IllegalOperationException si no se encuentran asesorías con el calendarioId 
      */
     @Transactional
     public List <AsesoriaEntity> getAsesoriasByCalendarioId(Long calendarioId) throws IllegalOperationException {
@@ -217,7 +194,7 @@ public class AsesoriaService {
         }
         List<AsesoriaEntity> asesorias = asesoriaRepository.findByCalendarioId(calendarioId);
         if(asesorias==null || asesorias.isEmpty()){
-            throw new IllegalOperationException("No se encontraron asesorías con el calendario proporcionado");
+            throw new IllegalOperationException("No se encontraron asesorías con el calendario");
         }
         return asesorias;
     }
