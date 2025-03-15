@@ -50,13 +50,11 @@ import co.edu.uniandes.dse.asesorando.services.AsesoriaCalendarioService;
  */
 @RestController
 @RequestMapping("/asesorias")
-@RequestMapping("/asesorias")
 public class AsesoriaCalendarioController {
 
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
-    @Autowired
-    private ModelMapper modelMapper;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -67,7 +65,6 @@ public class AsesoriaCalendarioController {
      * @return Lista de asesorías asociadas al calendario.
      * @throws EntityNotFoundException Si el calendario no existe.
      */
-    @GetMapping("/calendario/{calendarioId}")
     @GetMapping("/calendario/{calendarioId}")
     @ResponseStatus(code = HttpStatus.OK)
     public List<AsesoriaDetail> listarAsesoriasDeCalendario(@PathVariable Long calendarioId) throws EntityNotFoundException {
