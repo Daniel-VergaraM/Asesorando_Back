@@ -46,6 +46,12 @@ public class ReservaService {
     
             return reservaGuardada;
         }
+
+        @Transactional
+        public ReservaEntity getReserva(Long id) throws EntityNotFoundException {
+            return reservaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No se encontró la reserva con el ID: " + id));
+        }
     
         @Transactional
         public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {

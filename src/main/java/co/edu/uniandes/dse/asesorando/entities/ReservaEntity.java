@@ -1,5 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
