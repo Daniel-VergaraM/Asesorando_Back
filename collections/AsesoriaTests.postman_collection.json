@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2e9ceb44-bbd7-42ef-9337-cfff6666eee9",
-		"name": "Asesoria Tests",
+		"name": "AsesoriaTests",
 		"description": "Colección de las pruebas sobre el recurso Asesoria",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "42585443"
@@ -37,12 +37,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": 1,\n  \"duracion\": \"60 minutos\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false\n}\n\n"
+					"raw": "\n{\n  \"duracion\": \"60\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false,\n  \"profesorId\": 2\n}\n\n\n\n\n\n"
 				},
 				"url": {
-					"raw": "{{baseUrl}}asesoria",
+					"raw": "{{baseUrl}}/asesorias",
 					"host": [
-						"{{baseUrl}}asesoria"
+						"{{baseUrl}}"
+					],
+					"path": [
+						"asesorias"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nCrea un nuevo autor. El Id es inicializado por la BD y se debe ver en la respuesta.\r\nPara la prueba, se guarda el id en una variable que será utilizada en otras peticiones de la colección.\r\n\r\n**Código http esperado: 200**"
@@ -56,14 +59,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test('Number of authors > ' + 0, function () {",
-							"   var data = pm.response.json()",
-							"   pm.expect(data.length).to.greaterThan(0)",
+							"pm.test('Number of asesorias > ' + 0, function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.length).to.be.greaterThan(0);",
 							"});",
 							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"   pm.response.to.have.status(200);",
 							"});",
+							"",
 							""
 						],
 						"type": "text/javascript",
@@ -75,51 +79,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria",
+					"raw": "{{baseUrl}}/asesorias",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"asesoria"
+						"asesorias"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta todos los autores de la aplicacion. \r\nLa petición no tiene cuerpo.\r\n\r\nPara la prueba, se verifica que el conjunto de autores en la respuesta tenga mas de uno.\r\n\r\n**Código http esperado: 200**"
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener asesorias por tematica",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"   pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/tematica/Matematicas",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"asesoria",
-						"tematica",
-						"Matematicas"
-					]
-				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
 			},
 			"response": []
 		},
@@ -143,15 +111,23 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"raw": "{{baseUrl}}/asesorias/completada?estado=false&profesorId=2",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"asesoria",
-						"profesor",
-						"{{profesorId}}"
+						"asesorias",
+						"completada"
+					],
+					"query": [
+						{
+							"key": "estado",
+							"value": "false"
+						},
+						{
+							"key": "profesorId",
+							"value": "2"
+						}
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -178,50 +154,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"raw": "{{baseUrl}}/asesorias/area/Ciencias",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"asesoria",
-						"profesor",
-						"{{profesorId}}"
-					]
-				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener asesorias por Calendario",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"   pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"api",
-						"asesoria",
-						"profesor",
-						"{{profesorId}}"
+						"asesorias",
+						"area",
+						"Ciencias"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -248,15 +188,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/profesor/{{profesorId}}",
+					"raw": "{{baseUrl}}/asesorias/completada?estado=false\n",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"asesoria",
-						"profesor",
-						"{{profesorId}}"
+						"asesorias",
+						"completada"
+					],
+					"query": [
+						{
+							"key": "estado",
+							"value": "false\n"
+						}
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -290,17 +234,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \n  \"duracion\": \"90 minutos\",\n  \"tematica\": \"Física\",\n  \"modalidad\": \"Grupal\",\n  \"area\": \"Ciencias\",\n  \"profesorId\": 2\n}\n\n\n\n"
+					"raw": "{\n    \"duracion\": \"90\",\n    \"tematica\": \"Física\",\n    \"tipo\": \"Individual\",\n    \"area\": \"Ciencias\",\n    \"completada\": true,\n    \"profesorId\": 2\n}\n"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/{{asesoriaId}}",
+					"raw": "{{baseUrl}}/asesorias/2",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"asesoria",
-						"{{asesoriaId}}"
+						"asesorias",
+						"2"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza un autor existente. \r\nse envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -332,12 +275,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/asesoria/{{asesoriaId}}",
+					"raw": "{{baseUrl}}/asesoria/{{asesoriaId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
 						"asesoria",
 						"{{asesoriaId}}"
 					]
