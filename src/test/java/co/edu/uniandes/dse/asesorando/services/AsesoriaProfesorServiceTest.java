@@ -41,7 +41,6 @@ import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
-import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -59,8 +58,6 @@ public class AsesoriaProfesorServiceTest {
     @Autowired
     private AsesoriaRepository asesoriaRepository;
     
-    @Autowired
-    private ProfesorRepository profesorRepository;
     
     @Autowired  
     private TestEntityManager entityManager;

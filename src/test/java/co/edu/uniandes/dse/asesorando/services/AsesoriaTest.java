@@ -25,8 +25,6 @@ package co.edu.uniandes.dse.asesorando.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -41,7 +39,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
-import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
