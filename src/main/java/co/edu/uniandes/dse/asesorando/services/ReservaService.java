@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-
 public class ReservaService {
 
     @Autowired
@@ -52,15 +51,6 @@ public class ReservaService {
         public ReservaEntity getReserva(Long id) throws EntityNotFoundException {
             return reservaRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("No se encontró la reserva con el ID: " + id));
-        }
-    
-        @Transactional
-        public String toString(Date fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {
-            return "ReservaEntity{" +
-                "fechaReserva='" + fechaReserva + '\'' +
-                ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
-                ", asesoria=" + (asesoria != null ? asesoria : "N/A") +
-                '}';
         }
     
         @Transactional
