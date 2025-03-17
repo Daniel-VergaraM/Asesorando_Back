@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservaDetailDTO {
+public class ReservaDetailDTO extends ReservaDTO{
     private EstudianteEntity estudiante;
     private CalendarioEntity calendario;
     private AsesoriaEntity asesoria;
