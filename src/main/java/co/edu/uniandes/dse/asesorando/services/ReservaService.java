@@ -1,7 +1,8 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-
 public class ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
 
         @Transactional
-        public ReservaEntity crearReserva(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException { 
+        public ReservaEntity crearReserva(Date fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException { 
                
             if (fechaReserva == null) {
                 throw new EntityNotFoundException("La fecha de la reserva no puede ser nula");
@@ -54,15 +54,6 @@ public class ReservaService {
         }
     
         @Transactional
-        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {
-            return "ReservaEntity{" +
-                "fechaReserva='" + fechaReserva + '\'' +
-                ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
-                ", asesoria=" + (asesoria != null ? asesoria : "N/A") +
-                '}';
-        }
-    
-        @Transactional
         public List<ReservaEntity> listarReservas() {
             return reservaRepository.findAll();
         }   
@@ -80,7 +71,7 @@ public class ReservaService {
 
 
         @Transactional
-        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
+        public ReservaEntity updateReserva(Long Id, Date fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
             
             ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
 

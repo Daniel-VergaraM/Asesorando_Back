@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +57,7 @@ class ReservaServiceTest {
     @Test
     void testCrearReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
             assertNotNull(reserva);
@@ -71,14 +72,14 @@ class ReservaServiceTest {
     @Test
     void testCrearReservaConDatosNulos() {
         assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(null, estudiante, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), null, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), estudiante, null));
+        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(new Date(), null, asesoria));
+        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(new Date(), estudiante, null));
     }
 
     @Test
     void testListarReservas() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             reservaService.crearReserva(fecha, estudiante, asesoria);
             
             List<ReservaEntity> reservas = reservaService.listarReservas();
@@ -91,10 +92,10 @@ class ReservaServiceTest {
     @Test
     void testActualizarReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
-            LocalDate nuevaFecha = fecha.plusDays(3);
+            Date nuevaFecha = new Date(System.currentTimeMillis() + (1000*60*60*24*3));
             EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
             AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
             
@@ -115,7 +116,7 @@ class ReservaServiceTest {
     @Test
     void testEliminarReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
             reservaService.eliminarReserva(reserva.getId());
@@ -123,5 +124,102 @@ class ReservaServiceTest {
         } catch (EntityNotFoundException ex) {
             assertNotNull(ex);
         }
+    }
+
+    @Test
+    void testGetReserva_Exito() throws EntityNotFoundException {
+        // Crea una reserva
+        LocalDate fecha = LocalDate.now();
+        ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+        
+        // Obtén la reserva por su ID
+        ReservaEntity reservaEncontrada = reservaService.getReserva(reserva.getId());
+        
+        // Verifica que la reserva fue encontrada y es la correcta
+        assertNotNull(reservaEncontrada);
+        assertEquals(reserva.getId(), reservaEncontrada.getId());
+        assertEquals(reserva.getFechaReserva(), reservaEncontrada.getFechaReserva());
+    }
+    
+    @Test
+    void testGetReserva_NoEncontrada() {
+        // Intenta obtener una reserva con un ID inexistente
+        assertThrows(EntityNotFoundException.class, () -> reservaService.getReserva(Long.MAX_VALUE));
+    }
+
+
+    @Test
+void testEliminarReserva_Exito() throws EntityNotFoundException {
+    // Crea una reserva
+    LocalDate fecha = LocalDate.now();
+    ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+    
+    // Elimina la reserva
+    reservaService.eliminarReserva(reserva.getId());
+    
+    // Verifica que la reserva haya sido eliminada
+    assertFalse(reservaRepository.existsById(reserva.getId()));
+}
+
+    @Test
+    void testEliminarReserva_IdNulo() {
+        // Intenta eliminar una reserva con un ID nulo
+        assertThrows(EntityNotFoundException.class, () -> reservaService.eliminarReserva(null));
+    }
+
+    @Test
+    void testEliminarReserva_NoExistente() {
+        // Intenta eliminar una reserva con un ID inexistente
+        assertThrows(EntityNotFoundException.class, () -> reservaService.eliminarReserva(Long.MAX_VALUE));
+    }
+
+    @Test
+    void testActualizarReserva_Exito() throws EntityNotFoundException {
+        // Crea una reserva
+        LocalDate fecha = LocalDate.now();
+        ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+        
+        // Nuevos datos para la actualización
+        LocalDate nuevaFecha = fecha.plusDays(1);
+        EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        
+        // Persiste los nuevos estudiantes y asesorías
+        entityManager.persist(nuevoEstudiante);
+        entityManager.persist(nuevaAsesoria);
+        
+        // Actualiza la reserva
+        ReservaEntity reservaActualizada = reservaService.updateReserva(reserva.getId(), nuevaFecha, nuevoEstudiante, nuevaAsesoria);
+        
+        // Verifica que los datos de la reserva se han actualizado correctamente
+        assertNotNull(reservaActualizada);
+        assertEquals(nuevaFecha, reservaActualizada.getFechaReserva());
+        assertEquals(nuevoEstudiante, reservaActualizada.getEstudiante());
+        assertEquals(nuevaAsesoria, reservaActualizada.getAsesoria());
+    }
+    
+    
+    @Test
+    void testActualizarReserva_Fallo_FechaNula() {
+        // Intenta actualizar una reserva con fecha nula
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, null, estudiante, asesoria));
+    }
+    
+    @Test
+    void testActualizarReserva_Fallo_EstudianteNulo() {
+        // Intenta actualizar una reserva con estudiante nulo
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), null, asesoria));
+    }
+    
+    @Test
+    void testActualizarReserva_Fallo_AsesoriaNula() {
+        // Intenta actualizar una reserva con asesoría nula
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), estudiante, null));
+    }
+    
+    @Test
+    void testActualizarReserva_NoExistente() {
+        // Intenta actualizar una reserva con un ID inexistente
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), estudiante, asesoria));
     }
 }
