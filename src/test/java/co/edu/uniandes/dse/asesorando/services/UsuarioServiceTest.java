@@ -32,6 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -114,6 +116,23 @@ public class UsuarioServiceTest {
             assertTrue(found);
         }
 
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "ESTUDIANTE", "RANDOM"})
+    public void testGetUsuariosPorTipo(String tipo) throws EntityNotFoundException {
+        UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
+        entityManager.persist(entity);
+
+        if (List.of("PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "ESTUDIANTE").contains(tipo)) {
+            entity.setTipo(tipo);
+            List<UsuarioEntity> result = usuarioService.obtenerUsuariosPorTipo(tipo);
+            assertNotNull(result);
+        } else {
+            assertThrows(IllegalArgumentException.class, () -> {
+                usuarioService.obtenerUsuariosPorTipo(tipo);
+            });
+        }
     }
 
     @Test
