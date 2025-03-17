@@ -53,14 +53,6 @@ public class ReservaService {
             .orElseThrow(() -> new EntityNotFoundException("No se encontró la reserva con el ID: " + id));
         }
     
-        @Transactional
-        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {
-            return "ReservaEntity{" +
-                "fechaReserva='" + fechaReserva + '\'' +
-                ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
-                ", asesoria=" + (asesoria != null ? asesoria : "N/A") +
-                '}';
-        }
     
         @Transactional
         public List<ReservaEntity> listarReservas() {

@@ -40,10 +40,6 @@ public class ReservaCalendarioService {
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
                 .orElseThrow(() -> new EntityNotFoundException("El calendario no existe"));
 
-        // Verificar si la reserva ya tiene un calendario asociado
-        if (reserva.getCalendario() != null) {
-            log.info("La reserva ya estaba asociada a un calendario. Se actualizará la relación.");
-        }
 
         // Asociar la reserva al nuevo calendario
         reserva.setCalendario(calendario);
@@ -58,9 +54,6 @@ public class ReservaCalendarioService {
         ReservaEntity reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
 
-        if (!reserva.getCalendario().getId().equals(calendarioId)) {
-            throw new EntityNotFoundException("La reserva no pertenece a este calendario");
-        }
 
         reservaRepository.delete(reserva);
     }
@@ -77,7 +70,6 @@ public class ReservaCalendarioService {
         // Obtener todas las reservas asociadas al calendario
         List<ReservaEntity> reservas = reservaRepository.findByCalendarioId(calendarioId);
 
-        log.info("Se encontraron {} reservas para el calendario con ID {}", reservas.size(), calendarioId);
         return reservas;
     }
 
@@ -85,7 +77,6 @@ public class ReservaCalendarioService {
     public ReservaEntity crearReservaEnCalendario(@NotNull Long calendarioId, @NotNull Long reservaId) 
             throws EntityNotFoundException, IllegalOperationException {
         
-        log.info("Iniciando la creación de la reserva en el calendario con ID: {}", calendarioId);
 
         // Buscar el calendario en la base de datos
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
@@ -108,7 +99,6 @@ public class ReservaCalendarioService {
         reservaRepository.save(reserva);
         calendarioRepository.save(calendario);
 
-        log.info("Reserva con ID {} asociada exitosamente al calendario con ID {}", reservaId, calendarioId);
         
         return reserva;
     }
