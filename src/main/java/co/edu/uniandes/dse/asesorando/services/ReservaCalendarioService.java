@@ -29,19 +29,6 @@ public class ReservaCalendarioService {
     @Autowired
     private CalendarioRepository calendarioRepository;
 
-    @Transactional
-    public ReservaEntity crearReservaEnCalendario(Long calendarioId, ReservaEntity reserva) throws EntityNotFoundException {
-        CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new EntityNotFoundException("El calendario no existe"));
-
-        reserva.setCalendario(calendario);
-        return reservaRepository.save(reserva);
-    }
-
-    @Transactional
-    public List<ReservaEntity> listarReservasDeCalendario(Long calendarioId) {
-        return reservaRepository.findByCalendarioId(calendarioId);
-    }
 
     @Transactional
     public ReservaEntity asociarReservaACalendario(Long reservaId, Long calendarioId) throws EntityNotFoundException {
@@ -65,19 +52,6 @@ public class ReservaCalendarioService {
         return reservaRepository.save(reserva);
     }
 
-
-    @Transactional
-    public ReservaEntity actualizarReservaEnCalendario(Long calendarioId, Long reservaId, ReservaEntity nuevaReserva) throws EntityNotFoundException {
-        ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
-
-        if (!reserva.getCalendario().getId().equals(calendarioId)) {
-            throw new EntityNotFoundException("La reserva no pertenece a este calendario");
-        }
-
-        reserva.setFechaReserva(nuevaReserva.getFechaReserva());
-        return reservaRepository.save(reserva);
-    }
 
     @Transactional
     public void eliminarReservaDeCalendario(Long calendarioId, Long reservaId) throws EntityNotFoundException {
