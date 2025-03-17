@@ -3,7 +3,6 @@ package co.edu.uniandes.dse.asesorando.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 
@@ -72,10 +71,10 @@ public class EstudianteService {
     }
 
     @Transactional
-    public <T extends EstudianteEntity> Iterable<T> getEstudiantes() {
+    public List<EstudianteEntity> getEstudiantes() {
         log.info("Se están obteniendo todos los estudiantes...");
 
-        List<T> estudiantes =  new ArrayList<>();
+        List<EstudianteEntity> estudiantes =  new ArrayList<>();
         estudiantes.addAll(estudianteRepository.findByTipo("ESTUDIANTE"));
 
         log.info("Estudiantes obtenidos exitosamente.");
