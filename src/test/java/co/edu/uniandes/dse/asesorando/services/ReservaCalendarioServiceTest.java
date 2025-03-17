@@ -1,8 +1,9 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -49,7 +50,7 @@ public class ReservaCalendarioServiceTest {
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
-        reserva.setFechaReserva(LocalDate.now().plusDays(3));
+        reserva.setFechaReserva((new Date(System.currentTimeMillis() + (3*1000*60*60*20))));
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
@@ -58,7 +59,7 @@ public class ReservaCalendarioServiceTest {
     @Test
     void testCrearReservaEnCalendario() throws EntityNotFoundException {
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-        nuevaReserva.setFechaReserva(LocalDate.now().plusDays(5));
+        nuevaReserva.setFechaReserva((new Date(System.currentTimeMillis() + (5*1000*60*60*20))));
         
         ReservaEntity result = reservaCalendarioService.crearReservaEnCalendario(calendario.getId(), nuevaReserva);
 
@@ -80,7 +81,7 @@ public class ReservaCalendarioServiceTest {
     @Test
     void testActualizarReservaEnCalendario() throws EntityNotFoundException {
         ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
-        reservaActualizada.setFechaReserva(LocalDate.now().plusDays(6));
+        reservaActualizada.setFechaReserva((new Date(System.currentTimeMillis() + (6*1000*60*60*20))));
 
         ReservaEntity result = reservaCalendarioService.actualizarReservaEnCalendario(calendario.getId(), reserva.getId(), reservaActualizada);
 

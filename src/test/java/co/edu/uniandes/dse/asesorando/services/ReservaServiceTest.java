@@ -1,6 +1,7 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +57,7 @@ class ReservaServiceTest {
     @Test
     void testCrearReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
             assertNotNull(reserva);
@@ -71,14 +72,14 @@ class ReservaServiceTest {
     @Test
     void testCrearReservaConDatosNulos() {
         assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(null, estudiante, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), null, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), estudiante, null));
+        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(new Date(), null, asesoria));
+        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(new Date(), estudiante, null));
     }
 
     @Test
     void testListarReservas() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             reservaService.crearReserva(fecha, estudiante, asesoria);
             
             List<ReservaEntity> reservas = reservaService.listarReservas();
@@ -91,10 +92,10 @@ class ReservaServiceTest {
     @Test
     void testActualizarReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
-            LocalDate nuevaFecha = fecha.plusDays(3);
+            Date nuevaFecha = new Date(System.currentTimeMillis() + (1000*60*60*24*3));
             EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
             AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
             
@@ -115,7 +116,7 @@ class ReservaServiceTest {
     @Test
     void testEliminarReserva() {
         try {
-            LocalDate fecha = LocalDate.now();
+            Date fecha = new Date();
             ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
             
             reservaService.eliminarReserva(reserva.getId());

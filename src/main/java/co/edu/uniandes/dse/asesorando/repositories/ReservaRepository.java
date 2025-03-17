@@ -1,5 +1,6 @@
 package co.edu.uniandes.dse.asesorando.repositories;
-import java.time.LocalDate;
+
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,7 @@ import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
-    List<ReservaEntity> findByfechaReserva(LocalDate fecha);
+    List<ReservaEntity> findByfechaReserva(Date fecha);
     List<ReservaEntity> findByEstado(String estado);
     List<ReservaEntity> findByCalendarioId(Long calendarioId);
     List<ReservaEntity> findByEstudianteId(Long estudianteId);
