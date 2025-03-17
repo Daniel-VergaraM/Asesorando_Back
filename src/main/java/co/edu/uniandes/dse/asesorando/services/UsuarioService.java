@@ -97,6 +97,7 @@ public class UsuarioService {
         if (!tipos.contains(tipo)) {
             throw new IllegalArgumentException("El tipo de usuario " + tipo + " no es válido.");
         }
+        log.info("Usuarios obtenidos");
         return usuarioRepository.findByTipo(tipo);
     }
 

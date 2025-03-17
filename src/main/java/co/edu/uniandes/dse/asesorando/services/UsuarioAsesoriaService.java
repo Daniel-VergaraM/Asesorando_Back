@@ -79,9 +79,10 @@ public class UsuarioAsesoriaService {
      * @return El usuario con la asesoría agregada
      */
     @Transactional
-    public UsuarioEntity addAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalArgumentException {
+    public UsuarioEntity addAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull Long asesoriaId) throws EntityNotFoundException, IllegalArgumentException {
         log.info("Inicia proceso de agregar una asesoría al usuario con id = {0}", usuarioId);
         UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId));
         if (usuario.getAsesoriasCompletadas().contains(asesoria)) {
             throw new IllegalArgumentException("La asesoría con id = " + asesoria.getId() + " ya está en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }

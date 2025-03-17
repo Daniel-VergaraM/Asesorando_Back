@@ -27,7 +27,9 @@ import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -36,9 +38,14 @@ import lombok.Data;
  * @author Daniel-VergaraM
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @DiscriminatorValue("PROFESORPRESENCIAL")
 public class ProfesorPresencialEntity extends ProfesorEntity {
+
+    @NotNull
+    private String tipo = "PROFESORPRESENCIAL";
 
     @NotNull
     private Integer codigoPostal;
@@ -49,19 +56,4 @@ public class ProfesorPresencialEntity extends ProfesorEntity {
     @NotNull
     private Double longitud;
 
-    public ProfesorPresencialEntity() {
-        super();
-        this.tipo = "PROFESORPRESENCIAL";
-        this.codigoPostal = 0;
-        this.latitud = 0.0;
-        this.longitud = 0.0;
-    }
-
-    public ProfesorPresencialEntity(ProfesorPresencialEntity profesor) {
-        super(profesor);
-        this.tipo = "PROFESORPRESENCIAL";
-        this.codigoPostal = profesor.codigoPostal;
-        this.latitud = profesor.latitud;
-        this.longitud = profesor.longitud;
-    }
 }

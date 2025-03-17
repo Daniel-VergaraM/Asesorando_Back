@@ -81,6 +81,7 @@ public class ProfesorCalendarioServiceTest {
         }
         for (int i = 0; i < 3; i++) {
             profesor = factory.manufacturePojo(ProfesorEntity.class);
+            profesor.setCalendario(new ArrayList<>());
             entityManager.persist(profesor);
             profesores.add(profesor);
         }
@@ -97,6 +98,7 @@ public class ProfesorCalendarioServiceTest {
     public void testAddCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+            entity.setCalendario(new ArrayList<>());
             CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);
@@ -115,6 +117,7 @@ public class ProfesorCalendarioServiceTest {
     public void testRemoveCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+            entity.setCalendario(new ArrayList<>());
             CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);
@@ -129,7 +132,7 @@ public class ProfesorCalendarioServiceTest {
 
     @Test
     public void testGetCalendarios() {
-        List<CalendarioEntity> calendario;
+        List<CalendarioEntity> calendario = new ArrayList<>();
         for (int i = 0; i < profesores.size(); i++) {
             try {
                 calendario = service.getCalendarios(profesores.get(i).getId());
@@ -144,6 +147,7 @@ public class ProfesorCalendarioServiceTest {
     public void testGetCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+            entity.setCalendario(new ArrayList<>());
             CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);

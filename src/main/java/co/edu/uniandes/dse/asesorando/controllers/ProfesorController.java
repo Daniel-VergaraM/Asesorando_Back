@@ -73,7 +73,7 @@ public class ProfesorController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProfesorDTO> findAll() throws EntityNotFoundException {
+    public <T extends ProfesorEntity> List<ProfesorDTO> findAll() throws EntityNotFoundException {
         List<ProfesorEntity> profesores = (List<ProfesorEntity>) profesorService.getProfesores();
         return modelMapper.map(profesores, new TypeToken<List<ProfesorDTO>>() {
         }.getType());
@@ -126,16 +126,10 @@ public class ProfesorController {
             profesores = (List<ProfesorEntity>) profesorService.getProfesorPorTematica(tematica);
         } else if (json.containsKey("tipo") && json.get("tipo") != null) {
             String tipo = (String) json.get("tipo");
-            if (!tiposValidos.contains(tipo)) {
-                throw new IllegalOperationException("El tipo de profesor proporcionado no es válido.");
-            }
             profesores = profesorService.getProfesoresPorTipo(tipo);
         } else if (json.containsKey("tematica") && json.containsKey("tipo") && json.get("tematica") != null && json.get("tipo") != null) {
             String tematica = (String) json.get("tematica");
             String tipo = (String) json.get("tipo");
-            if (!tiposValidos.contains(tipo)) {
-                throw new IllegalOperationException("El tipo de profesor proporcionado no es válido.");
-            }
             profesores = (List<ProfesorEntity>) profesorService.getProfesorPorTipoTematica(tematica, tipo);
         } else {
             throw new IllegalOperationException("No se encontraron profesores con los filtros proporcionados.");
@@ -165,8 +159,8 @@ public class ProfesorController {
     @ResponseStatus(HttpStatus.OK)
     public ProfesorDTO update(@PathVariable Long id, @RequestBody ProfesorDTO profesor) throws EntityNotFoundException {
         ProfesorEntity profesorEntity = modelMapper.map(profesor, ProfesorEntity.class);
-        ProfesorEntity nuevoProfesor = profesorService.updateProfesor(id, profesorEntity);
-        return modelMapper.map(nuevoProfesor, ProfesorDTO.class);
+        ProfesorEntity profesorActualizado = profesorService.updateProfesor(id, profesorEntity);
+        return modelMapper.map(profesorActualizado, ProfesorDTO.class);
     }
 
     @DeleteMapping("/{id}")

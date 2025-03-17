@@ -72,6 +72,7 @@ public class UsuarioAsesoriaServiceTest {
     private void insertData() {
         for (int i = 0; i < 3; i++) {
             UsuarioEntity usuario = factory.manufacturePojo(UsuarioEntity.class);
+            usuario.setAsesoriasCompletadas(new ArrayList<>());
             entityManager.persist(usuario);
             dataUsuario.add(usuario);
         }
@@ -108,20 +109,20 @@ public class UsuarioAsesoriaServiceTest {
         AsesoriaEntity asesoria = dataAsesoria.get(0);
         asesoria.setCompletada(true);
         entityManager.persist(asesoria);
-        UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria);
+        UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria.getId());
         assertTrue(result.getAsesoriasCompletadas().contains(asesoria));
 
         assertThrows(EntityNotFoundException.class, () -> {
-            service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(AsesoriaEntity.class));
+            service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
         });
         assertThrows(IllegalArgumentException.class, () -> {
-            service.addAsesoria(usuario.getId(), asesoria);
+            service.addAsesoria(usuario.getId(), asesoria.getId());
         });
 
         asesoria.setCompletada(false);
         entityManager.persist(asesoria);
         assertThrows(IllegalArgumentException.class, () -> {
-            service.addAsesoria(usuario.getId(), asesoria);
+            service.addAsesoria(usuario.getId(), asesoria.getId());
         });
     }
 

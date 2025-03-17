@@ -33,14 +33,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.asesorando.dto.UsuarioDetailsDTO;
-import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.services.UsuarioAsesoriaService;
 
@@ -57,7 +54,6 @@ public class UsuarioAsesoriaController {
     @Autowired
     private ModelMapper modelMapper;
 
-
     @GetMapping("/{id}/asesorias")
     @ResponseStatus(code = HttpStatus.OK)
     public List<UsuarioDetailsDTO> getAsesorias(@PathVariable Long id) throws EntityNotFoundException {
@@ -71,16 +67,10 @@ public class UsuarioAsesoriaController {
         return modelMapper.map(service.getAsesoria(id, idAsesoria), UsuarioDetailsDTO.class);
     }
 
-    @PostMapping("/{id}/asesorias")
+    @PostMapping("/{id}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public UsuarioDetailsDTO addAsesoria(@PathVariable Long id, @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
-        return modelMapper.map(service.addAsesoria(id, asesoria), UsuarioDetailsDTO.class);
-    }
-
-    @PutMapping("/{id}/asesorias/{idAsesoria}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public UsuarioDetailsDTO updateAsesoria(@PathVariable Long id, @PathVariable Long idAsesoria, @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException {
-        return modelMapper.map(service.updateAsesoria(id, idAsesoria, asesoria), UsuarioDetailsDTO.class);
+    public UsuarioDetailsDTO addAsesoria(@PathVariable Long id, @PathVariable Long asesoriaId) throws EntityNotFoundException {
+        return modelMapper.map(service.addAsesoria(id, asesoriaId), UsuarioDetailsDTO.class);
     }
 
     @DeleteMapping("/{id}/asesorias/{idAsesoria}")
