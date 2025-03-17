@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "c6eafa41-0773-43e3-930a-529ccb6ea0f2",
+		"name": "Reserva Comentario Detail Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41406905"
+	},
+	"item": [
+		{
+			"name": "Agregar un comentario a una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/1/comentarios/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"1",
+						"comentarios",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener el comentario de una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/1/comentarios/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"1",
+						"comentarios",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociarle un comentario a una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/1/comentarios/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"1",
+						"comentarios",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle un comentario a una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/1/comentarios/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"1",
+						"comentarios",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

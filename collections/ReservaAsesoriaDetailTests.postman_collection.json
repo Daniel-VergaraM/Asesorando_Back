@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "5e010221-ef48-42eb-bfd5-5013d6f17e8f",
+		"name": "Reserva Asesoria Detail Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41406905"
+	},
+	"item": [
+		{
+			"name": "Agregar una asesoria a un reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/7/asesorias/12",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"7",
+						"asesorias",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener la asesoria de una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/9",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle una asesoria a una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/7/asesorias",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"7",
+						"asesorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociarle una asesoria a una reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reservas/9/asesorias/13",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reservas",
+						"9",
+						"asesorias",
+						"13"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
