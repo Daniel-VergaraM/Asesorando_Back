@@ -28,8 +28,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -50,7 +48,6 @@ import uk.co.jemos.podam.common.PodamExclude;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
     @NotNull

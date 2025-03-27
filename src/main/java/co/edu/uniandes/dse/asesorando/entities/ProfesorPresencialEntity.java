@@ -25,7 +25,6 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import javax.validation.constraints.NotNull;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +40,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@DiscriminatorValue("PROFESORPRESENCIAL")
 public class ProfesorPresencialEntity extends ProfesorEntity {
 
     @NotNull

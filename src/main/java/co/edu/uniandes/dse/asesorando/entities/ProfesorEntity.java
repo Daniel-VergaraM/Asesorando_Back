@@ -54,7 +54,6 @@ public class ProfesorEntity extends UsuarioEntity {
     @NotNull
     protected String tipo = "PROFESOR";
 
-
     @NotNull
     private String formacion;
 
