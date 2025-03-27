@@ -2,7 +2,7 @@ package co.edu.uniandes.dse.asesorando.services;
 
 
 import java.util.List;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
         @Transactional
-        public ReservaEntity crearReserva(Date fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException { 
+        public ReservaEntity crearReserva(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException { 
                
             if (fechaReserva == null) {
                 throw new EntityNotFoundException("La fecha de la reserva no puede ser nula");
@@ -71,7 +71,7 @@ public class ReservaService {
 
 
         @Transactional
-        public ReservaEntity updateReserva(Long Id, Date fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
+        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
             
             ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
 

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +55,7 @@ public class EstudianteReservaServiceTest {
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
-        reserva.setFechaReserva((new Date(System.currentTimeMillis() + (2*1000*60*60*20))));
+        reserva.setFechaReserva(LocalDate.now().plusDays(2));;
         reserva.setEstudiante(estudiante);
         entityManager.persist(reserva);
         entityManager.flush();
@@ -65,7 +65,7 @@ public class EstudianteReservaServiceTest {
     void testCrearReserva() {
         try {
             ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-            nuevaReserva.setFechaReserva((new Date(System.currentTimeMillis() + 4*(1000*60*60*20))));
+            nuevaReserva.setFechaReserva(LocalDate.now().plusDays(2));
             
             ReservaEntity result = estudianteReservaService.crearReserva(estudiante.getId(), nuevaReserva);
             
@@ -91,7 +91,7 @@ public class EstudianteReservaServiceTest {
     void testActualizarReserva() {
         try {
             ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
-            reservaActualizada.setFechaReserva((new Date(System.currentTimeMillis() + (4*1000*60*60*20))));
+            reservaActualizada.setFechaReserva(LocalDate.now().plusDays(2));
             
             ReservaEntity result = estudianteReservaService.actualizarReserva(reserva.getId(), reservaActualizada);
             

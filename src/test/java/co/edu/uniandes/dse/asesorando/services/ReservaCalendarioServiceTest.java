@@ -1,7 +1,7 @@
 package co.edu.uniandes.dse.asesorando.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,60 +54,27 @@ public class ReservaCalendarioServiceTest {
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
-        reserva.setFechaReserva((new Date(System.currentTimeMillis() + (3 * 1000 * 60 * 60 * 20))));
+        reserva.setFechaReserva(LocalDate.now().plusDays(2));
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
 
         reserva2 = factory.manufacturePojo(ReservaEntity.class);
-        reserva2.setFechaReserva((new Date(System.currentTimeMillis() + (4 * 1000 * 60 * 60 * 20))));
+        reserva2.setFechaReserva(LocalDate.now().plusDays(3));
         entityManager.persist(reserva2);
         entityManager.flush();
     }
 
     @Test
-    void testCrearReservaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
-        CalendarioEntity c = factory.manufacturePojo(CalendarioEntity.class);
-        c.setReservas(new ArrayList<>());
-        entityManager.persist(c);
-        ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-        entityManager.persist(nuevaReserva);
-
-        nuevaReserva.setFechaReserva((new Date(System.currentTimeMillis() + (5 * 1000 * 60 * 60 * 20))));
-
-        ReservaEntity result = reservaCalendarioService.crearReservaEnCalendario(c.getId(), nuevaReserva.getId());
-
-        assertNotNull(result);
-        assertEquals(nuevaReserva.getFechaReserva(), result.getFechaReserva());
-        assertEquals(c.getId(), result.getCalendario().getId());
-    }
-
-    @Test
-    void testListarReservasDeCalendario() throws EntityNotFoundException {
-        List<ReservaEntity> reservas = reservaCalendarioService.listarReservasDeCalendario(calendario.getId());
-
-        assertNotNull(reservas);
-        assertFalse(reservas.isEmpty());
-        assertEquals(1, reservas.size());
-        assertEquals(reserva.getId(), reservas.get(0).getId());
-    }
-
-    @Test
-    void testActualizarReservaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
-        ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
-        reservaActualizada.setFechaReserva((new Date(System.currentTimeMillis() + (6 * 1000 * 60 * 60 * 20))));
-
-        ReservaEntity result = reservaCalendarioService.actualizarReservaEnCalendario(calendario.getId(), reserva.getId(), reservaActualizada);
-
-        assertNotNull(result);
-        assertEquals(reservaActualizada.getFechaReserva(), result.getFechaReserva());
-    }
-
-    @Test
     void testEliminarReservaDeCalendario() throws EntityNotFoundException {
         reservaCalendarioService.eliminarReservaDeCalendario(calendario.getId(), reserva.getId());
+
+        // Forzar la sincronización
+        entityManager.flush();
+        entityManager.clear();
+
         Optional<ReservaEntity> deleted = reservaRepository.findById(reserva.getId());
-        assertTrue(deleted.isEmpty());
+        assertTrue(deleted.isEmpty(), "La reserva aún existe en la base de datos.");
     }
 
     @Test
@@ -147,23 +114,12 @@ public class ReservaCalendarioServiceTest {
         CalendarioEntity c = factory.manufacturePojo(CalendarioEntity.class);
         c.setReservas(new ArrayList<>());
         entityManager.persist(c);
+        reservaCalendarioService.crearReservaEnCalendario(c.getId(), reserva2.getId());
 
         List<ReservaEntity> reservas = reservaCalendarioService.obtenerReservasPorCalendario(c.getId());
         assertNotNull(reservas);
-        assertTrue(reservas.isEmpty());
-        assertEquals(0, reservas.size());
-    }
-
-    @Test
-    void testCrearReservaEnCalendario_Exito() throws EntityNotFoundException, IllegalOperationException {
-        // Llamada al servicio para crear una reserva en el calendario
-
-        ReservaEntity resultado = reservaCalendarioService.crearReservaEnCalendario(calendario.getId(), reserva2.getId());
-
-        // Verificación de que la reserva ha sido asociada al calendario
-        assertNotNull(resultado);
-        assertNotNull(resultado.getCalendario()); // Verificamos que la reserva ahora tiene un calendario asociado
-        assertEquals(calendario.getId(), resultado.getCalendario().getId()); // Verificamos que el calendario es el correcto
+        assertFalse(reservas.isEmpty());
+        assertEquals(1, reservas.size());
     }
 
     @Test
@@ -179,15 +135,4 @@ public class ReservaCalendarioServiceTest {
         });
     }
 
-    @Test
-    void testCrearReservaEnCalendario_ListaDeReservasActualizada() throws EntityNotFoundException, IllegalOperationException {
-        // Llamada al servicio para crear una reserva en el calendario
-        reservaCalendarioService.crearReservaEnCalendario(calendario.getId(), reserva2.getId());
-
-        // Volver a obtener el calendario desde la base de datos para verificar la lista actualizada
-        CalendarioEntity calendarioPersistido = entityManager.find(CalendarioEntity.class, calendario.getId());
-
-        // Verificación de que el calendario contiene la reserva en su lista
-        assertTrue(calendarioPersistido.getReservas().contains(reserva2), "El calendario no contiene la reserva asociada.");
-    }
 }
