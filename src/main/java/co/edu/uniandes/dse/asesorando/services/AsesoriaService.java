@@ -94,7 +94,7 @@ SOFTWARE.
          log.info("Inicia proceso de consulta de asesoria con id = {}", asesoriaId);
  
          return asesoriaRepository.findById(asesoriaId)
-                 .orElseThrow(() -> new IllegalOperationException("La asesoría con el ID proporcionado no está en el sistema."));
+                 .orElseThrow(() -> new IllegalOperationException("La asesoría con el ID proporcionado no está en la base de datos."));
      }
  
      /**
@@ -110,7 +110,7 @@ SOFTWARE.
              throws EntityNotFoundException, IllegalOperationException {
          log.info("Inicia proceso de actualizar la asesoría con id = {}", asesoriaId);
  
-         AsesoriaEntity asesoriaExistente = asesoriaRepository.findById(asesoriaId)
+         asesoriaRepository.findById(asesoriaId)
                  .orElseThrow(() -> new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema."));
  
          asesoria.setId(asesoriaId);
@@ -185,5 +185,6 @@ SOFTWARE.
      public List<AsesoriaEntity> getAllAsesorias() {
          return asesoriaRepository.findAll();
      }
+     
  }
  
