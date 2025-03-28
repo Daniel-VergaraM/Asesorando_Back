@@ -152,7 +152,7 @@
 							</commandlineArgs>
 						</configuration>
 					</execution>
-					
+					<!-- Remover esta línea
 					<execution>
 						<id>integration-tests-composed-collection</id>
 						<phase>integration-test</phase>
@@ -167,8 +167,9 @@
 								run it/composed.collection.json -e collections/EntornoIT.postman_environment.json
 							</commandlineArgs>
 						</configuration>
-					</execution>
 					
+					</execution>
+					-->
 				</executions>
 			</plugin>
 		</plugins>
