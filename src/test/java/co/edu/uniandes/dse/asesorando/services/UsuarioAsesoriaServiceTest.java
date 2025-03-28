@@ -23,13 +23,13 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.services;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +72,7 @@ public class UsuarioAsesoriaServiceTest {
     private void insertData() {
         for (int i = 0; i < 3; i++) {
             UsuarioEntity usuario = factory.manufacturePojo(UsuarioEntity.class);
+            usuario.setAsesoriasCompletadas(new ArrayList<>());
             entityManager.persist(usuario);
             dataUsuario.add(usuario);
         }
@@ -89,15 +90,37 @@ public class UsuarioAsesoriaServiceTest {
     }
 
     @Test
+    public void getAsesoriaTest() throws EntityNotFoundException {
+        UsuarioEntity usuario = dataUsuario.get(0);
+        AsesoriaEntity asesoria = dataAsesoria.get(0);
+        usuario.getAsesoriasCompletadas().add(asesoria);
+        entityManager.persist(usuario);
+        AsesoriaEntity result = service.getAsesoria(usuario.getId(), asesoria.getId());
+        assertEquals(result.getId(), asesoria.getId());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
+        });
+    }
+
+    @Test
     public void addAsesoriaTest() throws EntityNotFoundException {
         UsuarioEntity usuario = dataUsuario.get(0);
         AsesoriaEntity asesoria = dataAsesoria.get(0);
+        asesoria.setCompletada(true);
+        entityManager.persist(asesoria);
         UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria.getId());
         assertTrue(result.getAsesoriasCompletadas().contains(asesoria));
 
         assertThrows(EntityNotFoundException.class, () -> {
             service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
         });
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.addAsesoria(usuario.getId(), asesoria.getId());
+        });
+
+        asesoria.setCompletada(false);
+        entityManager.persist(asesoria);
         assertThrows(IllegalArgumentException.class, () -> {
             service.addAsesoria(usuario.getId(), asesoria.getId());
         });
@@ -132,6 +155,21 @@ public class UsuarioAsesoriaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> {
             service.getAsesoriasCompletadas(factory.manufacturePojoWithFullData(Long.class));
+        });
+    }
+
+    @Test
+    public void updateAsesoriaTest() throws EntityNotFoundException {
+        UsuarioEntity usuario = dataUsuario.get(0);
+        AsesoriaEntity asesoria = dataAsesoria.get(0);
+        AsesoriaEntity asesoria2 = dataAsesoria.get(1);
+        usuario.getAsesoriasCompletadas().add(asesoria);
+        entityManager.persist(usuario);
+        AsesoriaEntity result = service.updateAsesoria(usuario.getId(), asesoria.getId(), asesoria2);
+        assertEquals(result.getId(), asesoria.getId());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.updateAsesoria(factory.manufacturePojoWithFullData(Long.class), asesoria.getId(), asesoria2);
         });
     }
 

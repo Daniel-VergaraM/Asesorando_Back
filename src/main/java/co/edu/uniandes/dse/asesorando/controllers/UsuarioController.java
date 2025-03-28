@@ -77,14 +77,14 @@ public class UsuarioController {
      */
     @GetMapping(value = "/tipo/{tipo_usuario}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<UsuarioDTO> findAll(@PathVariable String tipo_usuario) throws IllegalArgumentException {
+    public List<UsuarioDTO> findByType(@PathVariable String tipo_usuario) throws EntityNotFoundException {
         if (!tiposValidos.contains(tipo_usuario)) {
-            throw new IllegalArgumentException("El tipo de usuario " + tipo_usuario + " no es válido.");
+            throw new EntityNotFoundException("Tipo de usuario no válido: " + tipo_usuario);
         }
-
         List<UsuarioEntity> usuarios = usuarioService.obtenerUsuariosPorTipo(tipo_usuario);
         return modelMapper.map(usuarios, new TypeToken<List<UsuarioDTO>>() {
         }.getType());
+
     }
 
     /**

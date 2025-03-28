@@ -23,20 +23,18 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -47,9 +45,9 @@ import uk.co.jemos.podam.common.PodamExclude;
  */
 @Data
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioEntity extends BaseEntity {
 
     @NotNull
@@ -69,23 +67,4 @@ public class UsuarioEntity extends BaseEntity {
     @PodamExclude
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
     private List<AsesoriaEntity> asesoriasCompletadas;
-
-    public UsuarioEntity() {
-        super();
-        this.asesoriasCompletadas = new ArrayList<>();
-        this.contrasena = "";
-        this.correo = "";
-        this.telefono = "";
-        this.nombre = "";
-        this.tipo = "";
-    }
-    public UsuarioEntity(UsuarioEntity usuario) {
-        super();
-        this.asesoriasCompletadas = usuario.asesoriasCompletadas;
-        this.contrasena = usuario.contrasena;
-        this.correo = usuario.correo;
-        this.telefono = usuario.telefono;
-        this.nombre = usuario.nombre;
-        this.tipo = usuario.tipo;
-    }
 }

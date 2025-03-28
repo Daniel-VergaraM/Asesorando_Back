@@ -74,11 +74,13 @@ public class TematicaProfesorServiceTest {
     private void insertData() {
         for (int i = 0; i < 3; i++) {
             TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+            tematica.setProfesores(new ArrayList<>());
             entityManager.persist(tematica);
             tematicas.add(tematica);
         }
         for (int i = 0; i < 3; i++) {
             ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
+            profesor.setTematicas(new ArrayList<>());
             entityManager.persist(profesor);
             profesores.add(profesor);
         }
@@ -236,7 +238,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void eliminarProfesorDeTematicasTest() throws EntityNotFoundException{
+    public void eliminarProfesorDeTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -252,7 +254,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void eliminarTematicaProfesorTest() throws EntityNotFoundException{
+    public void eliminarTematicaProfesorTest() throws EntityNotFoundException {
 
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
@@ -305,7 +307,5 @@ public class TematicaProfesorServiceTest {
             service.actualizarTematicaProfesor(id, nuevosProfesores);
         });
     }
-
-
 
 }

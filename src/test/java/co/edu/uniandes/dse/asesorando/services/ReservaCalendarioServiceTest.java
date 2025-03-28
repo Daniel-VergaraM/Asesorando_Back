@@ -1,13 +1,15 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.time.LocalDate;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,8 @@ import org.springframework.context.annotation.Import;
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
-import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
-
+import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -43,10 +44,12 @@ public class ReservaCalendarioServiceTest {
 
     private CalendarioEntity calendario;
     private ReservaEntity reserva;
+    private ReservaEntity reserva2;
 
     @BeforeEach
     void setUp() {
         calendario = factory.manufacturePojo(CalendarioEntity.class);
+        calendario.setReservas(new ArrayList<>());
         entityManager.persist(calendario);
         entityManager.flush();
 
@@ -54,6 +57,11 @@ public class ReservaCalendarioServiceTest {
         reserva.setFechaReserva(LocalDate.now().plusDays(2));
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
+        entityManager.flush();
+
+        reserva2 = factory.manufacturePojo(ReservaEntity.class);
+        reserva2.setFechaReserva(LocalDate.now().plusDays(3));
+        entityManager.persist(reserva2);
         entityManager.flush();
     }
 
@@ -68,7 +76,7 @@ public class ReservaCalendarioServiceTest {
         Optional<ReservaEntity> deleted = reservaRepository.findById(reserva.getId());
         assertTrue(deleted.isEmpty(), "La reserva aún existe en la base de datos.");
     }
-  
+
     @Test
     void testCrearReservaEnCalendario_CalendarioNoExiste() {
         assertThrows(EntityNotFoundException.class, () -> {
@@ -99,16 +107,20 @@ public class ReservaCalendarioServiceTest {
             reservaCalendarioService.obtenerReservasPorCalendario(999L);
         });
     }
+
     @Test
-    void testObtenerReservasPorCalendario_Exito() throws EntityNotFoundException {
+    void testObtenerReservasPorCalendario_Exito() throws EntityNotFoundException, IllegalOperationException {
         // Llamada al servicio para obtener reservas por calendario
-        List<ReservaEntity> reservas = reservaCalendarioService.obtenerReservasPorCalendario(calendario.getId());
+        CalendarioEntity c = factory.manufacturePojo(CalendarioEntity.class);
+        c.setReservas(new ArrayList<>());
+        entityManager.persist(c);
+        reservaCalendarioService.crearReservaEnCalendario(c.getId(), reserva2.getId());
+
+        List<ReservaEntity> reservas = reservaCalendarioService.obtenerReservasPorCalendario(c.getId());
         assertNotNull(reservas);
         assertFalse(reservas.isEmpty());
         assertEquals(1, reservas.size());
     }
-
-
 
     @Test
     void testCrearReservaEnCalendario_CalendarioYaTieneReserva() throws EntityNotFoundException, IllegalOperationException {
@@ -116,11 +128,11 @@ public class ReservaCalendarioServiceTest {
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
-    
+
         // Verifica que se lanza IllegalOperationException
         assertThrows(IllegalOperationException.class, () -> {
             reservaCalendarioService.crearReservaEnCalendario(calendario.getId(), reserva.getId());
         });
     }
-  
+
 }

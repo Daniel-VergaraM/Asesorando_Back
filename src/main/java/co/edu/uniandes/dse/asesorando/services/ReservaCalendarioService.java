@@ -13,9 +13,9 @@ import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import jakarta.transaction.Transactional;
 
 
 @Slf4j
@@ -101,6 +101,40 @@ public class ReservaCalendarioService {
 
         
         return reserva;
+    }
+
+
+    public List<ReservaEntity> listarReservasDeCalendario(Long id) {
+        return reservaRepository.findByCalendarioId(id);
+        }
+
+        @Transactional
+        public ReservaEntity actualizarReservaEnCalendario(Long calendarioId, Long reservaId, ReservaEntity reservaActualizada) 
+            throws EntityNotFoundException, IllegalOperationException {
+        // Buscar el calendario en la base de datos
+        CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
+            .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no está en la base de datos"));
+
+        // Buscar la reserva en la base de datos
+        ReservaEntity reserva = reservaRepository.findById(reservaId)
+            .orElseThrow(() -> new EntityNotFoundException("La reserva con ID " + reservaId + " no está en la base de datos"));
+
+        // Verificar si la reserva está asociada al calendario
+        if (!reserva.getCalendario().getId().equals(calendarioId)) {
+            throw new IllegalOperationException("La reserva con ID " + reservaId + " no está asociada al calendario con ID " + calendarioId);
+        }
+
+        // Actualizar los detalles de la reserva
+        reserva.setFechaReserva(reservaActualizada.getFechaReserva());
+        reserva.setEstudiante(reservaActualizada.getEstudiante());
+        reserva.setAsesoria(reservaActualizada.getAsesoria());
+        reserva.setComentario(reservaActualizada.getComentario());
+        reserva.setCancelada(reservaActualizada.getCancelada());
+        reserva.setEstado(reservaActualizada.getEstado());
+
+
+        // Guardar los cambios en la base de datos
+        return reservaRepository.save(reserva);
     }
 
 
