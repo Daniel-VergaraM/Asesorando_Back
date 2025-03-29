@@ -127,29 +127,24 @@ public class ProfesorServiceTest {
         }
 
         switch (tipo) {
-            case BASE_PROFESOR: {
+            case BASE_PROFESOR ->  {
                 ProfesorEntity result = profesorService.createProfesor(p1, tipo);
                 assertNotNull(result);
                 assertNotNull(entityManager.find(ProfesorEntity.class, result.getId()));
-                break;
             }
-            case BASE_PROFESOR_VIRTUAL: {
+            case BASE_PROFESOR_VIRTUAL ->  {
                 ProfesorEntity result = profesorService.createProfesor(p2, tipo);
                 assertNotNull(result);
                 assertNotNull(entityManager.find(ProfesorVirtualEntity.class, result.getId()));
-                break;
             }
-            case BASE_PROFESOR_PRESENCIAL: {
+            case BASE_PROFESOR_PRESENCIAL ->  {
                 ProfesorEntity result = profesorService.createProfesor(p3, tipo);
                 assertNotNull(result);
                 assertNotNull(entityManager.find(ProfesorPresencialEntity.class, result.getId()));
-                break;
             }
-            default:
-                assertThrows(EntityNotFoundException.class, () -> {
+            default -> assertThrows(EntityNotFoundException.class, () -> {
                     profesorService.createProfesor(p1, tipo);
                 });
-                break;
         }
     }
 
