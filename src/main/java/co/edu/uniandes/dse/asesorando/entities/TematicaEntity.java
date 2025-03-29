@@ -1,5 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -30,6 +31,6 @@ public class TematicaEntity extends BaseEntity {
 
     @PodamExclude
     @ManyToMany(mappedBy = "tematicas")
-    private List<ProfesorEntity> profesores;
+    private List<ProfesorEntity> profesores = new ArrayList<>();
 
 }

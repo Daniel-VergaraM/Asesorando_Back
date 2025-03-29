@@ -1,5 +1,6 @@
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -23,9 +24,9 @@ public class EstudianteEntity extends UsuarioEntity {
 
     @PodamExclude
     @OneToMany(mappedBy = "estudiante", targetEntity = ReservaEntity.class)
-    private List<ReservaEntity> reservas;
+    private List<ReservaEntity> reservas = new ArrayList<>();
 
     @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ComentarioEntity.class)
-    private List<ComentarioEntity> comentarios;
+    private List<ComentarioEntity> comentarios = new ArrayList<>();
 
 }

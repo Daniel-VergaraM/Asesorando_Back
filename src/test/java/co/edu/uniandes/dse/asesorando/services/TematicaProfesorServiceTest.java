@@ -308,4 +308,118 @@ public class TematicaProfesorServiceTest {
         });
     }
 
+    @Test
+    public void eliminarProfesoresDeTematicaTest() throws EntityNotFoundException {
+        TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+
+        for (int i = 0; i < 5; i++) {
+            ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
+            entityManager.persist(profesor);
+
+            tematica.getProfesores().add(profesor);
+            profesor.getTematicas().add(tematica);
+        }
+
+        entityManager.persist(tematica);
+        entityManager.flush();
+
+        service.eliminarProfesoresDeTematica(tematica.getId());
+
+        List<ProfesorEntity> profesores = service.getProfesoresDeTematica(tematica.getId());
+        assertNotNull(profesores);
+        assertTrue(profesores.isEmpty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.eliminarProfesoresDeTematica(factory.manufacturePojo(Long.class));
+        });
+
+    }
+
+    @Test
+    public void eliminarTematicasDeProfesorTest() throws EntityNotFoundException {
+        ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
+
+        for (int i = 0; i < 5; i++) {
+            TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+            entityManager.persist(tematica);
+
+            profesor.getTematicas().add(tematica);
+            tematica.getProfesores().add(profesor);
+        }
+        entityManager.persist(profesor);
+        entityManager.flush();
+
+        service.eliminarTematicasDeProfesor(profesor.getId());
+        List<TematicaEntity> tematicas = service.obtenerTematicas(profesor.getId());
+        assertNotNull(tematicas);
+        assertTrue(tematicas.isEmpty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.eliminarTematicasDeProfesor(factory.manufacturePojo(Long.class));
+        });
+    }
+
+    @Test
+    public void getProfesorDeTematicaTest() throws EntityNotFoundException {
+        ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
+        TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+
+        profesor.getTematicas().add(tematica);
+        tematica.getProfesores().add(profesor);
+        entityManager.persist(profesor);
+        entityManager.persist(tematica);
+
+        entityManager.flush();
+
+        ProfesorEntity result = service.getProfesorDeTematica(profesor.getId(), tematica.getId());
+
+        assertNotNull(result);
+        assertTrue(result.getId().equals(profesor.getId()));
+        assertTrue(result.getTematicas().contains(tematica));
+        assertTrue(tematica.getProfesores().contains(profesor));
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getProfesorDeTematica(factory.manufacturePojo(Long.class), factory.manufacturePojo(Long.class));
+        });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getProfesorDeTematica(profesor.getId(), factory.manufacturePojo(Long.class));
+        });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getProfesorDeTematica(factory.manufacturePojo(Long.class), tematica.getId());
+        });
+
+    }
+
+    @Test
+    public void getTematicaDeProfesorTest() throws EntityNotFoundException {
+        ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
+        TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+
+        profesor.getTematicas().add(tematica);
+        tematica.getProfesores().add(profesor);
+        entityManager.persist(profesor);
+        entityManager.persist(tematica);
+
+        entityManager.flush();
+
+        TematicaEntity result = service.getTematicaDeProfesor(tematica.getId(), profesor.getId());
+        assertNotNull(result);
+        assertTrue(result.getId().equals(tematica.getId()));
+        assertTrue(result.getProfesores().contains(profesor));
+        assertTrue(profesor.getTematicas().contains(tematica));
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getTematicaDeProfesor(factory.manufacturePojo(Long.class), factory.manufacturePojo(Long.class));
+        });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getTematicaDeProfesor(tematica.getId(), factory.manufacturePojo(Long.class));
+        });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getTematicaDeProfesor(factory.manufacturePojo(Long.class), profesor.getId());
+        });
+    }
 }

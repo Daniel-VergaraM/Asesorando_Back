@@ -92,6 +92,18 @@ public class TematicaServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             tematicaService.createTematica(newEntity);
         });
+
+        String area = factory.manufacturePojo(String.class);
+        String tema = factory.manufacturePojo(String.class);
+
+        TematicaEntity r2 = tematicaService.createTematica(area, tema);
+        assertNotNull(r2);
+        TematicaEntity entity2 = entityManager.find(TematicaEntity.class, r2.getId());
+        assertNotNull(entity2);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            tematicaService.createTematica(area, tema);
+        });
     }
 
     @Test

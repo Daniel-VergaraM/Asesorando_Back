@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package co.edu.uniandes.dse.asesorando.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -59,11 +60,11 @@ public class ProfesorEntity extends UsuarioEntity {
 
     @PodamExclude
     @ManyToMany
-    private List<TematicaEntity> tematicas;
+    private List<TematicaEntity> tematicas = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
-    private List<AsesoriaEntity> asesorias;
+    private List<AsesoriaEntity> asesorias = new ArrayList<>();
 
     @NotNull
     private String experiencia;
