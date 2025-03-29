@@ -246,7 +246,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) throws EntityNotFoundException {
+    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) {
         log.info("Obteniendo un profesor por tematica");
         List<ProfesorEntity> profesores = new ArrayList<>();
         profesores.addAll(profesorRepository.findAll());

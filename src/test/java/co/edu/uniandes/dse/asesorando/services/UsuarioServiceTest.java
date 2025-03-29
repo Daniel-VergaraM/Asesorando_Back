@@ -39,6 +39,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -156,6 +160,41 @@ public class UsuarioServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> {
             usuarioService.updateUsuario(factory.manufacturePojo(Long.class), entity);
+        });
+
+        ProfesorEntity p1 = factory.manufacturePojo(ProfesorEntity.class);
+        ProfesorVirtualEntity p2 = factory.manufacturePojo(ProfesorVirtualEntity.class);
+        ProfesorPresencialEntity p3 = factory.manufacturePojo(ProfesorPresencialEntity.class);
+        EstudianteEntity e1 = factory.manufacturePojo(EstudianteEntity.class);
+
+        entityManager.persist(p1);
+        entityManager.persist(p2);
+        entityManager.persist(p3);
+        entityManager.persist(e1);
+
+        UsuarioEntity r1 = usuarioService.updateUsuario(entity.getId(), p1);
+        assertNotNull(r1);
+
+        UsuarioEntity r2 = usuarioService.updateUsuario(entity.getId(), p2);
+        assertNotNull(r2);
+
+        UsuarioEntity r3 = usuarioService.updateUsuario(entity.getId(), p3);
+        assertNotNull(r3);
+
+        UsuarioEntity r4 = usuarioService.updateUsuario(entity.getId(), e1);
+        assertNotNull(r4);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), p1);
+        });
+        assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), p2);
+        });
+        assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), p3);
+        });
+        assertThrows(EntityNotFoundException.class, () -> {
+            usuarioService.updateUsuario(factory.manufacturePojo(Long.class), e1);
         });
     }
 
