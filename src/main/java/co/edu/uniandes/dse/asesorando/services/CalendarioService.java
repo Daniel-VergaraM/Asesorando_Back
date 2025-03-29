@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
 import java.util.Date;
 import java.util.List;
 
@@ -60,15 +63,25 @@ public class CalendarioService {
     return calendarioRepository.save(calendarioEntity);
 }
 
-  @Transactional
-    public void deleteCalendario(Long id) throws EntityNotFoundException {
-    log.info("Inicia proceso de eliminación del calendario con id = {0}", id);
-    if(calendarioRepository.findById(id).isEmpty()){
-        throw new EntityNotFoundException("No se encontró el calendario con el id = {0}");
+
+@Transactional
+public void deleteCalendario(Long id) throws EntityNotFoundException {
+    log.info("Inicia proceso de borrar calendario con id = {}", id);
+    
+    Optional<CalendarioEntity> optionalCalendario = calendarioRepository.findById(id);
+    
+    if (!optionalCalendario.isPresent()) {
+        throw new EntityNotFoundException("No se encontró el calendario con id = " + id);
     }
-    calendarioRepository.deleteById(id);
-    log.info("Termina proceso de eliminación del calendario con id = {0}", id);
+
+    CalendarioEntity calendarioEntity = optionalCalendario.get(); 
+
+    calendarioRepository.delete(calendarioEntity);
+
+    log.info("Termina proceso de borrar el calendario con id = {}", id);
 }
+
+
 
 @Transactional
     public CalendarioEntity getCalendarioByFechaInicio(Date fechaInicio) throws IllegalOperationException {

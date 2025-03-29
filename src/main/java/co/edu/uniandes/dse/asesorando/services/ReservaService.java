@@ -1,7 +1,8 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+
 import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-
 public class ReservaService {
 
     @Autowired
@@ -46,14 +46,11 @@ public class ReservaService {
     
             return reservaGuardada;
         }
-    
+
         @Transactional
-        public String toString(LocalDate fechaReserva, EstudianteEntity estudiante, AsesoriaEntity asesoria) throws EntityNotFoundException {
-            return "ReservaEntity{" +
-                "fechaReserva='" + fechaReserva + '\'' +
-                ", estudiante=" + (estudiante != null ? estudiante : "N/A") +
-                ", asesoria=" + (asesoria != null ? asesoria : "N/A") +
-                '}';
+        public ReservaEntity getReserva(Long id) throws EntityNotFoundException {
+            return reservaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No se encontró la reserva con el ID: " + id));
         }
     
         @Transactional

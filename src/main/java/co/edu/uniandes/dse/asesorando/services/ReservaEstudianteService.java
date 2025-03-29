@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
-import co.edu.uniandes.dse.asesorando.repositories.EstudianteRepository;
 import co.edu.uniandes.dse.asesorando.repositories.ReservaRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +19,6 @@ public class ReservaEstudianteService {
 
     @Autowired
     private ReservaRepository reservaRepository;
-
-    @Autowired
-    private EstudianteRepository estudianteRepository;
 
     @Transactional
     public ReservaEntity crearReserva(ReservaEntity nuevaReserva) {

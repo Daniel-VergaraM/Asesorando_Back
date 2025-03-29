@@ -25,8 +25,6 @@ package co.edu.uniandes.dse.asesorando.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -41,7 +39,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
-import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
@@ -58,7 +55,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @Import(AsesoriaService.class)
 public class AsesoriaTest {
     @Autowired
-	private AsesoriaService AsesoriaService;
+	private AsesoriaService asesoriaService;
 	@Autowired
 	private TestEntityManager entityManager;
     private PodamFactory factory = new PodamFactoryImpl();
@@ -112,17 +109,20 @@ public class AsesoriaTest {
     * @throws IllegalOperationException si la operación no es válida según las reglas del negocio.
     */
 
+
+
     @Test
     void createAsesoriaTest() throws EntityNotFoundException, IllegalOperationException {
         ProfesorEntity profesor = entityManager.persist(factory.manufacturePojo(ProfesorEntity.class));
-
-        AsesoriaEntity result = AsesoriaService.createAsesoria("60 minutos", "Matemáticas", "Individual", "Ciencias", profesor.getId());
+        AsesoriaEntity asesoria = new AsesoriaEntity();
+        asesoria.setDuracion("60 minutos");
+        asesoria.setTematica("Matemáticas");
+        asesoria.setArea("Ciencias");
+        AsesoriaEntity result = asesoriaService.createAsesoria(asesoria, profesor.getId());
         assertNotNull(result);
-
         AsesoriaEntity entity = entityManager.find(AsesoriaEntity.class, result.getId());
-        assertNotNull(entity);
         assertEquals("Matemáticas", entity.getTematica());
-    }
+}
 
     /**
     * Prueba unitaria para obtener una asesoría existente en la base de datos.
@@ -135,7 +135,7 @@ public class AsesoriaTest {
     @Test
     void getAsesoriaTest() throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesoria = asesorias.get(0);
-        AsesoriaEntity result = AsesoriaService.getAsesoriaEntity(asesoria.getId());
+        AsesoriaEntity result = asesoriaService.getAsesoriaEntity(asesoria.getId());
         assertNotNull(result);
         assertEquals(asesoria.getId(), result.getId());
     }
@@ -154,9 +154,8 @@ public class AsesoriaTest {
         AsesoriaEntity asesoria = asesorias.get(0);
         AsesoriaEntity newAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
         newAsesoria.setId(asesoria.getId());
-        AsesoriaService.updateAsesoriaEntity(asesoria.getId(), newAsesoria);
+        asesoriaService.updateAsesoriaEntity(asesoria.getId(), newAsesoria);
         AsesoriaEntity entity = entityManager.find(AsesoriaEntity.class, asesoria.getId());
-        assertNotNull(entity);
         assertEquals(newAsesoria.getId(), entity.getId());
     }
     /**
@@ -169,33 +168,13 @@ public class AsesoriaTest {
     @Test
     void deleteAsesoriaTest() throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesoria = asesorias.get(0);
-        AsesoriaService.deleteAsesoriaEntity(asesoria.getId());
+        asesoriaService.deleteAsesoriaEntity(asesoria.getId());
         AsesoriaEntity deleted = entityManager.find(AsesoriaEntity.class, asesoria.getId());
         assertNull(deleted);
+    
     }
 
-    /**
-     * Prueba unitaria para el método getAsesoriasByTematica del servicio AsesoriaService.
-     * 
-     * Se crea una instancia de AsesoriaEntity con la temática "Matemáticas" y se persiste en la base de datos.
-     * Luego, se invoca el método getAsesoriasByTematica con el parámetro "Matemáticas" y se verifica que:
-     * - El resultado no sea nulo.
-     * - La lista de asesorías no esté vacía.
-     * - La temática de la primera asesoría en la lista sea "Matemáticas".
-     * 
-     * @throws IllegalOperationException si ocurre una operación ilegal durante la ejecución del método.
-     */
-    @Test
-    void testGetAsesoriasByTematica() throws IllegalOperationException {
-        AsesoriaEntity asesoria = entityManager.persist(factory.manufacturePojo(AsesoriaEntity.class));
-        asesoria.setTematica("Matemáticas");
-        entityManager.persist(asesoria);
-
-        List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByTematica("Matemáticas");
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-        assertEquals("Matemáticas", result.get(0).getTematica());
-    }
+   
 
     /**
      * Prueba unitaria para el método getAsesoriasByArea del servicio AsesoriaService.
@@ -214,7 +193,7 @@ public class AsesoriaTest {
         asesoria.setArea("Ciencias");
         entityManager.persist(asesoria);
 
-        List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByArea("Ciencias");
+        List<AsesoriaEntity> result = asesoriaService.getAsesoriasByArea("Ciencias");
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals("Ciencias", result.get(0).getArea());
@@ -223,7 +202,6 @@ public class AsesoriaTest {
 
     /**
      * Prueba unitaria para el método getAsesoriasByCompletada del servicio AsesoriaService.
-     * 
      * Se crea una instancia de AsesoriaEntity con el estado completada en true y se persiste en la base de datos.
      * Luego, se invoca el método getAsesoriasByCompletada con el parámetro true y se verifica que:
      * - El resultado no sea nulo.
@@ -234,58 +212,86 @@ public class AsesoriaTest {
      */
     @Test
     void testGetAsesoriasByCompletada() throws IllegalOperationException {
-        AsesoriaEntity asesoria = entityManager.persist(factory.manufacturePojo(AsesoriaEntity.class));
+        ProfesorEntity profesor = entityManager.persist(factory.manufacturePojo(ProfesorEntity.class));
+        AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        asesoria.setProfesor(profesor);
         asesoria.setCompletada(true);
         entityManager.persist(asesoria);
 
-        List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByCompletada(true);
+        List<AsesoriaEntity> result = asesoriaService.getAsesoriasByCompletada(true, profesor.getId());
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertTrue(result.get(0).getCompletada());
     }
 
+    /**prueba unitaria para encontrar un profesor inexistente con su Id 
+     * Se crea una instancia de AsesoriaEntity y se intenta crear una asesoría con un ID de profesor que no existe.
+     * Se espera que se lance una IllegalOperationException.
+     * 
+     * @throws IllegalOperationException si ocurre una operación ilegal durante la ejecución del método.
+     */
     @Test
-    void testGetAsesoriasByProfesorId() throws IllegalOperationException {
-        ProfesorEntity profesor = entityManager.persist(factory.manufacturePojo(ProfesorEntity.class));
-        AsesoriaEntity asesoria = entityManager.persist(factory.manufacturePojo(AsesoriaEntity.class));
-        asesoria.setProfesor(profesor);
-        entityManager.persist(asesoria);
-
-        List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByProfesorId(profesor.getId());
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-        assertEquals(profesor.getId(), result.get(0).getProfesor().getId());
+    void createAsesoriaTest_ProfesorNoExiste() {
+        AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        assertThrows(IllegalOperationException.class, () -> {asesoriaService.createAsesoria(asesoria, 999L); });
+    }
+    /**
+     * Prueba unitaria para obtener una asesoría que no existe.
+     * Se intenta obtener una asesoría con un ID que no existe en la base de datos.
+     * Se espera que se lance una IllegalOperationException.
+     * 
+     * @throws IllegalOperationException si ocurre una operación ilegal durante la ejecución del método.
+     */
+    @Test
+    void getAsesoriaTest_NoExiste() {
+        assertThrows(IllegalOperationException.class, () -> {asesoriaService.getAsesoriaEntity(999L); });
+    }
+    /**
+     * Prueba unitaria para actualizar una asesoría que no existe.
+     * Se intenta actualizar una asesoría con un ID que no existe en la base de datos.
+     * Se espera que se lance una EntityNotFoundException.
+     * 
+     * @throws EntityNotFoundException si la entidad no se encuentra en la base de datos.
+     */
+    @Test
+    void updateAsesoriaTest_NoExiste() {
+        AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);assertThrows(EntityNotFoundException.class, () -> {asesoriaService.updateAsesoriaEntity(999L, asesoria);});
+    }
+    /**
+     * Prueba unitaria para eliminar una asesoría que no existe.
+     * Se intenta eliminar una asesoría con un ID que no existe en la base de datos.
+     * Se espera que se lance una IllegalOperationException.
+     * 
+     * @throws IllegalOperationException si ocurre una operación ilegal durante la ejecución del método.
+     */
+    @Test
+    void deleteAsesoriaTest_NoExiste() {
+        assertThrows(IllegalOperationException.class, () -> {asesoriaService.deleteAsesoriaEntity(999L);});
     }
 
     /**
-    * Prueba unitaria para obtener asesorías por ID de calendario.
-    * Se crea una asesoría asociada a un calendario específico y se chekea que el servicio retorne correctamente dicha asesoría al buscar mediante el ID del calendario.
-    * @throws IllegalOperationException si la operación no es válida según las reglas del negocio.
-    */
+     * Prueba unitaria para obtener asesorías por área con un valor nulo.
+     * Se intenta obtener asesorías con un área nula.
+     * Se espera que se lance una IllegalOperationException.
+     * 
+     * @throws IllegalOperationException si ocurre una operación ilegal durante la ejecución del método.
+     */
+    @Test
+    void getAsesoriasByArea_AreaInvalida() {
+        assertThrows(IllegalOperationException.class, () -> {asesoriaService.getAsesoriasByArea(""); });
+    }
 
     @Test
-    void testGetAsesoriasByCalendarioId() throws IllegalOperationException {
-    CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
-    entityManager.persist(calendario);
+    void getAsesoriasByCompletada_NullValue() {
+        ProfesorEntity profesor = entityManager.persist(factory.manufacturePojo(ProfesorEntity.class));
+        assertThrows(IllegalOperationException.class, () -> { asesoriaService.getAsesoriasByCompletada(null, profesor.getId());});
+    }
 
-    AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);
-    asesoria.setCalendario(calendario);
-    entityManager.persist(asesoria);
-
-    List<AsesoriaEntity> result = AsesoriaService.getAsesoriasByCalendarioId(calendario.getId());
-    assertNotNull(result);
-    assertFalse(result.isEmpty());
-    assertEquals(calendario.getId(), result.get(0).getCalendario().getId());
-}
-
-
-
-
-
-
-
-    
-
-}
+    @Test
+    void getAllAsesoriasTest() {
+        List<AsesoriaEntity> result = asesoriaService.getAllAsesorias();
+        assertNotNull(result);
+    }        
+    }
 
 

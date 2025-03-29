@@ -1,6 +1,6 @@
 package co.edu.uniandes.dse.asesorando.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservaDTO {
-    private LocalDate fechaReserva;
+    private Date fechaReserva;
     private Boolean cancelada = false;
     private String estado = "noCompletada";
 

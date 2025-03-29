@@ -34,8 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
-import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
-import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import jakarta.transaction.Transactional;
@@ -135,7 +133,7 @@ public class ProfesorService {
         profesorExistente.setPrecioHora(profesor.getPrecioHora());
         profesorExistente.setFotoUrl(profesor.getFotoUrl());
 
-        if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
+        /* if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
             ((ProfesorVirtualEntity) profesorExistente)
                     .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
         }
@@ -147,7 +145,7 @@ public class ProfesorService {
                     .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
             ((ProfesorPresencialEntity) profesorExistente)
                     .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
-        }
+        } */
 
         log.info("Profesor actualizado");
         return profesorRepository.save(profesorExistente);
@@ -248,7 +246,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) throws EntityNotFoundException {
+    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) {
         log.info("Obteniendo un profesor por tematica");
         List<ProfesorEntity> profesores = new ArrayList<>();
         profesores.addAll(profesorRepository.findAll());

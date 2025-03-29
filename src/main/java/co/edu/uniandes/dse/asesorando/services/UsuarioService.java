@@ -55,6 +55,8 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final List<String> tipos = List.of("ESTUDIANTE", "PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL");
+
     /**
      * Crea un usuario por medio de un objeto usuario
      */
@@ -81,6 +83,22 @@ public class UsuarioService {
     public List<UsuarioEntity> obtenerUsuarios() {
         log.info("Obteniendo todos los usuarios");
         return usuarioRepository.findAll();
+    }
+
+    /**
+     * Obtiene todos los usuarios de un tipo
+     * 
+     * @param tipo
+     * @return List<UsuarioEntity>
+     */
+    @Transactional
+    public List<UsuarioEntity> obtenerUsuariosPorTipo(String tipo) {
+        log.info("Obteniendo todos los usuarios de un tipo");
+        if (!tipos.contains(tipo)) {
+            throw new IllegalArgumentException("El tipo de usuario " + tipo + " no es válido.");
+        }
+        log.info("Usuarios obtenidos");
+        return usuarioRepository.findByTipo(tipo);
     }
 
     /**

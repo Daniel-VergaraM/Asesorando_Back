@@ -34,7 +34,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -44,20 +46,25 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author Daniel-VergaraM
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ProfesorEntity extends UsuarioEntity {
+
+    @NotNull
+    protected String tipo = "PROFESOR";
 
     @NotNull
     private String formacion;
 
     @PodamExclude
     @ManyToMany
-    private List<TematicaEntity> tematicas;
+    private List<TematicaEntity> tematicas = new ArrayList<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AsesoriaEntity.class)
-    private List<AsesoriaEntity> asesorias;
+    private List<AsesoriaEntity> asesorias = new ArrayList<>();
 
     @NotNull
     private String experiencia;
@@ -74,30 +81,5 @@ public class ProfesorEntity extends UsuarioEntity {
     @PodamExclude
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = CalendarioEntity.class)
     private List<CalendarioEntity> calendario;
-
-    public ProfesorEntity() {
-        super();
-        this.tipo = "PROFESOR";
-        this.asesorias = new ArrayList<>();
-        this.tematicas =  new ArrayList<>();
-        this.calendario =  new ArrayList<>();
-        this.formacion = "";
-        this.experiencia = "";
-        this.precioHora = "";
-        this.fotoUrl = "";
-        this.videoUrl = "";
-    }
-
-    public ProfesorEntity(ProfesorEntity profesor) {
-        super();
-        this.asesorias = profesor.asesorias;
-        this.tematicas = profesor.tematicas;
-        this.formacion = profesor.formacion;
-        this.calendario = profesor.calendario;
-        this.experiencia = profesor.experiencia;
-        this.precioHora = profesor.precioHora;
-        this.fotoUrl = profesor.fotoUrl;
-        this.videoUrl = profesor.videoUrl;
-    }
 
 }

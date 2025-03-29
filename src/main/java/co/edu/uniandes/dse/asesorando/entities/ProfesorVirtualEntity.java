@@ -25,9 +25,10 @@ package co.edu.uniandes.dse.asesorando.entities;
 
 import javax.validation.constraints.NotNull;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -36,22 +37,15 @@ import lombok.Data;
  * @author: @Daniel-VergaraM
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@DiscriminatorValue("PROFESORVIRTUAL")
 public class ProfesorVirtualEntity extends ProfesorEntity {
+
+    @NotNull
+    private String tipo = "PROFESORVIRTUAL";
 
     @NotNull
     private String enlaceReunion;
 
-    public ProfesorVirtualEntity() {
-        super();
-        this.tipo = "PROFESORVIRTUAL";
-        this.enlaceReunion = "";
-    }
-
-    public ProfesorVirtualEntity(ProfesorVirtualEntity profesor) {
-        super(profesor);
-        this.tipo = "PROFESORVIRTUAL";
-        this.enlaceReunion = profesor.enlaceReunion;
-    }
 }

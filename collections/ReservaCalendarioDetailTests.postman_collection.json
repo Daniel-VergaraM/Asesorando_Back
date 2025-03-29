@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "46eb35f5-b69d-4af3-8f28-754f53169c3a",
+		"name": "Reserva Calendario Detail Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41406905"
+	},
+	"item": [
+		{
+			"name": "Agregar una reserva a un calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/calendars/11/reservas/2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars",
+						"11",
+						"reservas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener las reservas de un calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Number of books > ' + 0, function () {\r",
+							"   var data = pm.response.json()\r",
+							"   pm.expect(data.length).to.greaterThan(0)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/calendars/11/reservas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars",
+						"11",
+						"reservas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociarle una reserva a un calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/calendars/11/reservas/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars",
+						"11",
+						"reservas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrarle una reserva a un calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/calendars/11/reservas/2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars",
+						"11",
+						"reservas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

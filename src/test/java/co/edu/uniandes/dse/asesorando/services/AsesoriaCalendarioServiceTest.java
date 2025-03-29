@@ -1,6 +1,6 @@
 package co.edu.uniandes.dse.asesorando.services;
-/*
-MIT License
+
+/**MIT License
 
 Copyright (c) 2021 Universidad de los Andes - ISIS2603
 
@@ -20,8 +20,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
+SOFTWARE.**/
+ 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 /**
  * Pruebas de lógica de AsesoriaCalendarioService mediante PODAM
- */
+ **/
 @DataJpaTest
 @Transactional
 @Import({AsesoriaCalendarioService.class})
@@ -76,7 +76,7 @@ public class AsesoriaCalendarioServiceTest {
     
     /**
      * Limpia los datos  que usamos en la prueba.
-     */
+     **/
     private void clearData() {
         entityManager.getEntityManager().createQuery("DELETE FROM AsesoriaEntity").executeUpdate();
         entityManager.getEntityManager().createQuery("DELETE FROM CalendarioEntity").executeUpdate();
@@ -84,23 +84,27 @@ public class AsesoriaCalendarioServiceTest {
 
     /**
      * Creacion de casos iniciales mediante PODAM, crea 3 asesorias y un calendario.
-     */
+     **/
     private void insertData() {
         calendario = factory.manufacturePojo(CalendarioEntity.class);
+        calendario.setAsesorias(new ArrayList<>()); // Inicializa la lista de asesorías
         entityManager.persist(calendario);
 
         for (int i = 0; i < 3; i++) {
             AsesoriaEntity asesoria = factory.manufacturePojo(AsesoriaEntity.class);
             asesoria.setCalendario(calendario);
             entityManager.persist(asesoria);
+            calendario.getAsesorias().add(asesoria);
             asesoriaList.add(asesoria);
         }
+        entityManager.flush();
     }
+    
 
 
 
     /**
-     * Método para crear una asesoría dentro de un calendario.
+     * Método de verificar el test para crear una asesoría dentro de un calendario.
      *
      * Verifica que la asesoría se cree correctamente y que sus atributos 
      * (temática, duración, tipo y área) coincidan con los valores esperados. 
@@ -108,12 +112,15 @@ public class AsesoriaCalendarioServiceTest {
      * Parametros que arrojan excepciones: calendarioId, asesoria
      * @throws EntityNotFoundException   Si el calendario no existe en la base de datos.
      * @throws IllegalOperationException Si la asesoría ya está asignada a otro calendario.
-     */
+     **/
     @Test
     void testCrearAsesoriaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
-        AsesoriaEntity resultado = asesoriaCalendarioService.crearAsesoriaEnCalendario(calendario.getId(), nuevaAsesoria);
-        
+        entityManager.persist(nuevaAsesoria);
+        entityManager.flush();
+    
+        AsesoriaEntity resultado = asesoriaCalendarioService.crearAsesoriaEnCalendario(calendario.getId(), nuevaAsesoria.getId());
+    
         assertNotNull(resultado);
         assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
         assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
@@ -128,10 +135,10 @@ public class AsesoriaCalendarioServiceTest {
      * previamente creadas y asociadas al calendario.
      *
      * @throws EntityNotFoundException Si el calendario no existe en la base de datos.
-     */
+     **/
     @Test
     void testListarAsesoriasDeCalendario() throws EntityNotFoundException {
-        List<AsesoriaEntity> resultado = asesoriaCalendarioService.listarAsesoriasDeCalendario(calendario.getId());
+        List<AsesoriaEntity> resultado = asesoriaCalendarioService.getAsesoriasByCalendarioId(calendario.getId());
         assertEquals(asesoriaList.size(), resultado.size());
     }
     /**
@@ -143,14 +150,14 @@ public class AsesoriaCalendarioServiceTest {
      *
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen en la base de datos.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
-     */
+    **/     
 
     @Test
     void testActualizarAsesoriaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesoria = asesoriaList.get(0);
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
         
-        AsesoriaEntity resultado = asesoriaCalendarioService.actualizarAsesoriaEnCalendario(calendario.getId(), asesoria.getId(), nuevaAsesoria);
+        AsesoriaEntity resultado = asesoriaCalendarioService.updateAsesoriaInCalendario(calendario.getId(), asesoria.getId(), nuevaAsesoria);
         
         assertNotNull(resultado);
         assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
@@ -167,11 +174,66 @@ public class AsesoriaCalendarioServiceTest {
      *
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen en la base de datos.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
-     */
+     **/
     @Test
     void testEliminarAsesoriaDeCalendario() throws EntityNotFoundException, IllegalOperationException {
         AsesoriaEntity asesoria = asesoriaList.get(0);
-        asesoriaCalendarioService.eliminarAsesoriaDeCalendario(calendario.getId(), asesoria.getId());
+        asesoriaCalendarioService.deleteAsesoriaFromCalendario(calendario.getId(), asesoria.getId());
         assertFalse(asesoriaRepository.findById(asesoria.getId()).isPresent());
+    }
+
+
+    /**
+     * Método para verificar la creación de una asesoría en un calendario inexistente.
+     *
+     * Se asegura de que se lance una excepción cuando se intenta crear una asesoría
+     * dentro de un calendario que no existe en la base de datos.
+     *
+     * @throws EntityNotFoundException Si el calendario con el ID especificado no se encuentra.
+     */
+    @Test
+    void testCrearAsesoriaEnCalendarioInexistente() {
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.crearAsesoriaEnCalendario(9999L, nuevaAsesoria.getId());});
+    }
+
+    /**
+     * Método para verificar la actualización de una asesoría en un calendario inexistente.
+     *
+     * Se asegura de que se lance una excepción cuando se intenta actualizar una asesoría
+     * en un calendario que no existe en la base de datos.
+     *
+     * @throws EntityNotFoundException Si el calendario con el ID especificado no se encuentra.
+     */
+    @Test
+    void testActualizarAsesoriaEnCalendarioInexistente() {
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.updateAsesoriaInCalendario(9999L, asesoriaList.get(0).getId(), nuevaAsesoria);});
+    }
+
+    /**
+     * Método para verificar la obtención de asesorías de un calendario inexistente.
+     *
+     * Se asegura de que se lance una excepción cuando se intenta obtener asesorías
+     * de un calendario que no existe en la base de datos.
+     *
+     * @throws EntityNotFoundException Si el calendario con el ID especificado no se encuentra.
+     */
+    @Test
+    void testListarAsesoriasDeCalendarioInexistente() {
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.getAsesoriasByCalendarioId(9999L);});
+    }
+
+    /**
+     * Método para verificar la eliminación de una asesoría en un calendario inexistente.
+     *
+     * Se asegura de que se lance una excepción cuando se intenta eliminar una asesoría
+     * de un calendario que no existe en la base de datos.
+     *
+     * @throws EntityNotFoundException Si el calendario con el ID especificado no se encuentra.
+     */
+    @Test
+    void testEliminarAsesoriaDeCalendarioInexistente() {
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.deleteAsesoriaFromCalendario(9999L, asesoriaList.get(0).getId());});
     }
 }

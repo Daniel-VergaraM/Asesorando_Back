@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -17,6 +18,7 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author Daniel-VergaraM
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class TematicaEntity extends BaseEntity {
@@ -29,17 +31,6 @@ public class TematicaEntity extends BaseEntity {
 
     @PodamExclude
     @ManyToMany(mappedBy = "tematicas")
-    private List<ProfesorEntity> profesores;
+    private List<ProfesorEntity> profesores = new ArrayList<>();
 
-    public TematicaEntity() {
-        this.area = "";
-        this.tema = "";
-        this.profesores = new ArrayList<>();
-    }
-
-    public TematicaEntity(TematicaEntity entity) {
-        this.area = entity.area;
-        this.tema = entity.tema;
-        this.profesores = entity.profesores;
-    }
 }

@@ -30,21 +30,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
- import org.springframework.stereotype.Service;
- import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Service;
+
  
- import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
- import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
+import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
+import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
- import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
- import lombok.Data;
- import lombok.extern.slf4j.Slf4j;
- import jakarta.transaction.Transactional;
+import co.edu.uniandes.dse.asesorando.repositories.CalendarioRepository;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import jakarta.transaction.Transactional;
  
  /**
   * Servicio que maneja la relación entre Asesorías y Calendarios.
+  implementado por @JuanCaicedo
   */
 @Slf4j
  @Data
@@ -68,40 +69,30 @@ import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
      * @throws IllegalOperationException Si la asesoría ya está asignada a un calendario.
      */
     @Transactional
-    public AsesoriaEntity crearAsesoriaEnCalendario(@NotNull Long calendarioId, @Valid @NotNull AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
+    public AsesoriaEntity crearAsesoriaEnCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Iniciacion de la  creación de asesoría en el calendario con ID: {}", calendarioId);
-
-        CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no esta en la base de datos"));
-
-        if (asesoria.getCalendario() != null) {
-            throw new IllegalOperationException("La asesoría ya está asignada a un calendario");
-        }
-
+        CalendarioEntity calendario = calendarioRepository.findById(calendarioId).orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no esta en la base de datos"));
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no esta en la base de datos"));
         asesoria.setCalendario(calendario);
-        AsesoriaEntity resultado = asesoriaRepository.save(asesoria);
-
-        log.info("La Asesoría ha sido creada exitosamente con respectivo ID: {}", resultado.getId());
-        return resultado;
+        calendario.getAsesorias().add(asesoria);
+        asesoriaRepository.save(asesoria);
+        calendarioRepository.save(calendario);
+        return asesoria;
     }
+    /**
+     * Obtiene todas las asesorías asociadas a un calendario.
+     **/
  
-      /**
-     * Lista todas las asesorías asociadas a un calendario.
-     *
-     * @param calendarioId ID del calendario.
-     * @return Lista de asesorías en el calendario.
-     * @throws EntityNotFoundException Si el calendario no existe.
-     */
     @Transactional
-    public List<AsesoriaEntity> listarAsesoriasDeCalendario(@NotNull Long calendarioId) throws EntityNotFoundException {
-        log.info("Listando asesorías en el calendario con ID: {}", calendarioId);
+    public List<AsesoriaEntity> getAsesoriasByCalendarioId(@NotNull Long calendarioId) throws EntityNotFoundException {
+        log.info("Inicia proceso de consulta de asesorías para el calendario con ID = {}", calendarioId);
+        
+        CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
+                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe."));
 
-        if (!calendarioRepository.existsById(calendarioId)) {
-            throw new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe en la base de datos");
-        }
-
-        return asesoriaRepository.findByCalendarioId(calendarioId);
+        return calendario.getAsesorias();
     }
+
 
  
      /**
@@ -115,29 +106,26 @@ import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @Transactional
-    public AsesoriaEntity actualizarAsesoriaEnCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId,@Valid @NotNull AsesoriaEntity nuevaAsesoria)
-            throws EntityNotFoundException, IllegalOperationException {
-        log.info("Actualizando asesoría con ID: {} en el calendario con ID: {}", asesoriaId, calendarioId);
-
+    public AsesoriaEntity updateAsesoriaInCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId,
+            @Valid @NotNull AsesoriaEntity nuevaAsesoria) throws EntityNotFoundException, IllegalOperationException {
+        
+        log.info("Inicia proceso de actualización de asesoría con ID = {} en el calendario con ID = {}", asesoriaId, calendarioId);
+        
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe"));
-
+                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe."));
+        
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
-                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
 
-        if (!asesoria.getCalendario().equals(calendario)) {
-            throw new IllegalOperationException("La asesoría no pertenece a este calendario");
+        if (asesoria.getCalendario() == null || !asesoria.getCalendario().equals(calendario)) {
+            throw new IllegalOperationException("La asesoría no pertenece a este calendario.");
         }
+        
+        nuevaAsesoria.setId(asesoriaId);
+        AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(nuevaAsesoria);
 
-        asesoria.setDuracion(nuevaAsesoria.getDuracion());
-        asesoria.setTematica(nuevaAsesoria.getTematica());
-        asesoria.setTipo(nuevaAsesoria.getTipo());
-        asesoria.setArea(nuevaAsesoria.getArea());
-        asesoria.setCompletada(nuevaAsesoria.getCompletada());
-        AsesoriaEntity resultado = asesoriaRepository.save(asesoria);
-
-        log.info("Asesoría actualizada exitosamente con ID: {}", resultado.getId());
-        return resultado;
+        log.info("Finaliza proceso de actualización de asesoría con ID = {}", asesoriaId);
+        return asesoriaActualizada;
     }
  
      /**
@@ -149,21 +137,25 @@ import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @Transactional
-    public void eliminarAsesoriaDeCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId)
+    public void deleteAsesoriaFromCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId)
             throws EntityNotFoundException, IllegalOperationException {
-        log.info("Eliminando asesoría con ID: {} del calendario con ID: {}", asesoriaId, calendarioId);
-
+        
+        log.info("Inicia proceso de eliminación de asesoría con ID = {} del calendario con ID = {}", asesoriaId, calendarioId);
+        
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe"));
-
+                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe."));
+        
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
-                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe"));
+                .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
 
-        if (!asesoria.getCalendario().equals(calendario)) {
-            throw new IllegalOperationException("La asesoría no pertenece a este calendario");
+        if (asesoria.getCalendario() == null || !asesoria.getCalendario().equals(calendario)) {
+            throw new IllegalOperationException("La asesoría no pertenece a este calendario.");
         }
 
-        asesoriaRepository.delete(asesoria);
- }
+        calendario.getAsesorias().remove(asesoria);
+        asesoriaRepository.deleteById(asesoriaId);
+
+        log.info("Termina proceso de eliminación de asesoría con ID = {}", asesoriaId);
+    }
 }
  
