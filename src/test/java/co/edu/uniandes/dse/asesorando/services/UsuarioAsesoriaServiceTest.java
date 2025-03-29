@@ -46,13 +46,14 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 /**
  * Clase de pruebas para el servicio de UsuarioAsesoria
- * 
+ *
  * @author Daniel-VergaraM
  */
 @DataJpaTest
 @Transactional
 @Import(UsuarioAsesoriaService.class)
 public class UsuarioAsesoriaServiceTest {
+
     @Autowired
     private UsuarioAsesoriaService service;
 
@@ -93,6 +94,7 @@ public class UsuarioAsesoriaServiceTest {
     public void getAsesoriaTest() throws EntityNotFoundException {
         UsuarioEntity usuario = dataUsuario.get(0);
         AsesoriaEntity asesoria = dataAsesoria.get(0);
+        AsesoriaEntity asesoria2 = dataAsesoria.get(1);
         usuario.getAsesoriasCompletadas().add(asesoria);
         entityManager.persist(usuario);
         AsesoriaEntity result = service.getAsesoria(usuario.getId(), asesoria.getId());
@@ -101,16 +103,23 @@ public class UsuarioAsesoriaServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             service.getAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
         });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.getAsesoria(usuario.getId(), asesoria2.getId());
+        });
     }
 
     @Test
     public void addAsesoriaTest() throws EntityNotFoundException {
         UsuarioEntity usuario = dataUsuario.get(0);
         AsesoriaEntity asesoria = dataAsesoria.get(0);
-        asesoria.setCompletada(true);
+        AsesoriaEntity asesoria2 = dataAsesoria.get(1);
+        asesoria.setCompletada(false);
+        asesoria2.setCompletada(true);
         entityManager.persist(asesoria);
-        UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria.getId());
-        assertTrue(result.getAsesoriasCompletadas().contains(asesoria));
+        entityManager.persist(asesoria2);
+        UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria2.getId());
+        assertTrue(result.getAsesoriasCompletadas().contains(asesoria2));
 
         assertThrows(EntityNotFoundException.class, () -> {
             service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
@@ -119,8 +128,6 @@ public class UsuarioAsesoriaServiceTest {
             service.addAsesoria(usuario.getId(), asesoria.getId());
         });
 
-        asesoria.setCompletada(false);
-        entityManager.persist(asesoria);
         assertThrows(IllegalArgumentException.class, () -> {
             service.addAsesoria(usuario.getId(), asesoria.getId());
         });
@@ -163,15 +170,30 @@ public class UsuarioAsesoriaServiceTest {
         UsuarioEntity usuario = dataUsuario.get(0);
         AsesoriaEntity asesoria = dataAsesoria.get(0);
         AsesoriaEntity asesoria2 = dataAsesoria.get(1);
+
+        asesoria.setCompletada(false);
+        asesoria2.setCompletada(true);
+
         usuario.getAsesoriasCompletadas().add(asesoria);
         entityManager.persist(usuario);
+        entityManager.persist(asesoria);
+        entityManager.persist(asesoria2);
+        entityManager.flush();
+
         AsesoriaEntity result = service.updateAsesoria(usuario.getId(), asesoria.getId(), asesoria2);
         assertEquals(result.getId(), asesoria.getId());
 
         assertThrows(EntityNotFoundException.class, () -> {
             service.updateAsesoria(factory.manufacturePojoWithFullData(Long.class), asesoria.getId(), asesoria2);
         });
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.updateAsesoria(usuario.getId(), factory.manufacturePojoWithFullData(Long.class), asesoria2);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.updateAsesoria(usuario.getId(), asesoria2.getId(), asesoria);
+        });
     }
 
-    
 }
