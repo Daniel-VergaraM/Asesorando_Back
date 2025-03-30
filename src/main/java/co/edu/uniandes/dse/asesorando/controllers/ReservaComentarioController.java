@@ -49,7 +49,7 @@ public class ReservaComentarioController {
      * @return Comentario asociado.
      * @throws EntityNotFoundException Si la reserva no existe o no tiene comentario.
      */
-    @GetMapping("/")
+    @GetMapping("/{comentarioId}")
     @ResponseStatus(code = HttpStatus.OK)
     public ComentarioEntity obtenerComentario(@PathVariable Long reservaId) throws EntityNotFoundException {
         return reservaComentarioService.obtenerComentarioPorReserva(reservaId);
@@ -60,7 +60,7 @@ public class ReservaComentarioController {
      * @param reservaId ID de la reserva.
      * @throws EntityNotFoundException Si la reserva o el comentario no existen.
      */
-    @DeleteMapping("/")
+    @DeleteMapping("/{comentarioId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void eliminarComentario(@PathVariable Long reservaId) throws EntityNotFoundException {
         reservaComentarioService.eliminarComentario(reservaId);
