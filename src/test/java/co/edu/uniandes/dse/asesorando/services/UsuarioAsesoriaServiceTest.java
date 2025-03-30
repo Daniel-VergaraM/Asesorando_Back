@@ -100,13 +100,13 @@ public class UsuarioAsesoriaServiceTest {
         AsesoriaEntity result = service.getAsesoria(usuario.getId(), asesoria.getId());
         assertEquals(result.getId(), asesoria.getId());
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.getAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.getAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class))
+        );
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.getAsesoria(usuario.getId(), asesoria2.getId());
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.getAsesoria(usuario.getId(), asesoria2.getId())
+        );
     }
 
     @Test
@@ -121,16 +121,16 @@ public class UsuarioAsesoriaServiceTest {
         UsuarioEntity result = service.addAsesoria(usuario.getId(), asesoria2.getId());
         assertTrue(result.getAsesoriasCompletadas().contains(asesoria2));
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.addAsesoria(usuario.getId(), asesoria.getId());
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.addAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class))
+        );
+        assertThrows(IllegalArgumentException.class, ()
+                -> service.addAsesoria(usuario.getId(), asesoria.getId())
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.addAsesoria(usuario.getId(), asesoria.getId());
-        });
+        assertThrows(IllegalArgumentException.class, ()
+                -> service.addAsesoria(usuario.getId(), asesoria.getId())
+        );
     }
 
     @Test
@@ -142,13 +142,13 @@ public class UsuarioAsesoriaServiceTest {
         UsuarioEntity result = service.removeAsesoria(usuario.getId(), asesoria.getId());
         assertFalse(result.getAsesoriasCompletadas().contains(asesoria));
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.removeAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class));
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.removeAsesoria(factory.manufacturePojoWithFullData(Long.class), factory.manufacturePojoWithFullData(Long.class))
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.removeAsesoria(usuario.getId(), asesoria.getId());
-        });
+        assertThrows(IllegalArgumentException.class, ()
+                -> service.removeAsesoria(usuario.getId(), asesoria.getId())
+        );
     }
 
     @Test
@@ -160,9 +160,9 @@ public class UsuarioAsesoriaServiceTest {
         Iterable<AsesoriaEntity> result = service.getAsesoriasCompletadas(usuario.getId());
         assertTrue(result.iterator().hasNext());
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.getAsesoriasCompletadas(factory.manufacturePojoWithFullData(Long.class));
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.getAsesoriasCompletadas(factory.manufacturePojoWithFullData(Long.class))
+        );
     }
 
     @Test
@@ -183,17 +183,17 @@ public class UsuarioAsesoriaServiceTest {
         AsesoriaEntity result = service.updateAsesoria(usuario.getId(), asesoria.getId(), asesoria2);
         assertEquals(result.getId(), asesoria.getId());
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.updateAsesoria(factory.manufacturePojoWithFullData(Long.class), asesoria.getId(), asesoria2);
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.updateAsesoria(factory.manufacturePojoWithFullData(Long.class), asesoria.getId(), asesoria2)
+        );
 
-        assertThrows(EntityNotFoundException.class, () -> {
-            service.updateAsesoria(usuario.getId(), factory.manufacturePojoWithFullData(Long.class), asesoria2);
-        });
+        assertThrows(EntityNotFoundException.class, ()
+                -> service.updateAsesoria(usuario.getId(), factory.manufacturePojoWithFullData(Long.class), asesoria2)
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.updateAsesoria(usuario.getId(), asesoria2.getId(), asesoria);
-        });
+        assertThrows(IllegalArgumentException.class, ()
+                -> service.updateAsesoria(usuario.getId(), asesoria2.getId(), asesoria)
+        );
     }
 
 }

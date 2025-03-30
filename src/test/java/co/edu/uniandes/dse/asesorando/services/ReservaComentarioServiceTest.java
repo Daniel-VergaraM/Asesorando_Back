@@ -67,7 +67,7 @@ public class ReservaComentarioServiceTest {
     }
 
     @Test
-    void testCrearComentarioReservaNoExiste() throws EntityNotFoundException {
+    void testCrearComentarioReservaNoExiste() {
         ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
         assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.crearComentario(999L, nuevoComentario);
@@ -204,7 +204,7 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
     }
 
     @Test
-    void testActualizarComentarioComentarioNoExiste() throws EntityNotFoundException {
+    void testActualizarComentarioComentarioNoExiste() {
         // Crear una reserva sin comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
         entityManager.persist(nuevaReserva);
@@ -249,7 +249,7 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
     }
 
     @Test
-    void testEliminarComentarioComentarioNoExiste() throws EntityNotFoundException {
+    void testEliminarComentarioComentarioNoExiste() {
         // Crear una reserva sin comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
         entityManager.persist(nuevaReserva);

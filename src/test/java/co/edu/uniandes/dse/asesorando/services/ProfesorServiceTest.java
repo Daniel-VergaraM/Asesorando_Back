@@ -254,7 +254,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesorPorTematica() throws EntityNotFoundException {
+    public void testGetProfesorPorTematica() {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
         entity.getTematicas().add(tematica);

@@ -44,10 +44,10 @@ import uk.co.jemos.podam.common.PodamExclude;
  *
  * @author Daniel-VergaraM
  */
-@Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class UsuarioEntity extends BaseEntity {
 

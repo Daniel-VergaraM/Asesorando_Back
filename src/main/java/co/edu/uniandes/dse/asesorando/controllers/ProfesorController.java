@@ -73,7 +73,7 @@ public class ProfesorController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public <T extends ProfesorEntity> List<ProfesorDTO> findAll() throws EntityNotFoundException {
+    public List<ProfesorDTO> findAll() throws EntityNotFoundException {
         List<ProfesorEntity> profesores = (List<ProfesorEntity>) profesorService.getProfesores();
         return modelMapper.map(profesores, new TypeToken<List<ProfesorDTO>>() {
         }.getType());
@@ -117,19 +117,19 @@ public class ProfesorController {
 
         List<ProfesorEntity> profesores = null;
 
-        if (json.containsKey("nombre") && json.get("nombre") != null) {
-            String nombre = (String) json.get("nombre");
+        if (json.containsKey(filtrosValidos.get(0)) && json.get(filtrosValidos.get(0)) != null) {
+            String nombre = (String) json.get(filtrosValidos.get(0));
             ProfesorEntity profesor = profesorService.getProfesorPorNombre(nombre);
             profesores = List.of(profesor);
-        } else if (json.containsKey("tematica") && json.get("tematica") != null) {
-            String tematica = (String) json.get("tematica");
+        } else if (json.containsKey(filtrosValidos.get(1)) && json.get(filtrosValidos.get(1)) != null) {
+            String tematica = (String) json.get(filtrosValidos.get(1));
             profesores = (List<ProfesorEntity>) profesorService.getProfesorPorTematica(tematica);
-        } else if (json.containsKey("tipo") && json.get("tipo") != null) {
-            String tipo = (String) json.get("tipo");
+        } else if (json.containsKey(filtrosValidos.get(2)) && json.get(filtrosValidos.get(2)) != null) {
+            String tipo = (String) json.get(filtrosValidos.get(2));
             profesores = profesorService.getProfesoresPorTipo(tipo);
-        } else if (json.containsKey("tematica") && json.containsKey("tipo") && json.get("tematica") != null && json.get("tipo") != null) {
-            String tematica = (String) json.get("tematica");
-            String tipo = (String) json.get("tipo");
+        } else if (json.containsKey(filtrosValidos.get(1)) && json.containsKey(filtrosValidos.get(2)) && json.get(filtrosValidos.get(1)) != null && json.get(filtrosValidos.get(2)) != null) {
+            String tematica = (String) json.get(filtrosValidos.get(1));
+            String tipo = (String) json.get(filtrosValidos.get(2));
             profesores = (List<ProfesorEntity>) profesorService.getProfesorPorTipoTematica(tematica, tipo);
         } else {
             throw new IllegalOperationException("No se encontraron profesores con los filtros proporcionados.");

@@ -35,7 +35,7 @@ public class ComentarioService {
     }
 
     @Transactional
-    public ComentarioEntity leer_comentario(Long comentarioId) throws EntityNotFoundException {
+    public ComentarioEntity leerComentario(Long comentarioId) throws EntityNotFoundException {
         log.info("Inicia proceso de lectura de comentario con id = {}", comentarioId);
         if (comentarioId == null) {
             throw new EntityNotFoundException("El id del comentario no puede ser nulo");
@@ -57,7 +57,7 @@ public class ComentarioService {
     }
 
     @Transactional
-    public ComentarioEntity actualizar_comentario(Long comentarioId, ComentarioEntity comentario) throws EntityNotFoundException {
+    public ComentarioEntity actualizarComentario(Long comentarioId, ComentarioEntity comentario) throws EntityNotFoundException {
         log.info("Inicia proceso de actualización de comentario con id = {}", comentarioId);
         if (comentario.getComentario() == null || comentario.getComentario().isEmpty() || comentario.getCalificacion() == null) {
             throw new EntityNotFoundException("El comentario no puede ser nulo o vacío");
@@ -73,7 +73,7 @@ public class ComentarioService {
     }
 
     @Transactional
-    public void eliminar_comentario(Long comentarioId) throws EntityNotFoundException {
+    public void eliminarComentario(Long comentarioId) throws EntityNotFoundException {
         log.info("Inicia proceso de eliminación de comentario con id = {}", comentarioId);
         if (comentarioId == null) {
             throw new EntityNotFoundException("El id del comentario no puede ser nulo");

@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 .history/
+it/
 
 ### MAC OS ###
 .DS_Store

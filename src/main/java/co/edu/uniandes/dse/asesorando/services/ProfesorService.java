@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import jakarta.transaction.Transactional;
@@ -146,7 +148,6 @@ public class ProfesorService {
             ((ProfesorPresencialEntity) profesorExistente)
                     .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
         } */
-
         log.info("Profesor actualizado");
         return profesorRepository.save(profesorExistente);
     }
@@ -212,13 +213,10 @@ public class ProfesorService {
     @Transactional
     public <T extends ProfesorEntity> T getProfesorPorCorreo(String correo) throws EntityNotFoundException {
         log.info("Obteniendo un profesor por correo");
-        Optional<T> profesorExistente = profesorRepository.findByCorreo(correo);
-        if (profesorExistente.isEmpty()) {
-            throw new EntityNotFoundException("El profesor no existe.");
-        }
+        T profesorExistente = (T) profesorRepository.findByCorreo(correo).orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
 
         log.info("Profesor obtenido");
-        return (T) profesorExistente.get();
+        return profesorExistente;
     }
 
     /**

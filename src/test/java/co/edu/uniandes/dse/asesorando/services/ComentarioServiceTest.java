@@ -85,7 +85,7 @@ public class ComentarioServiceTest {
     void testLeerComentario() {
         try {
             ComentarioEntity entity = comentarioList.get(0);
-            ComentarioEntity resultEntity = comentarioService.leer_comentario(entity.getId());
+            ComentarioEntity resultEntity = comentarioService.leerComentario(entity.getId());
             assertNotNull(resultEntity);
             assertEquals(entity.getComentario(), resultEntity.getComentario());
             assertEquals(entity.getCalificacion(), resultEntity.getCalificacion());
@@ -97,7 +97,7 @@ public class ComentarioServiceTest {
     @Test
     void testLeerComentarioInvalido() {
         assertThrows(EntityNotFoundException.class, () -> {
-            comentarioService.leer_comentario(0L);
+            comentarioService.leerComentario(0L);
         });
     }
 
@@ -128,7 +128,7 @@ public class ComentarioServiceTest {
                 pojoEntity.setCalificacion(3);
             }
             
-            comentarioService.actualizar_comentario(entity.getId(), pojoEntity);
+            comentarioService.actualizarComentario(entity.getId(), pojoEntity);
             
             ComentarioEntity resp = entityManager.find(ComentarioEntity.class, entity.getId());
             
@@ -144,7 +144,7 @@ public class ComentarioServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             ComentarioEntity pojoEntity = factory.manufacturePojo(ComentarioEntity.class);
             pojoEntity.setComentario(null);
-            comentarioService.actualizar_comentario(0L, pojoEntity);
+            comentarioService.actualizarComentario(0L, pojoEntity);
         });
     }
 
@@ -152,7 +152,7 @@ public class ComentarioServiceTest {
     void testEliminarComentario() {
         try {
             ComentarioEntity entity = comentarioList.get(0);
-            comentarioService.eliminar_comentario(entity.getId());
+            comentarioService.eliminarComentario(entity.getId());
             ComentarioEntity deleted = entityManager.find(ComentarioEntity.class, entity.getId());
             assertNull(deleted);
         } catch (EntityNotFoundException ex) {
@@ -163,7 +163,7 @@ public class ComentarioServiceTest {
     @Test
     void testEliminarComentarioInvalido() {
         assertThrows(EntityNotFoundException.class, () -> {
-            comentarioService.eliminar_comentario(0L);
+            comentarioService.eliminarComentario(0L);
         });
     }
 
@@ -181,7 +181,7 @@ public class ComentarioServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             ComentarioEntity pojoEntity = factory.manufacturePojo(ComentarioEntity.class);
             pojoEntity.setCalificacion(6);
-            comentarioService.actualizar_comentario(0L, pojoEntity);
+            comentarioService.actualizarComentario(0L, pojoEntity);
         });
     }
 }

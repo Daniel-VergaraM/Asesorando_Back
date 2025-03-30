@@ -20,7 +20,6 @@ import co.edu.uniandes.dse.asesorando.dto.ProfesorDTO;
 import co.edu.uniandes.dse.asesorando.dto.ProfesorDetailsDTO;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
-import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.TematicaProfesorService;
 
 
@@ -59,7 +58,7 @@ public class TematicaProfesorController {
 	@GetMapping(value = "/{tematicaId}/profesors/{profesorId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ProfesorDetailsDTO getProfesor(@PathVariable Long profesorId, @PathVariable Long tematicaId)
-			throws EntityNotFoundException, IllegalOperationException {
+			throws EntityNotFoundException {
 		ProfesorEntity profesorEntity = tematicaProfesorService.getProfesorDeTematica(tematicaId, profesorId);
 		return modelMapper.map(profesorEntity, ProfesorDetailsDTO.class);
 	}
