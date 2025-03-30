@@ -67,10 +67,8 @@ public class ReservaCalendarioService {
             throw new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe");
         }
 
-        // Obtener todas las reservas asociadas al calendario
-        List<ReservaEntity> reservas = reservaRepository.findByCalendarioId(calendarioId);
-
-        return reservas;
+        // Obtener  y devolver todas las reservas asociadas al calendario
+        return reservaRepository.findByCalendarioId(calendarioId);
     }
 
     @Transactional
@@ -120,7 +118,7 @@ public class ReservaCalendarioService {
             .orElseThrow(() -> new EntityNotFoundException("La reserva con ID " + reservaId + " no está en la base de datos"));
 
         // Verificar si la reserva está asociada al calendario
-        if (!reserva.getCalendario().getId().equals(calendarioId)) {
+        if (!reserva.getCalendario().getId().equals(calendario.getId())) {
             throw new IllegalOperationException("La reserva con ID " + reservaId + " no está asociada al calendario con ID " + calendarioId);
         }
 

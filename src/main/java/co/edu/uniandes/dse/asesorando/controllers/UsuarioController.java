@@ -75,13 +75,13 @@ public class UsuarioController {
      *
      * @return a list of UsuarioDTO objects representing all users.
      */
-    @GetMapping(value = "/tipo/{tipo_usuario}")
+    @GetMapping(value = "/tipo/{tipoUsuario}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<UsuarioDTO> findByType(@PathVariable String tipo_usuario) throws EntityNotFoundException {
-        if (!tiposValidos.contains(tipo_usuario)) {
-            throw new EntityNotFoundException("Tipo de usuario no válido: " + tipo_usuario);
+    public List<UsuarioDTO> findByType(@PathVariable String tipoUsuario) throws EntityNotFoundException {
+        if (!tiposValidos.contains(tipoUsuario)) {
+            throw new EntityNotFoundException("Tipo de usuario no válido: " + tipoUsuario);
         }
-        List<UsuarioEntity> usuarios = usuarioService.obtenerUsuariosPorTipo(tipo_usuario);
+        List<UsuarioEntity> usuarios = usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
         return modelMapper.map(usuarios, new TypeToken<List<UsuarioDTO>>() {
         }.getType());
 
@@ -114,12 +114,13 @@ public class UsuarioController {
     @GetMapping(value = "/")
     @ResponseStatus(code = HttpStatus.OK)
     public UsuarioDTO findByCorreo(@RequestBody Map<String, Object> json) throws EntityNotFoundException {
-        if (json.containsKey("correo") && json.get("correo") != null) {
-            String correo = (String) json.get("correo");
+        String key = "correo";
+        if (json.containsKey(key) && json.get(key) != null) {
+            String correo = (String) json.get(key);
             UsuarioEntity usuario = usuarioService.getUsuarioByCorreo(correo);
             return modelMapper.map(usuario, UsuarioDTO.class);
         } else {
-            throw new EntityNotFoundException("El usuario con correo " + json.get("correo") + " no existe.");
+            throw new EntityNotFoundException("El usuario con correo " + json.get(key) + " no existe.");
         }
     }
 

@@ -124,7 +124,7 @@ public class UsuarioServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "ESTUDIANTE", "RANDOM"})
-    public void testGetUsuariosPorTipo(String tipo) throws EntityNotFoundException {
+    public void testGetUsuariosPorTipo(String tipo) {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
 

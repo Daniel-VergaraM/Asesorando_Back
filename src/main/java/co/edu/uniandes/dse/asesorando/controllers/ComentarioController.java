@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.uniandes.dse.asesorando.dto.ComentarioDTO;
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
-import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.ComentarioService;
 
 
@@ -65,7 +64,7 @@ public class ComentarioController {
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ComentarioDTO findOne(@PathVariable Long id) throws EntityNotFoundException {
-		ComentarioEntity comentarioEntity = comentarioService.leer_comentario(id);
+		ComentarioEntity comentarioEntity = comentarioService.leerComentario(id);
 		return modelMapper.map(comentarioEntity, ComentarioDTO.class);
 	}
     
@@ -82,7 +81,7 @@ public class ComentarioController {
 	 */
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ComentarioDTO create(@RequestBody ComentarioDTO comentarioDTO) throws IllegalOperationException, EntityNotFoundException {
+	public ComentarioDTO create(@RequestBody ComentarioDTO comentarioDTO) throws EntityNotFoundException {
 		ComentarioEntity comentarioEntity = comentarioService.crearComentario(modelMapper.map(comentarioDTO, ComentarioEntity.class));
 		return modelMapper.map(comentarioEntity, ComentarioDTO.class);
 	}
@@ -100,8 +99,8 @@ public class ComentarioController {
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public ComentarioDTO update(@PathVariable Long id, @RequestBody ComentarioDTO comentarioDTO)
-			throws EntityNotFoundException, IllegalOperationException {
-		ComentarioEntity comentarioEntity = comentarioService.actualizar_comentario(id, modelMapper.map(comentarioDTO, ComentarioEntity.class));
+			throws EntityNotFoundException {
+		ComentarioEntity comentarioEntity = comentarioService.actualizarComentario(id, modelMapper.map(comentarioDTO, ComentarioEntity.class));
 		return modelMapper.map(comentarioEntity, ComentarioDTO.class);
 	}
 
@@ -113,8 +112,8 @@ public class ComentarioController {
 	 */
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
-		comentarioService.eliminar_comentario(id);
+	public void delete(@PathVariable Long id) throws EntityNotFoundException {
+		comentarioService.eliminarComentario(id);
 	}
 
 

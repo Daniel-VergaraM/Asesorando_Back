@@ -3,7 +3,14 @@ package co.edu.uniandes.dse.asesorando.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.asesorando.dto.ComentarioDTO;
 import co.edu.uniandes.dse.asesorando.entities.ComentarioEntity;
@@ -42,7 +49,7 @@ public class ReservaComentarioController {
      * @return Comentario asociado.
      * @throws EntityNotFoundException Si la reserva no existe o no tiene comentario.
      */
-    @GetMapping("/{comentarioId}")
+    @GetMapping("/")
     @ResponseStatus(code = HttpStatus.OK)
     public ComentarioEntity obtenerComentario(@PathVariable Long reservaId) throws EntityNotFoundException {
         return reservaComentarioService.obtenerComentarioPorReserva(reservaId);
@@ -53,7 +60,7 @@ public class ReservaComentarioController {
      * @param reservaId ID de la reserva.
      * @throws EntityNotFoundException Si la reserva o el comentario no existen.
      */
-    @DeleteMapping("/{comentarioId}")
+    @DeleteMapping("/")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void eliminarComentario(@PathVariable Long reservaId) throws EntityNotFoundException {
         reservaComentarioService.eliminarComentario(reservaId);

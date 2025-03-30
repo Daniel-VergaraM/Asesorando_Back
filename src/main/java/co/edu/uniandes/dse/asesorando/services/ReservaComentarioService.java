@@ -134,7 +134,7 @@ public class ReservaComentarioService {
 
         // Asociar el comentario a la reserva
         comentario.setReserva(reserva);
-        reserva.setComentario(comentario);;
+        reserva.setComentario(comentario);
 
         // Guardar los cambios en la base de datos
         comentarioRepository.save(comentario);

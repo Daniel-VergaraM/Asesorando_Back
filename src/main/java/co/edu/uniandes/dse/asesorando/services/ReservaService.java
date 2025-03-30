@@ -1,8 +1,8 @@
 package co.edu.uniandes.dse.asesorando.services;
 
 
-import java.util.List;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,10 +41,8 @@ public class ReservaService {
             reserva.setFechaReserva(fechaReserva);
             reserva.setEstudiante(estudiante);
             reserva.setAsesoria(asesoria);
-    
-            ReservaEntity reservaGuardada = reservaRepository.save(reserva);
-    
-            return reservaGuardada;
+        
+            return reservaRepository.save(reserva);
         }
 
         @Transactional
@@ -59,23 +57,23 @@ public class ReservaService {
         }   
 
         @Transactional
-        public void eliminarReserva(Long Id) throws EntityNotFoundException {
+        public void eliminarReserva(Long id) throws EntityNotFoundException {
 
-            if (Id == null) {
+            if (id == null) {
                 throw new EntityNotFoundException("El ID de la reserva no puede ser nulo");
             }
 
-            ReservaEntity reservaEliminar = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
+            ReservaEntity reservaEliminar = reservaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
             reservaRepository.delete(reservaEliminar);
     }
 
 
         @Transactional
-        public ReservaEntity updateReserva(Long Id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
+        public ReservaEntity updateReserva(Long id, LocalDate fechaReservaNueva, EstudianteEntity estudianteNuevo, AsesoriaEntity asesoriaNueva) throws EntityNotFoundException {
             
-            ReservaEntity reservaUpdate = reservaRepository.findById(Id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
+            ReservaEntity reservaUpdate = reservaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Este id no existe."));
 
-            if (Id == null) {throw new EntityNotFoundException("El ID de la reserva no puede ser nulo");}
+            if (id == null) {throw new EntityNotFoundException("El ID de la reserva no puede ser nulo");}
             if (fechaReservaNueva == null) {throw new EntityNotFoundException("La nueva fecha de la reserva no puede ser nula");}
             if (estudianteNuevo == null) {throw new EntityNotFoundException("El nuevo estudiante no puede ser nulo");}
             if (asesoriaNueva == null) {throw new EntityNotFoundException("La nueva asesoría no puede ser nula");}
@@ -84,9 +82,7 @@ public class ReservaService {
             reservaUpdate.setEstudiante(estudianteNuevo);
             reservaUpdate.setAsesoria(asesoriaNueva);
 
-            ReservaEntity reservaGuardada = reservaRepository.save(reservaUpdate);
-
-            return reservaGuardada;
+            return reservaRepository.save(reservaUpdate);
         }
 
 

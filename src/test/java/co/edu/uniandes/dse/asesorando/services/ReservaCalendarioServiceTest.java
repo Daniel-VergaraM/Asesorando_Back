@@ -123,7 +123,7 @@ public class ReservaCalendarioServiceTest {
     }
 
     @Test
-    void testCrearReservaEnCalendario_CalendarioYaTieneReserva() throws EntityNotFoundException, IllegalOperationException {
+    void testCrearReservaEnCalendario_CalendarioYaTieneReserva() {
         // Asocia previamente la reserva al calendario
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);

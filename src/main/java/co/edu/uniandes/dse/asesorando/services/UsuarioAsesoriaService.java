@@ -87,7 +87,7 @@ public class UsuarioAsesoriaService {
             throw new IllegalArgumentException("La asesoría con id = " + asesoria.getId() + " ya está en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }
 
-        if (!asesoria.getCompletada()) {
+        if (asesoria.getCompletada() == false) {
             throw new IllegalArgumentException("La asesoría con id = " + asesoria.getId() + " no está completada");
         }
 
