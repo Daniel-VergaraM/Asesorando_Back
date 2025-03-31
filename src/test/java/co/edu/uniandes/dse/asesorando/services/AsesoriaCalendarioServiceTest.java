@@ -157,7 +157,7 @@ public class AsesoriaCalendarioServiceTest {
         AsesoriaEntity asesoria = asesoriaList.get(0);
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
         
-        AsesoriaEntity resultado = asesoriaCalendarioService.updateAsesoriaInCalendario(calendario.getId(), asesoria.getId(), nuevaAsesoria);
+        AsesoriaEntity resultado = asesoriaCalendarioService.updateAsesoriaInCalendario(calendario.getId(), asesoria.getId());
         
         assertNotNull(resultado);
         assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
@@ -208,7 +208,7 @@ public class AsesoriaCalendarioServiceTest {
     @Test
     void testActualizarAsesoriaEnCalendarioInexistente() {
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
-        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.updateAsesoriaInCalendario(9999L, asesoriaList.get(0).getId(), nuevaAsesoria);});
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.updateAsesoriaInCalendario(9999L, asesoriaList.get(0).getId());});
     }
 
     /**

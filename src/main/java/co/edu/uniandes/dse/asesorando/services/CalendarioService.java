@@ -24,12 +24,7 @@ public class CalendarioService {
 
     @Transactional
     public CalendarioEntity createCalendario(CalendarioEntity calendarioEntity) throws IllegalOperationException {
-        log.info("Inicia proceso de creación del calendario");
-        Optional<CalendarioEntity> c = calendarioRepository.findById(calendarioEntity.getId());
-        if (c.isPresent()) {
-            throw new IllegalOperationException("Ya existe un calendario con el id = " + calendarioEntity.getId());
-        }
-        
+        log.info("Inicia proceso de creación del calendario");        
         if (calendarioEntity.getFechaInicio() == null || calendarioEntity.getFechaFin() == null) {
             throw new IllegalOperationException("El calendario debe tener una fecha de inicio y una fecha de fin");
         }
