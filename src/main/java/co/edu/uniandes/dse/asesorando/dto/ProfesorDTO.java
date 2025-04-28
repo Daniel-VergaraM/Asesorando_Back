@@ -38,9 +38,12 @@ public class ProfesorDTO {
     private String correo;
     private String telefono;
     private String contrasena;
+    private String fotoUrl;
+    private String videoUrl;
     // Profesor
     private String tipo;
     private String formacion;
+    private String experiencia;
     // ProfesorVirtual
     private String enlaceReunion = null;
     // ProfesorPresencial
