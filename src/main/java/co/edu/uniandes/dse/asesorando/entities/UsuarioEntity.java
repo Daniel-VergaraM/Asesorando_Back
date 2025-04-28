@@ -33,6 +33,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "usuario_entity")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class UsuarioEntity extends BaseEntity {
 
