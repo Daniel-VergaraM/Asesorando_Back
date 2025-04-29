@@ -8,6 +8,234 @@
 	},
 	"item": [
 		{
+			"name": "Crear un calendario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.globals.set(\"calendarioid\", data.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fechaInicio\": \"2023-10-01T00:00:00-05:00\",\r\n    \"fechaFin\": \"2023-10-31T23:59:59-05:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/calendars",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear un calendario",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1,\r\n    \"fechaInicio\": \"2023-10-01T00:00:00-05:00\",\r\n    \"fechaFin\": \"2023-10-31T23:59:59-05:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/calendarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"calendarios"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Crear un calendario Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.globals.set(\"calendarioid\", data.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fechaInicio\": \"2027-10-01T00:00:00-05:00\",\r\n    \"fechaFin\": \"2027-10-31T23:59:59-05:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/calendars",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calendars"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear un calendario",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1,\r\n    \"fechaInicio\": \"2023-10-01T00:00:00-05:00\",\r\n    \"fechaFin\": \"2023-10-31T23:59:59-05:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/calendarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"calendarios"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Crear Profesor Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"pm.globals.set(\"profesorid\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"telefono\": \"1234567890\",\r\n  \"contrasena\": \"miContrasenaSegura\",\r\n  \"tipo\": \"PROFESORVIRTUAL\",  \r\n  \"formacion\": \"Maestría en Educación\",\r\n  \"enlaceReunion\": \"https://meet.example.com/juan\",  // null si es presencial\r\n  \"codigoPostal\": null,  // un número si es presencial\r\n  \"latitud\": null,       // un valor si es presencial\r\n  \"longitud\": null       // un valor si es presencial\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profesores",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profesores"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una asesoria Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"asesoriasId\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"duracion\": \"60\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false,\n  \"profesorId\": {{profesor_id}}\n}\n\n\n\n\n\n"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/asesorias",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"asesorias"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nCrea un nuevo autor. El Id es inicializado por la BD y se debe ver en la respuesta.\r\nPara la prueba, se guarda el id en una variable que será utilizada en otras peticiones de la colección.\r\n\r\n**Código http esperado: 200**"
+			},
+			"response": []
+		},
+		{
 			"name": "Crear una Asesoría y asignarla a un Calendario",
 			"event": [
 				{

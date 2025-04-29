@@ -8,6 +8,51 @@
 	},
 	"item": [
 		{
+			"name": "Crear Profesor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"pm.globals.set(\"profesor_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"correo\": \"juan.perez@example.com\",\r\n  \"telefono\": \"1234567890\",\r\n  \"contrasena\": \"miContrasenaSegura\",\r\n  \"tipo\": \"PROFESORVIRTUAL\",  \r\n  \"formacion\": \"Maestría en Educación\",\r\n  \"enlaceReunion\": \"https://meet.example.com/juan\",  // null si es presencial\r\n  \"codigoPostal\": null,  // un número si es presencial\r\n  \"latitud\": null,       // un valor si es presencial\r\n  \"longitud\": null       // un valor si es presencial\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/profesores",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profesores"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
 			"name": "Crear una asesoria",
 			"event": [
 				{
@@ -37,7 +82,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "\n{\n  \"duracion\": \"60\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false,\n  \"profesorId\": 2\n}\n\n\n\n\n\n"
+					"raw": "\n{\n  \"duracion\": \"60\",\n  \"tematica\": \"Matemáticas\",\n  \"tipo\": \"Individual\",\n  \"area\": \"Ciencias\",\n  \"completada\": false,\n  \"profesorId\": {{profesor_id}}\n}\n\n\n\n\n\n"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/asesorias",
@@ -154,14 +199,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/asesorias/area/Ciencias",
+					"raw": "{{baseUrl}}/asesorias/area/{{area}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"asesorias",
 						"area",
-						"Ciencias"
+						"{{area}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -234,16 +279,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"duracion\": \"90\",\n    \"tematica\": \"Física\",\n    \"tipo\": \"Individual\",\n    \"area\": \"Ciencias\",\n    \"completada\": true,\n    \"profesorId\": 2\n}\n"
+					"raw": "{\n    \"duracion\": \"90\",\n    \"tematica\": \"Física\",\n    \"tipo\": \"Individual\",\n    \"area\": \"Ciencias\",\n    \"completada\": true,\n    \"profesorId\": 1\n}\n"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/asesorias/2",
+					"raw": "{{baseUrl}}/asesorias/{{asesoriaId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"asesorias",
-						"2"
+						"{{asesoriaId}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza un autor existente. \r\nse envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -275,12 +320,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUrl}}/asesoria/{{asesoriaId}}",
+					"raw": "{{baseUrl}}/asesorias/{{asesoriaId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"asesoria",
+						"asesorias",
 						"{{asesoriaId}}"
 					]
 				},

@@ -106,8 +106,7 @@ import jakarta.transaction.Transactional;
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
      */
     @Transactional
-    public AsesoriaEntity updateAsesoriaInCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId,
-            @Valid @NotNull AsesoriaEntity nuevaAsesoria) throws EntityNotFoundException, IllegalOperationException {
+    public AsesoriaEntity updateAsesoriaInCalendario(@NotNull Long calendarioId, @NotNull Long asesoriaId) throws EntityNotFoundException, IllegalOperationException {
         
         log.info("Inicia proceso de actualización de asesoría con ID = {} en el calendario con ID = {}", asesoriaId, calendarioId);
         
@@ -117,12 +116,14 @@ import jakarta.transaction.Transactional;
         AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId)
                 .orElseThrow(() -> new EntityNotFoundException("La asesoría con ID " + asesoriaId + " no existe."));
 
-        if (asesoria.getCalendario() == null || !asesoria.getCalendario().equals(calendario)) {
+        if (asesoria.getCalendario() == null || asesoria.getCalendario().equals(calendario)) {
             throw new IllegalOperationException("La asesoría no pertenece a este calendario.");
         }
         
-        nuevaAsesoria.setId(asesoriaId);
-        AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(nuevaAsesoria);
+        asesoria.setCalendario(calendario);
+        calendario.getAsesorias().add(asesoria);
+        AsesoriaEntity asesoriaActualizada = asesoriaRepository.save(asesoria);
+        calendarioRepository.save(calendario);
 
         log.info("Finaliza proceso de actualización de asesoría con ID = {}", asesoriaId);
         return asesoriaActualizada;

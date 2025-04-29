@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AsesoriaDetail extends AsesoriaDTO {
-    private List<CalendarioDTO> calendario = new ArrayList<>();
+    private CalendarioDTO calendario;
     private List<ProfesorDTO> profesor = new ArrayList<>();
     private List<ReservaDTO> reserva = new ArrayList<>();
 }
