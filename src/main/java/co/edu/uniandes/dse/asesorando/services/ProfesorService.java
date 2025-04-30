@@ -127,15 +127,21 @@ public class ProfesorService {
 
         profesorExistente.setNombre(profesor.getNombre());
         profesorExistente.setCorreo(profesor.getCorreo());
+        profesorExistente.setTelefono(profesor.getTelefono());
         profesorExistente.setContrasena(profesor.getContrasena());
-        profesorExistente.setTematicas(profesor.getTematicas());
+        profesorExistente.setFotoUrl(profesor.getFotoUrl());
+        profesorExistente.setVideoUrl(profesor.getVideoUrl());
+        // Profesor
         profesorExistente.setTipo(profesor.getTipo());
         profesorExistente.setFormacion(profesor.getFormacion());
         profesorExistente.setExperiencia(profesor.getExperiencia());
         profesorExistente.setPrecioHora(profesor.getPrecioHora());
-        profesorExistente.setFotoUrl(profesor.getFotoUrl());
+        // Relaciones
+        profesorExistente.setTematicas(profesor.getTematicas());
+        profesorExistente.setAsesorias(profesor.getAsesorias());
+        profesorExistente.setCalendario(profesor.getCalendario());
 
-        /* if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
+        if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
             ((ProfesorVirtualEntity) profesorExistente)
                     .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
         }
@@ -147,7 +153,7 @@ public class ProfesorService {
                     .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
             ((ProfesorPresencialEntity) profesorExistente)
                     .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
-        } */
+        }
         log.info("Profesor actualizado");
         return profesorRepository.save(profesorExistente);
     }
