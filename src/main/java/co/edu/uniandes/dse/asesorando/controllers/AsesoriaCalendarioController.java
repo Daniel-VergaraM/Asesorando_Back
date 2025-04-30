@@ -98,9 +98,8 @@ public class AsesoriaCalendarioController {
      */
     @PutMapping("/calendario/{calendarioId}/asesorias/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AsesoriaDetail actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId,
-            @RequestBody AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalOperationException {
-        AsesoriaEntity asesorias = asesoriaCalendarioService.updateAsesoriaInCalendario(calendarioId, asesoriaId,asesoria);
+    public AsesoriaDetail actualizarAsesoriaEnCalendario(@PathVariable Long calendarioId, @PathVariable Long asesoriaId) throws EntityNotFoundException, IllegalOperationException {
+        AsesoriaEntity asesorias = asesoriaCalendarioService.updateAsesoriaInCalendario(calendarioId, asesoriaId);
         return modelMapper.map(asesorias, AsesoriaDetail.class);
     }
 

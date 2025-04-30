@@ -114,17 +114,17 @@ public class AsesoriaController {
      * @param profesorId Identificador del profesor.
      * @return Lista de asesorías según el estado proporcionado.
      */
-    @GetMapping(value = "/completada")
+    @GetMapping(value = "/completada/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaDTO> findByCompletada(@RequestParam(required = false) Boolean estado, @RequestParam long profesorId) throws IllegalOperationException {
-        if (estado == null) {
-            throw new IllegalArgumentException("El parámetro 'estado' es obligatorio.");
-        }
-    
-        List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByCompletada(estado, profesorId);
-    
-        return modelMapper.map(Optional.ofNullable(asesorias).orElse(Collections.emptyList()), new TypeToken<List<AsesoriaDTO>>() {}.getType());
+    public List<AsesoriaDTO> findByCompletada(@RequestParam(required = false) Boolean estado, @PathVariable long asesoriaId) throws IllegalOperationException {
+    if (estado == null) {
+        throw new IllegalArgumentException("El parámetro 'estado' es obligatorio.");
     }
+
+    List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByCompletada(estado, asesoriaId);
+    return modelMapper.map(Optional.ofNullable(asesorias).orElse(Collections.emptyList()), new TypeToken<List<AsesoriaDTO>>() {}.getType());
+}
+
     
     
     /**
