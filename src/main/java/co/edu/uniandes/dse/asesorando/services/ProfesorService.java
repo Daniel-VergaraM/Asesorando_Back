@@ -138,8 +138,24 @@ public class ProfesorService {
         profesorExistente.setPrecioHora(profesor.getPrecioHora());
         // Relaciones
         profesorExistente.setTematicas(profesor.getTematicas());
-        profesorExistente.setAsesorias(profesor.getAsesorias());
-        profesorExistente.setCalendario(profesor.getCalendario());
+        
+        // Correctly handle collections with orphanRemoval=true
+        // Instead of replacing the asesorias collection, we modify it in-place
+        if (profesor.getAsesorias() != null) {
+            // Clear and add instead of replacing the collection reference
+            profesorExistente.getAsesorias().clear();
+            if (!profesor.getAsesorias().isEmpty()) {
+                profesorExistente.getAsesorias().addAll(profesor.getAsesorias());
+            }
+        }
+        
+        // Handle calendario collection in the same way
+        if (profesor.getCalendario() != null) {
+            profesorExistente.getCalendario().clear();
+            if (!profesor.getCalendario().isEmpty()) {
+                profesorExistente.getCalendario().addAll(profesor.getCalendario());
+            }
+        }
 
         if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
             ((ProfesorVirtualEntity) profesorExistente)
