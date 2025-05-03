@@ -149,13 +149,23 @@ public class UsuarioController {
      * @throws EntityNotFoundException If the user with the given ID is not
      * found.
      */
-    @PutMapping(value = "/{id}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public UsuarioDTO update(@PathVariable Long id, @RequestBody UsuarioDTO usuario) throws EntityNotFoundException {
-        UsuarioEntity usuarioEntity = modelMapper.map(usuario, UsuarioEntity.class);
-        UsuarioEntity nuevoUsuario = usuarioService.updateUsuario(id, usuarioEntity);
-        return modelMapper.map(nuevoUsuario, UsuarioDTO.class);
-    }
+    @PutMapping("/{id}")
+@ResponseStatus(HttpStatus.OK)
+public UsuarioDTO update(
+    @PathVariable Long id,
+    @RequestBody UsuarioDTO usuarioDto
+) throws EntityNotFoundException {
+    // 1) Obtiene la entidad completa del usuario antes de actualizar
+    UsuarioEntity existente = usuarioService.getUsuario(id);
+    // 2) Mapea sólo los campos que vienen en el DTO
+    UsuarioEntity cambios = modelMapper.map(usuarioDto, UsuarioEntity.class);
+    // 3) Preserva la lista de asesorías completadas
+    cambios.setAsesoriasCompletadas(existente.getAsesoriasCompletadas());
+    // 4) Llama al servicio, que ahora no recibirá null en esa colección
+    UsuarioEntity actualizado = usuarioService.updateUsuario(id, cambios);
+    // 5) Devuelve el DTO resultante
+    return modelMapper.map(actualizado, UsuarioDTO.class);
+}
 
     /**
      * Deletes a user by their ID.
