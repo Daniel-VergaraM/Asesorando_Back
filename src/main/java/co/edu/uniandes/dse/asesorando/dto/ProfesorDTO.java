@@ -44,6 +44,7 @@ public class ProfesorDTO {
     private String tipo;
     private String formacion;
     private String experiencia;
+    private String precioHora;
     // ProfesorVirtual
     private String enlaceReunion = null;
     // ProfesorPresencial
