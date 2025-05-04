@@ -154,3 +154,15 @@ INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES 
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-15 13:30:00', '2025-05-15 12:15:00', 9, 102);
 -- Calendario 10: Asesoría de Ingeniería de Software con Carlos Vera
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-16 14:30:00', '2025-05-16 13:00:00', 10, 103);
+
+
+INSERT INTO ASESORIA_ENTITY (
+  COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID,
+  USUARIO_ID, AREA, DURACION, TEMATICA, TIPO
+) VALUES
+  (FALSE, 1,  11, 101, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 101, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 101, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 101, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 101, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual');
+
