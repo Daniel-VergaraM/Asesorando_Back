@@ -40,6 +40,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorPresencialEntity;
+import co.edu.uniandes.dse.asesorando.entities.ProfesorVirtualEntity;
+import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -104,6 +107,45 @@ public class ProfesorServiceTest {
         assertThrows(EntityNotFoundException.class, () -> {
             profesorService.createProfesor(result, BASE_PROFESOR);
         });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "RANDOM"})
+    public void testCreateProfesorTipo(String tipo) throws EntityNotFoundException {
+        ProfesorEntity p1 = factory.manufacturePojo(ProfesorEntity.class);
+        ProfesorVirtualEntity p2 = factory.manufacturePojo(ProfesorVirtualEntity.class);
+        ProfesorPresencialEntity p3 = factory.manufacturePojo(ProfesorPresencialEntity.class);
+
+        if (p1.getId() == null) {
+            p1.setId(factory.manufacturePojo(Long.class));
+        }
+        if (p2.getId() == null) {
+            p2.setId(factory.manufacturePojo(Long.class));
+        }
+        if (p3.getId() == null) {
+            p3.setId(factory.manufacturePojo(Long.class));
+        }
+
+        switch (tipo) {
+            case BASE_PROFESOR ->  {
+                ProfesorEntity result = profesorService.createProfesor(p1, tipo);
+                assertNotNull(result);
+                assertNotNull(entityManager.find(ProfesorEntity.class, result.getId()));
+            }
+            case BASE_PROFESOR_VIRTUAL ->  {
+                ProfesorEntity result = profesorService.createProfesor(p2, tipo);
+                assertNotNull(result);
+                assertNotNull(entityManager.find(ProfesorVirtualEntity.class, result.getId()));
+            }
+            case BASE_PROFESOR_PRESENCIAL ->  {
+                ProfesorEntity result = profesorService.createProfesor(p3, tipo);
+                assertNotNull(result);
+                assertNotNull(entityManager.find(ProfesorPresencialEntity.class, result.getId()));
+            }
+            default -> assertThrows(EntityNotFoundException.class, () -> {
+                    profesorService.createProfesor(p1, tipo);
+                });
+        }
     }
 
     @Test
@@ -186,4 +228,66 @@ public class ProfesorServiceTest {
 
     }
 
+    @Test
+    public void testGetProfesorPorCorreo() throws EntityNotFoundException {
+        ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+        entityManager.persist(entity);
+
+        ProfesorEntity result = profesorService.getProfesorPorCorreo(entity.getCorreo());
+        assertNotNull(result);
+        assertThrows(EntityNotFoundException.class, () -> {
+            profesorService.getProfesorPorCorreo(factory.manufacturePojo(String.class));
+        });
+    }
+
+    @Test
+    public void testGetProfesorPorNombre() throws EntityNotFoundException {
+        ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+        entityManager.persist(entity);
+
+        ProfesorEntity result = profesorService.getProfesorPorNombre(entity.getNombre());
+        assertNotNull(result);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            profesorService.getProfesorPorNombre(factory.manufacturePojo(String.class));
+        });
+    }
+
+    @Test
+    public void testGetProfesorPorTematica() {
+        ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+        TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+        entity.getTematicas().add(tematica);
+        tematica.getProfesores().add(entity);
+        entityManager.persist(entity);
+        entityManager.persist(tematica);
+        entityManager.flush();
+
+        List<ProfesorEntity> result = (List<ProfesorEntity>) profesorService.getProfesorPorTematica(tematica.getTema());
+        assertNotNull(result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "RANDOM"})
+    public void testGetProfesorPorTipoTematica(String tipo) throws EntityNotFoundException {
+        ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
+        TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
+        entity.getTematicas().add(tematica);
+        tematica.getProfesores().add(entity);
+        entity.setTipo(tipo);
+        entityManager.persist(entity);
+        entityManager.persist(tematica);
+        entityManager.flush();
+
+        if (tipo.equals("RANDOM")) {
+            assertThrows(EntityNotFoundException.class, () -> {
+                profesorService.getProfesorPorTipoTematica(tipo, tematica.getTema());
+            });
+        } else {
+            List<ProfesorEntity> result = (List<ProfesorEntity>) profesorService.getProfesorPorTipoTematica(entity.getTipo(), tematica.getTema());
+
+            assertNotNull(result);
+        }
+
+    }
 }

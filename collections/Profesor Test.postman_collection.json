@@ -8,6 +8,25 @@
 	"item": [
 		{
 			"name": "Get All Profesores",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Number of profesores > ' + 0, function () {\r",
+							"   var data = pm.response.json()\r",
+							"   pm.expect(data.length).to.greaterThan(0)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -25,6 +44,29 @@
 		},
 		{
 			"name": "Get Profesor by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.apierror.message).to.eql(\"El profesor no existe.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -43,6 +85,29 @@
 		},
 		{
 			"name": "Get Profesores por Filtro (Body)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.apierror.message).to.eql(\"El tipo de profesor no es valido.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -51,7 +116,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    // Formula: nombre o tematica o tipo o (tematica y tipo)\r\n    \"nombre\": \"Alberto\",\r\n    \"tematica\": \"Matemáticas\", // Depende de Temática\r\n    \"tipo\": \"PROFESOR\" // PROFESORVIRTUAL o PROFESORPRESENCIAL o PROFESOR\r\n}",
+					"raw": "{\r\n    // Formula: nombre o tematica o tipo o (tematica y tipo)\r\n    \"nombre\": \"Alberto\",\r\n    \"tematica\": \"Matemáticas\", // Depende de Temática\r\n    \"tipo\": \"RANDOM\" // PROFESORVIRTUAL o PROFESORPRESENCIAL o PROFESOR\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -73,12 +138,29 @@
 		},
 		{
 			"name": "Create Profesor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.globals.set(\"usuario_id\", data.id)\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"    pm.response.to.have.status(201)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tipo\": \"PROFESOR\",\r\n    \"nombre\": \"String\",\r\n    \"correo\": \"String\",\r\n    \"telefono\": \"String\",\r\n    \"contraseña\": \"String\",\r\n    // Propiedades de PROFESOR (Base)\r\n    \"formacion\": \"String\",\r\n    \"experiencia\": \"String\",\r\n    \"precioHora\": \"String\",\r\n    \"fotoUrl\": \"String\",\r\n    \"videoUrl\": \"String\",\r\n    // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n    \"codigoPostal\": \"Integer\",\r\n    \"latitud\": \"Double\",\r\n    \"longitud\": \"Double\",\r\n    // Las propiedades que siguen son para PROFESORVIRTUAL\r\n    \"enlaceReunion\": \"String\"\r\n}",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"tipo\": \"PROFESORVIRTUAL\",\r\n    \"nombre\": \"Luis\",\r\n    \"correo\": \"String\",\r\n    \"telefono\": \"String\",\r\n    \"contraseña\": \"String\",\r\n    // Propiedades de PROFESOR (Base)\r\n    \"formacion\": \"\",\r\n    \"experiencia\": \"\",\r\n    \"precioHora\": \"\",\r\n    \"fotoUrl\": \"\",\r\n    \"videoUrl\": \"\",\r\n    // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n    \"codigoPostal\": \"\",\r\n    \"latitud\": \"\",\r\n    \"longitud\": \"\",\r\n    // Las propiedades que siguen son para PROFESORVIRTUAL\r\n    \"enlaceReunion\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -86,13 +168,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/profesores/",
+					"raw": "{{baseUrl}}/profesores",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"profesores",
-						""
+						"profesores"
 					]
 				}
 			},
@@ -100,12 +181,35 @@
 		},
 		{
 			"name": "Update Profesor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.apierror.message).to.eql(\"El profesor no existe.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tipo\": \"PROFESOR\",\r\n    \"nombre\": \"String\",\r\n    \"correo\": \"String\",\r\n    \"telefono\": \"String\",\r\n    \"contraseña\": \"String\",\r\n    \"formacion\": \"String\",\r\n    \"experiencia\": \"String\",\r\n    \"precioHora\": \"String\",\r\n    \"fotoUrl\": \"String\",\r\n    \"videoUrl\": \"String\",\r\n    // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n    \"codigoPostal\": \"Integer\",\r\n    \"latitud\": \"Double\",\r\n    \"longitud\": \"Double\",\r\n    // Las propiedades que siguen son para PROFESORVIRTUAL\r\n    \"enlaceReunion\": \"String\"\r\n}",
+					"raw": "{\r\n    \"id\": {{usuario_id}},\r\n    \"tipo\": \"PROFESORVIRTUAL\",\r\n    \"nombre\": \"Luis Alberto\",\r\n    \"correo\": \"String\",\r\n    \"telefono\": \"String\",\r\n    \"contraseña\": \"String\",\r\n    \"formacion\": \"String\",\r\n    \"experiencia\": \"String\",\r\n    \"precioHora\": \"String\",\r\n    \"fotoUrl\": \"String\",\r\n    \"videoUrl\": \"String\"\r\n    // Las propiedades que siguen son para PROFESORPRESENCIAL\r\n    //\"codigoPostal\": \"Integer\",\r\n    // \"latitud\": \"Double\",\r\n    // \"longitud\": \"Double\",\r\n    // Las propiedades que siguen son para PROFESORVIRTUAL\r\n    // \"enlaceReunion\": \"String\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -127,6 +231,30 @@
 		},
 		{
 			"name": "Delete Profesor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.apierror.message).to.eql(\"El profesor no existe.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],

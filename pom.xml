@@ -167,6 +167,7 @@
 								run it/composed.collection.json -e collections/EntornoIT.postman_environment.json
 							</commandlineArgs>
 						</configuration>
+					
 					</execution>
 					-->
 				</executions>

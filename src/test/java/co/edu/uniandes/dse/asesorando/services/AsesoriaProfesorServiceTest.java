@@ -41,7 +41,6 @@ import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.ProfesorEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.repositories.AsesoriaRepository;
-import co.edu.uniandes.dse.asesorando.repositories.ProfesorRepository;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -59,8 +58,6 @@ public class AsesoriaProfesorServiceTest {
     @Autowired
     private AsesoriaRepository asesoriaRepository;
     
-    @Autowired
-    private ProfesorRepository profesorRepository;
     
     @Autowired  
     private TestEntityManager entityManager;
@@ -164,7 +161,75 @@ public class AsesoriaProfesorServiceTest {
          asesoriaProfesorService.eliminarAsesoriaDeProfesor(profesor.getId(), asesoria.getId());
          assertFalse(asesoriaRepository.findById(asesoria.getId()).isPresent());
      }
-    
+        /**
+     * Método para probar qué pasa si intentamos crear una asesoría con un profesor que no existe.
+     *
+     * Debería lanzar un error porque el profesor con ese ID no está en la base de datos.
+     */
+    @Test
+    void testCrearAsesoriaParaProfesorConProfesorNoExistente() {
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        entityManager.persist(nuevaAsesoria);
+        entityManager.flush();
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.crearAsesoriaParaProfesor(9999L, nuevaAsesoria.getId());});
+    }
+
+    /**
+     * Método para probar qué pasa si intentamos crear una asesoría con un ID de asesoría que no existe.
+     *
+     * También debería lanzar un error porque esa asesoría no está en la base de datos.
+     */
+    @Test
+    void testCrearAsesoriaParaProfesorConAsesoriaNoExistente() {
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.crearAsesoriaParaProfesor(profesor.getId(), 9999L);});
+    }
+
+    /**
+     * Método para probar la actualización de una asesoría que no existe.
+     *
+     * Si intentamos actualizar algo que no está en la base de datos, debería fallar con un error.
+     */
+    @Test
+    void testActualizarAsesoriaDeProfesorConAsesoriaNoExistente() {
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.actualizarAsesoriaDeProfesor(profesor.getId(), 9999L, nuevaAsesoria);});
+    }
+
+    /**
+     * Método para probar qué pasa si un profesor intenta actualizar una asesoría que no le pertenece.
+     *
+     * Debería fallar porque solo el dueño de la asesoría puede modificarla.
+     */
+    @Test
+    void testActualizarAsesoriaDeProfesorConProfesorIncorrecto() {
+        ProfesorEntity otroProfesor = factory.manufacturePojo(ProfesorEntity.class);
+        entityManager.persist(otroProfesor);
+        AsesoriaEntity asesoria = asesoriaList.get(0);
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        nuevaAsesoria.setId(asesoria.getId());
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.actualizarAsesoriaDeProfesor(otroProfesor.getId(), asesoria.getId(), nuevaAsesoria);});
+    }
+
+    /**
+     * Método para probar la eliminación de una asesoría que no existe.
+     *
+     * Como no está en la base de datos, debería lanzar un error.
+     */
+    @Test
+    void testEliminarAsesoriaDeProfesorConAsesoriaNoExistente() {
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.eliminarAsesoriaDeProfesor(profesor.getId(), 9999L);});
+    }
+
+    /**
+     * Método para probar qué pasa si un profesor intenta eliminar una asesoría que no le pertenece.
+     *
+     * Debería fallar porque solo el dueño de la asesoría puede eliminarla.
+     */
+    @Test
+    void testEliminarAsesoriaDeProfesorConProfesorIncorrecto() {
+        ProfesorEntity otroProfesor = factory.manufacturePojo(ProfesorEntity.class);
+        entityManager.persist(otroProfesor);
+        AsesoriaEntity asesoria = asesoriaList.get(0);
+        assertThrows(EntityNotFoundException.class, () -> {asesoriaProfesorService.eliminarAsesoriaDeProfesor(otroProfesor.getId(), asesoria.getId());});
+    }
 }
-
-

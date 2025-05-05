@@ -9,5 +9,6 @@ public class CalendarioDTO {
 
     private Date fechaInicio;
     private Date fechaFin;
+    private Long id;
 
 }

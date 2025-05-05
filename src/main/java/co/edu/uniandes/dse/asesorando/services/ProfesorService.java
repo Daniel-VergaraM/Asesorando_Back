@@ -135,7 +135,7 @@ public class ProfesorService {
         profesorExistente.setPrecioHora(profesor.getPrecioHora());
         profesorExistente.setFotoUrl(profesor.getFotoUrl());
 
-        if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
+        /* if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
             ((ProfesorVirtualEntity) profesorExistente)
                     .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
         }
@@ -147,8 +147,7 @@ public class ProfesorService {
                     .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
             ((ProfesorPresencialEntity) profesorExistente)
                     .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
-        }
-
+        } */
         log.info("Profesor actualizado");
         return profesorRepository.save(profesorExistente);
     }
@@ -214,13 +213,10 @@ public class ProfesorService {
     @Transactional
     public <T extends ProfesorEntity> T getProfesorPorCorreo(String correo) throws EntityNotFoundException {
         log.info("Obteniendo un profesor por correo");
-        Optional<T> profesorExistente = profesorRepository.findByCorreo(correo);
-        if (profesorExistente.isEmpty()) {
-            throw new EntityNotFoundException("El profesor no existe.");
-        }
+        T profesorExistente = (T) profesorRepository.findByCorreo(correo).orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
 
         log.info("Profesor obtenido");
-        return (T) profesorExistente.get();
+        return profesorExistente;
     }
 
     /**
@@ -248,7 +244,7 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) throws EntityNotFoundException {
+    public Iterable<ProfesorEntity> getProfesorPorTematica(String tematica) {
         log.info("Obteniendo un profesor por tematica");
         List<ProfesorEntity> profesores = new ArrayList<>();
         profesores.addAll(profesorRepository.findAll());

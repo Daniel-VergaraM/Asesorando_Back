@@ -24,15 +24,24 @@ SOFTWARE.
 
 package co.edu.uniandes.dse.asesorando.controllers;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
@@ -78,7 +87,7 @@ public class AsesoriaController {
      */
     @GetMapping(value = "/{id:[0-9]+}") // Solo acepta números como ID
     @ResponseStatus(code = HttpStatus.OK)
-    public AsesoriaDTO findOne(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+    public AsesoriaDTO findOne(@PathVariable Long id) throws IllegalOperationException {
         AsesoriaEntity asesorias =  asesoriaService.getAsesoriaEntity(id);
             return modelMapper.map(asesorias, AsesoriaDTO.class);
         }
@@ -105,17 +114,17 @@ public class AsesoriaController {
      * @param profesorId Identificador del profesor.
      * @return Lista de asesorías según el estado proporcionado.
      */
-    @GetMapping(value = "/completada")
+    @GetMapping(value = "/completada/{asesoriaId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AsesoriaDTO> findByCompletada(@RequestParam(required = false) Boolean estado, @RequestParam long profesorId) throws IllegalOperationException {
-        if (estado == null) {
-            throw new IllegalArgumentException("El parámetro 'estado' es obligatorio.");
-        }
-    
-        List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByCompletada(estado, profesorId);
-    
-        return modelMapper.map(Optional.ofNullable(asesorias).orElse(Collections.emptyList()), new TypeToken<List<AsesoriaDTO>>() {}.getType());
+    public List<AsesoriaDTO> findByCompletada(@RequestParam(required = false) Boolean estado, @PathVariable long asesoriaId) throws IllegalOperationException {
+    if (estado == null) {
+        throw new IllegalArgumentException("El parámetro 'estado' es obligatorio.");
     }
+
+    List<AsesoriaEntity> asesorias = asesoriaService.getAsesoriasByCompletada(estado, asesoriaId);
+    return modelMapper.map(Optional.ofNullable(asesorias).orElse(Collections.emptyList()), new TypeToken<List<AsesoriaDTO>>() {}.getType());
+}
+
     
     
     /**
@@ -154,7 +163,7 @@ public class AsesoriaController {
      */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+    public void delete(@PathVariable Long id) throws IllegalOperationException {
         asesoriaService.deleteAsesoriaEntity(id);
         
     

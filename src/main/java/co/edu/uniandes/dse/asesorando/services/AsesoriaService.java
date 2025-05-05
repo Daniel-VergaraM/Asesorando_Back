@@ -26,7 +26,6 @@ SOFTWARE.
 
  import java.util.ArrayList;
  import java.util.List;
- import java.util.Optional;
  import java.util.stream.Collectors;
  
  import javax.validation.Valid;
@@ -94,7 +93,7 @@ SOFTWARE.
          log.info("Inicia proceso de consulta de asesoria con id = {}", asesoriaId);
  
          return asesoriaRepository.findById(asesoriaId)
-                 .orElseThrow(() -> new IllegalOperationException("La asesoría con el ID proporcionado no está en el sistema."));
+                 .orElseThrow(() -> new IllegalOperationException("La asesoría con el ID proporcionado no está en la base de datos."));
      }
  
      /**
@@ -110,10 +109,10 @@ SOFTWARE.
              throws EntityNotFoundException, IllegalOperationException {
          log.info("Inicia proceso de actualizar la asesoría con id = {}", asesoriaId);
  
-         AsesoriaEntity asesoriaExistente = asesoriaRepository.findById(asesoriaId)
+         AsesoriaEntity dummy = asesoriaRepository.findById(asesoriaId)
                  .orElseThrow(() -> new EntityNotFoundException("La asesoría con el ID proporcionado no está en el sistema."));
  
-         asesoria.setId(asesoriaId);
+         asesoria.setId(dummy.getId());
          log.info("Termina proceso de actualizar la asesoría con id = {}", asesoriaId);
          
          return asesoriaRepository.save(asesoria);
@@ -185,5 +184,6 @@ SOFTWARE.
      public List<AsesoriaEntity> getAllAsesorias() {
          return asesoriaRepository.findAll();
      }
+     
  }
  

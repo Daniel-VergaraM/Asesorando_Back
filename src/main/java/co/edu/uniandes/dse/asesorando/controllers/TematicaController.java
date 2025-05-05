@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.uniandes.dse.asesorando.dto.TematicaDTO;
 import co.edu.uniandes.dse.asesorando.entities.TematicaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
-import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.asesorando.services.TematicaService;
 
 
@@ -78,7 +77,7 @@ public class TematicaController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-	public TematicaDTO create(@RequestBody TematicaDTO tematicaDTO) throws IllegalOperationException, EntityNotFoundException {
+	public TematicaDTO create(@RequestBody TematicaDTO tematicaDTO) throws EntityNotFoundException {
 		TematicaEntity tematicaEntity = tematicaService.createTematica(modelMapper.map(tematicaDTO, TematicaEntity.class));
 		return modelMapper.map(tematicaEntity, TematicaDTO.class);
 	}
@@ -96,7 +95,7 @@ public class TematicaController {
     @PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public TematicaDTO update(@PathVariable Long id, @RequestBody TematicaDTO tematicaDTO)
-			throws EntityNotFoundException, IllegalOperationException {
+			throws EntityNotFoundException {
 		TematicaEntity tematicaEntity = tematicaService.updateTematica(id, modelMapper.map(tematicaDTO, TematicaEntity.class));
 		return modelMapper.map(tematicaEntity, TematicaDTO.class);
 	}
@@ -109,7 +108,7 @@ public class TematicaController {
     */
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+	public void delete(@PathVariable Long id) throws EntityNotFoundException {
 		tematicaService.deleteTematica(id);
 	}
 }

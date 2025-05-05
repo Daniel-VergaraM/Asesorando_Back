@@ -67,21 +67,7 @@ public class TematicaProfesorService {
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
         return profesorExistente.getTematicas();
-    }
-
-    /**
-     * Obtiene todos los profesores de una tematica
-     *
-     * @param tematicaId
-     * @return List<ProfesorEntity>
-     */
-    @Transactional
-    public List<ProfesorEntity> obtenerProfesores(@NotNull Long tematicaId) throws EntityNotFoundException {
-        log.info("Obteniendo todos los profesores de la tematica con id: {}", tematicaId);
-        TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
-                .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
-        return tematicaExistente.getProfesores();
-    }
+    }   
 
     /**
      * Elimina a un profesor de todas las tematicas
@@ -90,11 +76,11 @@ public class TematicaProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity eliminarProfesorDeTematicas(@NotNull Long profesorId) throws EntityNotFoundException{
+    public ProfesorEntity eliminarProfesorDeTematicas(@NotNull Long profesorId) throws EntityNotFoundException {
         log.info("Eliminando al profesor con id: {} de todas las tematicas", profesorId);
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
                 .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
-        profesorExistente.getTematicas().forEach((tematica) -> tematica.getProfesores().remove(profesorExistente));
+        profesorExistente.getTematicas().forEach(tematica -> tematica.getProfesores().remove(profesorExistente));
         profesorExistente.getTematicas().clear();
         return profesorExistente;
     }
@@ -150,7 +136,7 @@ public class TematicaProfesorService {
         TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
                 .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
 
-        tematicaExistente.getProfesores().forEach((profesor) -> profesor.getTematicas().remove(tematicaExistente));
+        tematicaExistente.getProfesores().forEach(profesor -> profesor.getTematicas().remove(tematicaExistente));
         tematicaExistente.getProfesores().clear();
         return tematicaExistente;
     }
@@ -173,25 +159,6 @@ public class TematicaProfesorService {
     }
 
     /**
-     * Elimina un profesor de una tematica existente y viceversa
-     *
-     * @param profesorId
-     * @param tematicaId
-     * @return
-     */
-    @Transactional
-    public ProfesorEntity eliminarTematicaProfesor(@NotNull Long profesorId, @NotNull Long tematicaId) throws EntityNotFoundException {
-        log.info("Eliminando el profesor con id: {} de la tematica con id: {}", profesorId, tematicaId);
-        ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
-                .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
-        TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
-                .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
-        profesorExistente.getTematicas().remove(tematicaExistente);
-        tematicaExistente.getProfesores().remove(profesorExistente);
-        return profesorExistente;
-    }
-
-    /**
      * Verifica si un profesor posee una tematica
      *
      * @param profesorId
@@ -207,7 +174,6 @@ public class TematicaProfesorService {
                 .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
         return profesorExistente.getTematicas().contains(tematicaExistente);
     }
-
 
     /**
      *
@@ -226,36 +192,34 @@ public class TematicaProfesorService {
                 .findFirst().orElseThrow(() -> new EntityNotFoundException("El profesor no existe en la tematica."));
     }
 
-/**
- *
- * @param tematicaId
- * @return
- */
+    /**
+     *
+     * @param tematicaId
+     * @return
+     */
     @Transactional
-    public List<ProfesorEntity> getProfesoresDeTematica ( @NotNull Long tematicaId) throws EntityNotFoundException {
+    public List<ProfesorEntity> getProfesoresDeTematica(@NotNull Long tematicaId) throws EntityNotFoundException {
         log.info("Obteniendo todos los profesores de la tematica con id: {}", tematicaId);
         TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
                 .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
         return tematicaExistente.getProfesores();
     }
-    
+
     /**
      *
      * @param tematicaId
      * @param profesores
      * @return
      */
-
     @Transactional
-    public List<ProfesorEntity> actualizarTematicaProfesor(@NotNull Long tematicaId ,@NotNull List<ProfesorEntity> profesores)throws EntityNotFoundException{
-    log.info("Actualizando los profesores de la tematica con id: {}", tematicaId);
+    public List<ProfesorEntity> actualizarTematicaProfesor(@NotNull Long tematicaId, @NotNull List<ProfesorEntity> profesores) throws EntityNotFoundException {
+        log.info("Actualizando los profesores de la tematica con id: {}", tematicaId);
         TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
                 .orElseThrow(() -> new EntityNotFoundException("La tematica no existe."));
         tematicaExistente.getProfesores().clear();
         profesores.forEach(profesor -> tematicaExistente.getProfesores().add(profesor));
         return tematicaExistente.getProfesores();
-        }
-
+    }
 
     /**
      *

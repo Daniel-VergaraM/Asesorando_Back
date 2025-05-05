@@ -47,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Daniel-VergaraM
  */
-
 @Slf4j
 @Service
 public class UsuarioService {
@@ -87,7 +86,7 @@ public class UsuarioService {
 
     /**
      * Obtiene todos los usuarios de un tipo
-     * 
+     *
      * @param tipo
      * @return List<UsuarioEntity>
      */
@@ -97,6 +96,7 @@ public class UsuarioService {
         if (!tipos.contains(tipo)) {
             throw new IllegalArgumentException("El tipo de usuario " + tipo + " no es válido.");
         }
+        log.info("Usuarios obtenidos");
         return usuarioRepository.findByTipo(tipo);
     }
 
@@ -138,32 +138,30 @@ public class UsuarioService {
         usuarioExistente.setCorreo(usuario.getCorreo());
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setTipo(usuario.getTipo());
+        usuarioExistente.setAsesoriasCompletadas(usuario.getAsesoriasCompletadas());
 
-        if (usuario instanceof ProfesorEntity && usuarioExistente instanceof ProfesorEntity) {
-            ProfesorEntity profesor = (ProfesorEntity) usuario;
-            ProfesorEntity profesorExistente = (ProfesorEntity) usuarioExistente;
+        if (usuario instanceof ProfesorEntity profesor && usuarioExistente instanceof ProfesorEntity profesorExistente) {
             profesorExistente.setTematicas(profesor.getTematicas());
             profesorExistente.setFormacion(profesor.getFormacion());
             profesorExistente.setExperiencia(profesor.getExperiencia());
             profesorExistente.setPrecioHora(profesor.getPrecioHora());
             profesorExistente.setFotoUrl(profesor.getFotoUrl());
 
-            if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
-                ((ProfesorVirtualEntity) profesorExistente)
-                        .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
+            if (profesor instanceof ProfesorVirtualEntity profesorVirtual && profesorExistente instanceof ProfesorVirtualEntity profesorVirtualExistente) {
+                profesorVirtualExistente.setEnlaceReunion(profesorVirtual.getEnlaceReunion());
             }
 
-            if (profesor instanceof ProfesorPresencialEntity && profesorExistente instanceof ProfesorPresencialEntity) {
-                ((ProfesorPresencialEntity) profesorExistente)
-                        .setCodigoPostal(((ProfesorPresencialEntity) profesor).getCodigoPostal());
-                ((ProfesorPresencialEntity) profesorExistente)
-                        .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
-                ((ProfesorPresencialEntity) profesorExistente)
-                        .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
+            if (profesor instanceof ProfesorPresencialEntity profesorPresencial && profesorExistente instanceof ProfesorPresencialEntity profesorPresencialExistente) {
+                profesorPresencialExistente
+                        .setCodigoPostal(profesorPresencial.getCodigoPostal());
+                profesorPresencialExistente
+                        .setLatitud(profesorPresencial.getLatitud());
+                profesorPresencialExistente
+                        .setLongitud(profesorPresencial.getLongitud());
             }
-        } else if (usuario instanceof EstudianteEntity && usuarioExistente instanceof EstudianteEntity) {
-            ((EstudianteEntity) usuario).setComentarios(((EstudianteEntity) usuarioExistente).getComentarios());
-            ((EstudianteEntity) usuario).setReservas(((EstudianteEntity) usuarioExistente).getReservas());
+        } else if (usuario instanceof EstudianteEntity estudiante && usuarioExistente instanceof EstudianteEntity estudianteExistente) {
+            estudiante.setComentarios(estudianteExistente.getComentarios());
+            estudiante.setReservas(estudianteExistente.getReservas());
         }
 
         log.info("Usuario actualizado");

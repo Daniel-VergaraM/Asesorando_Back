@@ -81,6 +81,7 @@ public class ProfesorCalendarioServiceTest {
         }
         for (int i = 0; i < 3; i++) {
             profesor = factory.manufacturePojo(ProfesorEntity.class);
+            profesor.setCalendario(new ArrayList<>());
             entityManager.persist(profesor);
             profesores.add(profesor);
         }
@@ -97,7 +98,8 @@ public class ProfesorCalendarioServiceTest {
     public void testAddCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
-            CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
+            entity.setCalendario(new ArrayList<>());
+            calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);
             service.addCalendario(entity.getId(), calendario.getId());
@@ -115,13 +117,14 @@ public class ProfesorCalendarioServiceTest {
     public void testRemoveCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
-            CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
+            entity.setCalendario(new ArrayList<>());
+            calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);
             service.addCalendario(entity.getId(), calendario.getId());
             service.removeCalendario(entity.getId(), calendario.getId());
             ProfesorEntity entityInDB = entityManager.find(ProfesorEntity.class, entity.getId());
-            assertEquals(entityInDB.getCalendario().size(), 0);
+            assertEquals(0, entityInDB.getCalendario().size());
         } catch (EntityNotFoundException ex) {
             assertNotNull(ex);
         }
@@ -129,11 +132,11 @@ public class ProfesorCalendarioServiceTest {
 
     @Test
     public void testGetCalendarios() {
-        List<CalendarioEntity> calendario;
+        List<CalendarioEntity> calendarios = new ArrayList<>();
         for (int i = 0; i < profesores.size(); i++) {
             try {
-                calendario = service.getCalendarios(profesores.get(i).getId());
-                assertEquals(calendario, profesores.get(i).getCalendario());
+                calendarios = service.getCalendarios(profesores.get(i).getId());
+                assertEquals(calendarios, profesores.get(i).getCalendario());
             } catch (EntityNotFoundException ex) {
                 assertNotNull(ex);
             }
@@ -144,7 +147,8 @@ public class ProfesorCalendarioServiceTest {
     public void testGetCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
-            CalendarioEntity calendario = factory.manufacturePojo(CalendarioEntity.class);
+            entity.setCalendario(new ArrayList<>());
+            calendario = factory.manufacturePojo(CalendarioEntity.class);
             entityManager.persist(calendario);
             entityManager.persist(entity);
             service.addCalendario(entity.getId(), calendario.getId());
