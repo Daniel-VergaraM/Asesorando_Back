@@ -43,7 +43,7 @@ public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> 
      * @param tipo
      * @return
      */
-    <T extends ProfesorEntity> List<T> findByTipo(String tipo);
+    List<ProfesorEntity> findByTipo(String tipo);
 
     /**
      * Obtiene un profesor por correo electrónico
@@ -51,7 +51,7 @@ public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> 
      * @param correo
      * @return
      */
-    <T extends ProfesorEntity> Optional<T> findByCorreo(String correo);
+    Optional<ProfesorEntity> findByCorreo(String correo);
 
     /**
      * Obtiene un profesor por su nombre
@@ -59,5 +59,5 @@ public interface ProfesorRepository extends JpaRepository<ProfesorEntity, Long> 
      * @param nombre
      * @return
      */
-    <T extends ProfesorEntity> Optional<T> findByNombre(String nombre);
+    Optional<ProfesorEntity> findByNombre(String nombre);
 }
