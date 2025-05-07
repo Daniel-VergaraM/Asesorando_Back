@@ -34,25 +34,25 @@ INSERT INTO USUARIO_ENTITY (CODIGO_POSTAL, LATITUD, LONGITUD, ID, DTYPE, CONTRAS
 
 --Crear Asesorias
 -- Asesoría 1: Maria Gomez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 1, 101, 1001, 1, 'Física', 60, 'Mecánica cuántica', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 101, 1, 1001, 1, 'Física', 60, 'Mecánica cuántica', 'Virtual');
 -- Asesoría 2: Juan Perez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 2, 102, 1002, 2, 'Matemáticas', 90, 'Cálculo diferencial', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 102, 2, 1002, 2, 'Matemáticas', 90, 'Cálculo diferencial', 'Presencial');
 -- Asesoría 3: Laura Martinez toma una asesoría de Psicología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 3, 102, 1003, 3, 'Psicología', 60, 'Psicología del desarrollo', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 102, 3, 1003, 3, 'Psicología', 60, 'Psicología del desarrollo', 'Virtual');
 -- Asesoría 4: Carlos Lopez toma una asesoría de Comunicación Social con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 4, 101, 1004, 4, 'Comunicación Social', 75, 'Teoría de la comunicación', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 101, 4, 1004, 4, 'Comunicación Social', 75, 'Teoría de la comunicación', 'Presencial');
 -- Asesoría 5: Paula Sanchez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 5, 102, 1005, 5, 'Matemáticas', 90, 'Álgebra lineal', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 102, 5, 1005, 5, 'Matemáticas', 90, 'Álgebra lineal', 'Virtual');
 -- Asesoría 6: Luis Fernandez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 6, 6, 101, 1006, 6, 'Física', 60, 'Electromagnetismo', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 6, 101, 6, 1006, 6, 'Física', 60, 'Electromagnetismo', 'Presencial');
 -- Asesoría 7: Ana Garcia toma una asesoría de Biología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 7, 7, 102, 1007, 7, 'Biología', 90, 'Biología celular', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 7, 102, 7, 1007, 7, 'Biología', 90, 'Biología celular', 'Virtual');
 -- Asesoría 8: David Moreno toma una asesoría de Química con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 8, 8, 103, 1008, 8, 'Química', 60, 'Química orgánica', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 8, 103, 8, 1008, 8, 'Química', 60, 'Química orgánica', 'Presencial');
 -- Asesoría 9: Andrea Castillo toma una asesoría de Literatura con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 9, 9, 102, 1009, 9, 'Literatura', 75, 'Literatura contemporánea', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 9, 102, 9, 1009, 9, 'Literatura', 75, 'Literatura contemporánea', 'Virtual');
 -- Asesoría 10: Julian Mendez toma una asesoría de Ingeniería de Software con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 10, 10, 103, 1010, 10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 10, 103, 10, 1010, 10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
 
 
 --Crear Tematicas
