@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import co.edu.uniandes.dse.asesorando.dto.UsuarioDTO;
 import co.edu.uniandes.dse.asesorando.entities.UsuarioEntity;
@@ -179,4 +180,18 @@ public UsuarioDTO update(
         usuarioService.deleteUsuario(id);
     }
 
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public UsuarioDTO login(@RequestBody UsuarioDTO usuarioReq) {
+    try {
+        UsuarioEntity user = usuarioService.getUsuarioByCorreo(usuarioReq.getCorreo());
+        if (!user.getContrasena().equals(usuarioReq.getContrasena())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña inválida");
+        }
+        return modelMapper.map(user, UsuarioDTO.class);
+    } catch (EntityNotFoundException e) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario no encontrado");
+    }
+    }  
 }
