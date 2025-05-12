@@ -168,5 +168,6 @@ public class ProfesorController {
     public void deleteProfesor(@PathVariable Long id) throws EntityNotFoundException {
         profesorService.deleteProfesor(id);
     }
+    
 
 }

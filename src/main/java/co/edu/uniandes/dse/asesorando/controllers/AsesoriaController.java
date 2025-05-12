@@ -44,6 +44,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.asesorando.dto.AsesoriaDTO;
+import co.edu.uniandes.dse.asesorando.dto.AsesoriaDetail;
+import co.edu.uniandes.dse.asesorando.dto.ProfesorDTO;
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
@@ -135,11 +137,14 @@ public class AsesoriaController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public AsesoriaDTO create(@RequestBody AsesoriaDTO asesoria) throws IllegalOperationException {
-        AsesoriaEntity convertirDTO = modelMapper.map(asesoria, AsesoriaEntity.class);
-        AsesoriaEntity createdAsesoria = asesoriaService.createAsesoria(convertirDTO, asesoria.getProfesorId());
-        return modelMapper.map(createdAsesoria, AsesoriaDTO.class);
-    }
+public AsesoriaDetail create(@RequestBody AsesoriaDTO asesoria) throws IllegalOperationException {
+    AsesoriaEntity entidad = modelMapper.map(asesoria, AsesoriaEntity.class);
+    AsesoriaEntity creada = asesoriaService.createAsesoria(entidad, asesoria.getProfesorId());
+    AsesoriaDetail detalle = modelMapper.map(creada, AsesoriaDetail.class);
+    ProfesorDTO profDto = modelMapper.map(creada.getProfesor(), ProfesorDTO.class);
+    detalle.getProfesor().add(profDto);
+    return detalle;
+}
 
     /**
      * Actualiza la asesoría con el ID recibido en la URL con la información proporcionada.
