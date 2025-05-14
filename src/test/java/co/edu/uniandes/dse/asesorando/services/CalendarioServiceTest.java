@@ -31,7 +31,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
  */
 @DataJpaTest
 @Transactional
-@Import({CalendarioService.class})
+@Import({ CalendarioService.class })
 public class CalendarioServiceTest {
 
     @Autowired
@@ -61,8 +61,7 @@ public class CalendarioServiceTest {
     }
 
     /**
-     * Inserta los datos iniciales para el correcto funcionamiento de las
-     * pruebas.
+     * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
      */
     private void insertData() {
         for (int i = 0; i < 3; i++) {
@@ -86,26 +85,18 @@ public class CalendarioServiceTest {
 
         CalendarioEntity entityInDatabase = entityManager.find(CalendarioEntity.class, result.getId());
         assertNotNull(entityInDatabase);
-    }
-
-    /**
+    }    /**
      * Prueba para crear un Calendario con fechaInicio repetida.
      */
     @Test
     void testCreateCalendarioWithSameDate() throws IllegalOperationException {
         CalendarioEntity newEntity1 = factory.manufacturePojo(CalendarioEntity.class);
         newEntity1.setFechaInicio(calendarioList.get(0).getFechaInicio());
-        entityManager.persist(newEntity1);
-        entityManager.flush();
-
-        CalendarioEntity newEntity2 = factory.manufacturePojo(CalendarioEntity.class);
-        newEntity2.setFechaInicio(calendarioList.get(0).getFechaInicio());
-        entityManager.persist(newEntity2);
-        entityManager.flush();
-
+        
         assertThrows(IllegalOperationException.class, () -> {
-            calendarioService.createCalendario(newEntity2);
+            calendarioService.createCalendario(newEntity1);
         });
+
     }
 
     /**
@@ -274,22 +265,24 @@ public class CalendarioServiceTest {
     }
 
     /**
-     * Prueba para buscar un Calendario por su fecha de inicio y fecha de fin
-     * dadas.
+     * Prueba para buscar un Calendario por su fecha de inicio y fecha de fin dadas.
      */
     @Test
     void testGetCalendarioByFechaInicioBetween() throws EntityNotFoundException {
         CalendarioEntity entityInicio = calendarioList.get(0);
         CalendarioEntity entityFin = calendarioList.get(calendarioList.size() - 1);
 
-        List<CalendarioEntity> resultEntities = calendarioService.getCalendarioByFechaInicioBetween(entityInicio.getFechaInicio(), entityFin.getFechaInicio());
+        List<CalendarioEntity> resultEntities = calendarioService
+                .getCalendarioByFechaInicioBetween(entityInicio.getFechaInicio(), entityFin.getFechaInicio());
 
         assertNotNull(resultEntities);
         assertFalse(resultEntities.isEmpty());
 
         for (CalendarioEntity resultEntity : resultEntities) {
-            assertTrue(resultEntity.getFechaInicio().after(entityInicio.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityInicio.getFechaInicio()));
-            assertTrue(resultEntity.getFechaInicio().before(entityFin.getFechaInicio()) || resultEntity.getFechaInicio().equals(entityFin.getFechaInicio()));
+            assertTrue(resultEntity.getFechaInicio().after(entityInicio.getFechaInicio())
+                    || resultEntity.getFechaInicio().equals(entityInicio.getFechaInicio()));
+            assertTrue(resultEntity.getFechaInicio().before(entityFin.getFechaInicio())
+                    || resultEntity.getFechaInicio().equals(entityFin.getFechaInicio()));
         }
 
     }
