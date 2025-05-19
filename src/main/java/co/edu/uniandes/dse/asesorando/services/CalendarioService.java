@@ -28,9 +28,14 @@ public class CalendarioService {
         if (calendarioEntity.getFechaInicio() == null || calendarioEntity.getFechaFin() == null) {
             throw new IllegalOperationException("El calendario debe tener una fecha de inicio y una fecha de fin");
         }
+        
+        List<CalendarioEntity> existingCalendarios = calendarioRepository.findByFechaInicio(calendarioEntity.getFechaInicio());
+        if (!existingCalendarios.isEmpty()) {
+            throw new IllegalOperationException("Ya existe un calendario con la misma fecha de inicio");
+        }
+        
         log.info("Termina proceso de creación del calendario");
         return calendarioRepository.save(calendarioEntity);
-
     }
 
     @Transactional
