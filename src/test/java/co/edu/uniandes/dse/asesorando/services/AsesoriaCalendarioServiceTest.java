@@ -51,7 +51,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import({AsesoriaCalendarioService.class})
-public class AsesoriaCalendarioServiceTest {
+class AsesoriaCalendarioServiceTest {
     
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
@@ -215,7 +215,6 @@ public class AsesoriaCalendarioServiceTest {
      */
     @Test
     void testActualizarAsesoriaEnCalendarioInexistente() {
-        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
         assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.updateAsesoriaInCalendario(9999L, asesoriaList.get(0).getId());});
     }
 

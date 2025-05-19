@@ -57,7 +57,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(UsuarioService.class)
-public class UsuarioServiceTest {
+class UsuarioServiceTest {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -83,13 +83,13 @@ public class UsuarioServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void testCreateUsuario() throws EntityNotFoundException {
+    void testCreateUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
 
         UsuarioEntity result = usuarioService.createUsuario(entity);
@@ -106,7 +106,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testGetUsuarios() {
+    void testGetUsuarios() {
         List<UsuarioEntity> list = usuarioService.obtenerUsuarios();
         assertNotNull(list);
 
@@ -124,7 +124,7 @@ public class UsuarioServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "ESTUDIANTE", "RANDOM"})
-    public void testGetUsuariosPorTipo(String tipo) {
+    void testGetUsuariosPorTipo(String tipo) {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
 
@@ -140,7 +140,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testGetUsuario() throws EntityNotFoundException {
+    void testGetUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.getUsuario(entity.getId());
@@ -152,7 +152,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testUpdateUsuario() throws EntityNotFoundException {
+    void testUpdateUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.updateUsuario(entity.getId(), entity);
@@ -199,7 +199,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testDeleteUsuario() throws EntityNotFoundException {
+    void testDeleteUsuario() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         usuarioService.deleteUsuario(entity.getId());
@@ -208,7 +208,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testGetUsuarioByCorreo() throws EntityNotFoundException {
+    void testGetUsuarioByCorreo() throws EntityNotFoundException {
         UsuarioEntity entity = factory.manufacturePojo(UsuarioEntity.class);
         entityManager.persist(entity);
         UsuarioEntity result = usuarioService.getUsuarioByCorreo(entity.getCorreo());

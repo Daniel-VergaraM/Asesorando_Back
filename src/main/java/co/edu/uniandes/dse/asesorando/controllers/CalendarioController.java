@@ -51,15 +51,18 @@ public class CalendarioController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CalendarioDTO create(@RequestBody CalendarioDTO calendarioDTO) throws IllegalOperationException, EntityNotFoundException {
-        CalendarioEntity calendarioEntity = calendarioService.createCalendario(modelMapper.map(calendarioDTO, CalendarioEntity.class));
+    public CalendarioDTO create(@RequestBody CalendarioDTO calendarioDTO) throws IllegalOperationException {
+        CalendarioEntity calendarioEntity = calendarioService
+                .createCalendario(modelMapper.map(calendarioDTO, CalendarioEntity.class));
         return modelMapper.map(calendarioEntity, CalendarioDTO.class);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public CalendarioDTO update(@PathVariable Long id, @RequestBody CalendarioDTO CalendarioDTO) throws IllegalOperationException {
-        CalendarioEntity calendarioEntity = calendarioService.updateCalendario(modelMapper.map(CalendarioDTO, CalendarioEntity.class));
+    public CalendarioDTO update(@PathVariable Long id, @RequestBody CalendarioDTO calendarioDTO)
+            throws IllegalOperationException {
+        CalendarioEntity calendarioEntity = calendarioService
+                .updateCalendario(modelMapper.map(calendarioDTO, CalendarioEntity.class));
         return modelMapper.map(calendarioEntity, CalendarioDTO.class);
     }
 
@@ -71,42 +74,39 @@ public class CalendarioController {
 
     @PostMapping(value = "/fechaInicio")
     @ResponseStatus(code = HttpStatus.OK)
-    public CalendarioDetailDTO findByFechaInicio(@RequestBody CalendarioDTO calendarioDTO) throws IllegalOperationException {
-        CalendarioEntity calendarioEntity = calendarioService.getCalendarioByFechaInicio(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio());
+    public CalendarioDetailDTO findByFechaInicio(@RequestBody CalendarioDTO calendarioDTO)
+            throws IllegalOperationException {
+        CalendarioEntity calendarioEntity = calendarioService
+                .getCalendarioByFechaInicio(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio());
         return modelMapper.map(calendarioEntity, CalendarioDetailDTO.class);
     }
 
     @PostMapping(value = "/fechaFin")
     @ResponseStatus(code = HttpStatus.OK)
-    public CalendarioDetailDTO findByFechaFin(@RequestBody CalendarioDTO calendarioDTO) throws IllegalOperationException {
-        CalendarioEntity calendarioEntity = calendarioService.getCalendarioByFechaFin(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaFin());
+    public CalendarioDetailDTO findByFechaFin(@RequestBody CalendarioDTO calendarioDTO)
+            throws IllegalOperationException {
+        CalendarioEntity calendarioEntity = calendarioService
+                .getCalendarioByFechaFin(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaFin());
         return modelMapper.map(calendarioEntity, CalendarioDetailDTO.class);
     }
 
-    /* 
-    TODO: Cambiar los parametros del método para que funcione con @PathVariable
-    @PathVariable String fechaInicio
-        Hacer que se convierta a un objeto de tipo Date.
-    */
     @GetMapping(value = "/fechaInicio/menor/{fechaInicio}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<CalendarioDetailDTO> findByFechaInicioLessThan(@RequestBody CalendarioDTO calendarioDTO) throws EntityNotFoundException {
-        List<CalendarioEntity> calendars = calendarioService.getCalendarioByFechaInicioLessThan(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio());
+    public List<CalendarioDetailDTO> findByFechaInicioLessThan(@RequestBody CalendarioDTO calendarioDTO)
+            throws EntityNotFoundException {
+        List<CalendarioEntity> calendars = calendarioService.getCalendarioByFechaInicioLessThan(
+                modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio());
         return modelMapper.map(calendars, new TypeToken<List<CalendarioDetailDTO>>() {
         }.getType());
     }
 
-    /*
-     TODO: Cambiar los parametros del método para que funcione con @PathVariable
-     @PathVariable String fechaInicio
-        Hacer que se convierta a un objeto de tipo Date.
-     @PathVariable String fechaFin
-        Hacer que se convierta a un objeto de tipo Date.   
-     */
     @GetMapping(value = "/fechaInicio/entre/{fechaInicio}/{fechaFin}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<CalendarioDetailDTO> findByFechaInicioBetween(@RequestBody CalendarioDTO startDateDTO, @RequestBody CalendarioDTO calendarioDTO) throws EntityNotFoundException {
-        List<CalendarioEntity> calendars = calendarioService.getCalendarioByFechaInicioBetween(modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio(), modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaFin());
+    public List<CalendarioDetailDTO> findByFechaInicioBetween(@RequestBody CalendarioDTO startDateDTO,
+            @RequestBody CalendarioDTO calendarioDTO) throws EntityNotFoundException {
+        List<CalendarioEntity> calendars = calendarioService.getCalendarioByFechaInicioBetween(
+                modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaInicio(),
+                modelMapper.map(calendarioDTO, CalendarioEntity.class).getFechaFin());
         return modelMapper.map(calendars, new TypeToken<List<CalendarioDetailDTO>>() {
         }.getType());
     }

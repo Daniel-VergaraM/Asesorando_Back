@@ -29,6 +29,12 @@ public class ReservaCalendarioService {
     @Autowired
     private CalendarioRepository calendarioRepository;
 
+    private String exceptionPartString = "El calendario con ID ";
+
+    private String exceptionPartString2 = "La reserva con ID ";
+
+    private String exceptionPartString3 = " no está en la base de datos";
+
 
     @Transactional
     public ReservaEntity asociarReservaACalendario(Long reservaId, Long calendarioId) throws EntityNotFoundException {
@@ -64,7 +70,7 @@ public class ReservaCalendarioService {
 
         // Verificar que el calendario existe
         if (!calendarioRepository.existsById(calendarioId)) {
-            throw new EntityNotFoundException("El calendario con ID " + calendarioId + " no existe");
+            throw new EntityNotFoundException(exceptionPartString + calendarioId + " no existe");
         }
 
         // Obtener  y devolver todas las reservas asociadas al calendario
@@ -78,15 +84,15 @@ public class ReservaCalendarioService {
 
         // Buscar el calendario en la base de datos
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-                .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no está en la base de datos"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + calendarioId + exceptionPartString3));
 
         // Buscar la reserva en la base de datos
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva con ID " + reservaId + " no está en la base de datos"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + reservaId + exceptionPartString3));
 
         // Verificar si la reserva ya está asociada a un calendario
         if (reserva.getCalendario() != null) {
-            throw new IllegalOperationException("La reserva con ID " + reservaId + " ya está asociada a un calendario");
+            throw new IllegalOperationException(exceptionPartString2 + reservaId + " ya está asociada a un calendario");
         }
 
         // Asociar la reserva al calendario
@@ -111,15 +117,15 @@ public class ReservaCalendarioService {
             throws EntityNotFoundException, IllegalOperationException {
         // Buscar el calendario en la base de datos
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId)
-            .orElseThrow(() -> new EntityNotFoundException("El calendario con ID " + calendarioId + " no está en la base de datos"));
+            .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + calendarioId + exceptionPartString3));
 
         // Buscar la reserva en la base de datos
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-            .orElseThrow(() -> new EntityNotFoundException("La reserva con ID " + reservaId + " no está en la base de datos"));
+            .orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + reservaId + exceptionPartString3));
 
         // Verificar si la reserva está asociada al calendario
         if (!reserva.getCalendario().getId().equals(calendario.getId())) {
-            throw new IllegalOperationException("La reserva con ID " + reservaId + " no está asociada al calendario con ID " + calendarioId);
+            throw new IllegalOperationException(exceptionPartString2 + reservaId + " no está asociada al calendario con ID " + calendarioId);
         }
 
         // Actualizar los detalles de la reserva

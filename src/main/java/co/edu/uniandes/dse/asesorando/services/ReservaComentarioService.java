@@ -24,11 +24,13 @@ public class ReservaComentarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
+    private String exceptionPartString = "La reserva no existe";
+
     @Transactional
     public ComentarioEntity crearComentario(Long reservaId, ComentarioEntity nuevoComentario) throws EntityNotFoundException {
         // Encuentra la reserva por su ID
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         // Asocia el comentario a la reserva
         nuevoComentario.setReserva(reserva);
@@ -39,7 +41,7 @@ public class ReservaComentarioService {
     public ComentarioEntity obtenerComentarioPorReserva(Long reservaId) throws EntityNotFoundException {
         // Obtiene el comentario asociado a la reserva
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         return reserva.getComentario();  // Retorna el comentario de la reserva
     }
@@ -48,7 +50,7 @@ public class ReservaComentarioService {
     public ComentarioEntity actualizarComentario(Long reservaId, ComentarioEntity comentarioActualizado) throws EntityNotFoundException {
         // Encuentra la reserva
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         // Actualiza el comentario asociado a la reserva
         ComentarioEntity comentario = reserva.getComentario();
@@ -65,7 +67,7 @@ public class ReservaComentarioService {
     public void eliminarComentario(Long reservaId) throws EntityNotFoundException {
         // Encuentra la reserva y elimina el comentario asociado
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
         
         ComentarioEntity comentario = reserva.getComentario();
         if (comentario != null) {
@@ -80,7 +82,7 @@ public class ReservaComentarioService {
     public void eliminarReservaYComentario(Long reservaId) throws EntityNotFoundException {
         // Encuentra la reserva y elimina tanto la reserva como el comentario
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         ComentarioEntity comentario = reserva.getComentario();
         if (comentario != null) {
@@ -97,7 +99,7 @@ public class ReservaComentarioService {
     public ComentarioEntity asociarComentarioAReserva(Long reservaId, Long comentarioId) throws EntityNotFoundException {
         // Buscar la reserva
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("La reserva no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         // Buscar el comentario
         ComentarioEntity comentario = comentarioRepository.findById(comentarioId)

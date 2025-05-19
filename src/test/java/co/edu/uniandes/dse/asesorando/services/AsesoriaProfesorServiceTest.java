@@ -50,7 +50,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import({AsesoriaProfesorService.class})
-public class AsesoriaProfesorServiceTest {
+class AsesoriaProfesorServiceTest {
     
     @Autowired
     private AsesoriaProfesorService asesoriaProfesorService;

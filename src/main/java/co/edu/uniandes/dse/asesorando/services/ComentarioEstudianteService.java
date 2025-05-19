@@ -27,6 +27,10 @@ public class ComentarioEstudianteService {
 	@Autowired
 	private EstudianteRepository estudianteRepository;
 
+	private String exceptionPartString = "Estudiante no encontrado";
+
+	private String exceptionPartString2 = "Comentario no encontrado";
+
 
     @Transactional
 	public ComentarioEntity addcomentario(Long comentarioId, Long estudianteId) throws EntityNotFoundException {
@@ -35,10 +39,10 @@ public class ComentarioEstudianteService {
 		Optional<ComentarioEntity> comentarioEntity = comentarioRepository.findById(comentarioId);
 
 		if (estudianteEntity.isEmpty())
-			throw new EntityNotFoundException("Estudiante no encontrado");
+			throw new EntityNotFoundException(exceptionPartString);
 
 		if (comentarioEntity.isEmpty())
-			throw new EntityNotFoundException("Comentario no encontrado");
+			throw new EntityNotFoundException(exceptionPartString2);
 
 		
 		log.info("Termina proceso de asociarle un comentario al estudiante con id = {0}", estudianteId);
@@ -59,7 +63,7 @@ public class ComentarioEstudianteService {
 		Optional<EstudianteEntity> estudianteEntity;
         estudianteEntity = estudianteRepository.findById(estudianteId);
 		if (estudianteEntity.isEmpty())
-			throw new EntityNotFoundException("Estudiante no encontrado");
+			throw new EntityNotFoundException(exceptionPartString);
 
 		log.info("Termina proceso de consultar todos los comentarios del estudiante con id = {0}", estudianteId);
         return estudianteEntity.get().getComentarios();
@@ -79,10 +83,10 @@ public class ComentarioEstudianteService {
 		Optional<ComentarioEntity> comentarioEntity = comentarioRepository.findById(comentarioId);
 
 		if (estudianteEntity.isEmpty())
-			throw new EntityNotFoundException("Estudiante no encontrado");
+			throw new EntityNotFoundException(exceptionPartString);
 
 		if (comentarioEntity.isEmpty())
-			throw new EntityNotFoundException("Comentario no encontrado");
+			throw new EntityNotFoundException(exceptionPartString2);
 
 		log.info("Termina proceso de consultar el comentario con id = {0} del estudiante con id = " + estudianteId, comentarioId);
         if (!estudianteEntity.get().getComentarios().contains(comentarioEntity.get()))
@@ -104,12 +108,12 @@ public class ComentarioEstudianteService {
 		log.info("Inicia proceso de reemplazar los comentarios asociados al estudiante con id = {0}", estudianteId);
 		Optional<EstudianteEntity> estudianteEntity = estudianteRepository.findById(estudianteId);
 		if (estudianteEntity.isEmpty())
-			throw new EntityNotFoundException("Estudiante no encontrado");  
+			throw new EntityNotFoundException(exceptionPartString);  
 
 		for (ComentarioEntity comentario : comentarios) {
 			Optional<ComentarioEntity> comentarioEntity = comentarioRepository.findById(comentario.getId());
 			if (comentarioEntity.isEmpty())
-				throw new EntityNotFoundException("Comentario no encontrado");
+				throw new EntityNotFoundException(exceptionPartString2);
 
 		}
 		log.info("Finaliza proceso de reemplazar los comentarios asociados al estudiante con id = {0}", estudianteId);
@@ -128,11 +132,11 @@ public class ComentarioEstudianteService {
 		log.info("Inicia proceso de borrar un comentario del estudiante con id = {0}", estudianteId);
 		Optional<EstudianteEntity> estudianteEntity = estudianteRepository.findById(estudianteId);
 		if (estudianteEntity.isEmpty())
-			throw new EntityNotFoundException("Estudiante no encontrado");
+			throw new EntityNotFoundException(exceptionPartString);
 
 		Optional<ComentarioEntity> comentarioEntity = comentarioRepository.findById(comentarioId);
 		if (comentarioEntity.isEmpty())
-			throw new EntityNotFoundException("Comentario no encontrado");
+			throw new EntityNotFoundException(exceptionPartString2);
 
         
 
