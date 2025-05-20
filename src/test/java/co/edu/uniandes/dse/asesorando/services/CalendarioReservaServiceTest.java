@@ -24,7 +24,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(CalendarioReservaService.class)
-public class CalendarioReservaServiceTest {
+class CalendarioReservaServiceTest {
 
     @Autowired
     private CalendarioReservaService calendarioReservaService;

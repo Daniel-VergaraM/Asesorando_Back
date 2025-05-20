@@ -50,7 +50,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(ProfesorCalendarioService.class)
-public class ProfesorCalendarioServiceTest {
+class ProfesorCalendarioServiceTest {
 
     @Autowired
     private ProfesorCalendarioService service;
@@ -89,13 +89,13 @@ public class ProfesorCalendarioServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void testAddCalendario() {
+    void testAddCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
             entity.setCalendario(new ArrayList<>());
@@ -114,7 +114,7 @@ public class ProfesorCalendarioServiceTest {
     }
 
     @Test
-    public void testRemoveCalendario() {
+    void testRemoveCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
             entity.setCalendario(new ArrayList<>());
@@ -131,12 +131,12 @@ public class ProfesorCalendarioServiceTest {
     }
 
     @Test
-    public void testGetCalendarios() {
-        List<CalendarioEntity> calendarios = new ArrayList<>();
+    void testGetCalendarios() {
+        List<CalendarioEntity> calendarios2 = new ArrayList<>();
         for (int i = 0; i < profesores.size(); i++) {
             try {
-                calendarios = service.getCalendarios(profesores.get(i).getId());
-                assertEquals(calendarios, profesores.get(i).getCalendario());
+                calendarios2 = service.getCalendarios(profesores.get(i).getId());
+                assertEquals(calendarios2, profesores.get(i).getCalendario());
             } catch (EntityNotFoundException ex) {
                 assertNotNull(ex);
             }
@@ -144,7 +144,7 @@ public class ProfesorCalendarioServiceTest {
     }
 
     @Test
-    public void testGetCalendario() {
+    void testGetCalendario() {
         try {
             ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
             entity.setCalendario(new ArrayList<>());

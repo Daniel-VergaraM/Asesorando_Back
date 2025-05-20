@@ -32,7 +32,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import({ CalendarioService.class })
-public class CalendarioServiceTest {
+class CalendarioServiceTest {
 
     @Autowired
     private CalendarioService calendarioService;
@@ -89,7 +89,7 @@ public class CalendarioServiceTest {
      * Prueba para crear un Calendario con fechaInicio repetida.
      */
     @Test
-    void testCreateCalendarioWithSameDate() throws IllegalOperationException {
+    void testCreateCalendarioWithSameDate() {
         CalendarioEntity newEntity1 = factory.manufacturePojo(CalendarioEntity.class);
         newEntity1.setFechaInicio(calendarioList.get(0).getFechaInicio());
         

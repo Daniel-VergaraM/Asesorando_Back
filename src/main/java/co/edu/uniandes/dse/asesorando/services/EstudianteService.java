@@ -18,6 +18,8 @@ public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
 
+    private String exceptionPartString = "El estudiante ya se encuentra registrado.";
+
     @Transactional
     public EstudianteEntity createEstudianteByAtributes(String nombre, String correo, String contrasena) throws EntityNotFoundException {
         EstudianteEntity estudiante = new EstudianteEntity();
@@ -28,7 +30,7 @@ public class EstudianteService {
         Optional<EstudianteEntity> estudianteExistente = estudianteRepository.findByCorreo(correo);
 
         if (estudianteExistente.isPresent()) {
-            throw new EntityNotFoundException("El estudiante ya se encuentra registrado.");
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         log.info("Estudiante creado exitosamente.");
@@ -42,8 +44,8 @@ public class EstudianteService {
         Optional<EstudianteEntity> estudianteExistente = estudianteRepository.findById(estudiante.getId());
 
         if (estudianteExistente.isPresent()) {
-            log.error("El estudiante ya se encuentra registrado.");
-            throw new EntityNotFoundException("El estudiante ya se encuentra registrado.");
+            log.error(exceptionPartString);
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         log.info("Estudiante creado exitosamente.");

@@ -31,7 +31,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @Transactional
 @Import(EstudianteService.class)
 
-public class EstudianteServiceTest {
+class EstudianteServiceTest {
 
     @Autowired
     private EstudianteService estudianteService;
@@ -57,13 +57,13 @@ public class EstudianteServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void testCreateEstudianteByAtributes() throws EntityNotFoundException {
+    void testCreateEstudianteByAtributes() throws EntityNotFoundException {
         EstudianteEntity entity = estudianteService.createEstudianteByAtributes("nombre", "correo", "contrasena");
 
         EstudianteEntity entityInDB = entityManager.find(EstudianteEntity.class, entity.getId());
@@ -73,7 +73,7 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testCreateEstudianteByObject() throws EntityNotFoundException {
+    void testCreateEstudianteByObject() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         if (entity.getId() == null) {
             entity.setId(factory.manufacturePojo(Long.class));
@@ -88,7 +88,7 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testGetProfesor() throws EntityNotFoundException {
+    void testGetProfesor() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         EstudianteEntity result = estudianteService.getEstudiante(entity.getId());
@@ -98,7 +98,7 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testGetEstudiantes() {
+    void testGetEstudiantes() {
         List<EstudianteEntity> list = (List<EstudianteEntity>) estudianteService.getEstudiantes();
 
         List<EstudianteEntity> listInDB = entityManager.getEntityManager().createQuery("select s from EstudianteEntity s", EstudianteEntity.class).getResultList();
@@ -109,7 +109,7 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testUpdateEstudianteById() throws EntityNotFoundException {
+    void testUpdateEstudianteById() throws EntityNotFoundException {
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         EstudianteEntity result = estudianteService.updateEstudianteById(entity.getId(), entity);
@@ -119,7 +119,7 @@ public class EstudianteServiceTest {
     }
 
     @Test
-    public void testDeleteEstudiante() throws EntityNotFoundException{
+    void testDeleteEstudiante() throws EntityNotFoundException{
         EstudianteEntity entity = factory.manufacturePojo(EstudianteEntity.class);
         entityManager.persist(entity);
         estudianteService.deleteEstudiante(entity.getId());

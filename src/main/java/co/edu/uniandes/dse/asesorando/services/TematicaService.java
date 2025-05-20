@@ -51,6 +51,8 @@ public class TematicaService {
     @Autowired
     private TematicaRepository tematicaRepository;
 
+    private String exceptionPartString = "La tematica no existe";
+
     /**
      * Crea una tematica por medio de un area y un tema
      *
@@ -121,7 +123,7 @@ public class TematicaService {
         Optional<TematicaEntity> tematica = tematicaRepository.findById(tematicaId);
 
         if (tematica.isEmpty()) {
-            throw new EntityNotFoundException("La tematica no existe");
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         return tematica.get();
@@ -137,7 +139,7 @@ public class TematicaService {
     @Transactional
     public TematicaEntity updateTematica(@NotNull Long tematicaId, @NotNull TematicaEntity tematica) throws EntityNotFoundException {
         log.info("Actualizando la tematica con id: {}", tematicaId);
-        TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId).orElseThrow(() -> new EntityNotFoundException("La tematica no existe"));
+        TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         tematicaExistente.setArea(tematica.getArea());
         tematicaExistente.setTema(tematica.getTema());
@@ -157,7 +159,7 @@ public class TematicaService {
     public void deleteTematica(@NotNull Long tematicaId) throws EntityNotFoundException {
         log.info("Eliminando la tematica con id: {}", tematicaId);
         TematicaEntity tematicaExistente = tematicaRepository.findById(tematicaId)
-                .orElseThrow(() -> new EntityNotFoundException("La tematica no existe"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         log.info("La tematica con id {} ha sido eliminada", tematicaId);
         tematicaRepository.delete(tematicaExistente);

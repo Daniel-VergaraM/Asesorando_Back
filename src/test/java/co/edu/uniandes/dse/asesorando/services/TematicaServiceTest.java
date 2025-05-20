@@ -51,7 +51,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(TematicaService.class)
-public class TematicaServiceTest {
+class TematicaServiceTest {
 
     @Autowired
     private TematicaService tematicaService;
@@ -76,13 +76,13 @@ public class TematicaServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void createTematicaTest() throws EntityNotFoundException {
+    void createTematicaTest() throws EntityNotFoundException {
         TematicaEntity newEntity = factory.manufacturePojo(TematicaEntity.class);
         TematicaEntity result = tematicaService.createTematica(newEntity);
         assertNotNull(result);
@@ -107,7 +107,7 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void getTematicasTest() {
+    void getTematicasTest() {
         List<TematicaEntity> list = tematicaService.getTematicas();
         assertNotNull(list);
 
@@ -123,7 +123,7 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void getTematicaTest() throws EntityNotFoundException {
+    void getTematicaTest() throws EntityNotFoundException {
         TematicaEntity entity = data.get(0);
         TematicaEntity resultEntity = tematicaService.getTematica(entity.getId());
         assertNotNull(resultEntity);
@@ -135,7 +135,7 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void updateTematicaTest() throws EntityNotFoundException{
+    void updateTematicaTest() throws EntityNotFoundException{
         TematicaEntity entity = data.get(0);
         TematicaEntity pojoEntity = factory.manufacturePojo(TematicaEntity.class);
 
@@ -154,7 +154,7 @@ public class TematicaServiceTest {
     }
 
     @Test
-    public void deleteTematicaTest() throws EntityNotFoundException {
+    void deleteTematicaTest() throws EntityNotFoundException {
         TematicaEntity entity = data.get(0);
         tematicaService.deleteTematica(entity.getId());
         TematicaEntity deleted = entityManager.find(TematicaEntity.class, entity.getId());
