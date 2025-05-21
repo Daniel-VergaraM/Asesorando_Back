@@ -33,27 +33,47 @@ VALUES
 (190002, 2.4435, -76.6048, 15, 'ProfesorEntity', 'profpass5', 'silvia.morales@example.com', 'https://meet.google.com/silvia', 'Docente universitaria e investigadora en biotecnología vegetal', 'Doctorado en Biología Molecular', 'https://randomuser.me/api/portraits/women/35.jpg', 'Silvia Morales', '68000', '3157788990', 'PROFESOR', 'https://youtube.com/silvia/biotecnologia');
 
 
---Crear Asesorias
--- Asesoría 1: Maria Gomez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 101, 1, 1001, 1, 'Física', 60, 'Mecánica cuántica', 'Virtual');
--- Asesoría 2: Juan Perez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 102, 2, 1002, 2, 'Matemáticas', 90, 'Cálculo diferencial', 'Presencial');
--- Asesoría 3: Laura Martinez toma una asesoría de Psicología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 102, 3, 1003, 3, 'Psicología', 60, 'Psicología del desarrollo', 'Virtual');
--- Asesoría 4: Carlos Lopez toma una asesoría de Comunicación Social con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 101, 4, 1004, 4, 'Comunicación Social', 75, 'Teoría de la comunicación', 'Presencial');
--- Asesoría 5: Paula Sanchez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 102, 5, 1005, 5, 'Matemáticas', 90, 'Álgebra lineal', 'Virtual');
--- Asesoría 6: Luis Fernandez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 6, 101, 6, 1006, 6, 'Física', 60, 'Electromagnetismo', 'Presencial');
--- Asesoría 7: Ana Garcia toma una asesoría de Biología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 7, 102, 7, 1007, 7, 'Biología', 90, 'Biología celular', 'Virtual');
--- Asesoría 8: David Moreno toma una asesoría de Química con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 8, 103, 8, 1008, 8, 'Química', 60, 'Química orgánica', 'Presencial');
--- Asesoría 9: Andrea Castillo toma una asesoría de Literatura con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 9, 102, 9, 1009, 9, 'Literatura', 75, 'Literatura contemporánea', 'Virtual');
--- Asesoría 10: Julian Mendez toma una asesoría de Ingeniería de Software con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 10, 103, 10, 1010, 10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
+-- 1) Insertar ASESORÍAS sin reserva (RESERVA_ID = NULL)
+INSERT INTO ASESORIA_ENTITY
+  (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO)
+VALUES
+  (FALSE,  1, 101, 101, NULL, 1, 'Física',                 60, 'Mecánica cuántica',           'Virtual'),
+  (FALSE,  2, 102, 102, NULL, 2, 'Matemáticas',            90, 'Cálculo diferencial',         'Presencial'),
+  (FALSE,  3, 103, 102, NULL, 3, 'Psicología',             60, 'Psicología del desarrollo',   'Virtual'),
+  (FALSE,  4, 104, 101, NULL, 4, 'Comunicación Social',    75, 'Teoría de la comunicación',   'Presencial'),
+  (FALSE,  5, 105, 102, NULL, 5, 'Matemáticas',            90, 'Álgebra lineal',              'Virtual'),
+  (FALSE,  6, 106, 101, NULL, 6, 'Física',                 60, 'Electromagnetismo',           'Presencial'),
+  (FALSE,  7, 107, 102, NULL, 7, 'Biología',               90, 'Biología celular',            'Virtual'),
+  (FALSE,  8, 108, 103, NULL, 8, 'Química',                60, 'Química orgánica',            'Presencial'),
+  (FALSE,  9, 109, 102, NULL, 9, 'Literatura',             75, 'Literatura contemporánea',     'Virtual'),
+  (FALSE, 10, 110, 103, NULL,10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
+
+-- 2) Insertar RESERVAS apuntando a las asesorías
+INSERT INTO RESERVA_ENTITY
+  (CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)
+VALUES
+  (FALSE, '2025-05-07', 101,  1, 1,  1, 1001, 'Completada'),
+  (FALSE, '2025-05-08', 102,  2, 2,  2, 1002, 'Completada'),
+  (FALSE, '2025-05-09', 103,  3, 3,  3, 1003, 'Completada'),
+  (FALSE, '2025-05-10', 104,  4, 4,  4, 1004, 'Completada'),
+  (FALSE, '2025-05-11', 105,  5, 5,  5, 1005, 'Completada'),
+  (FALSE, '2025-05-12', 106,  6, 6,  6, 1006, 'Completada'),
+  (FALSE, '2025-05-13', 107,  7, 7,  7, 1007, 'Completada'),
+  (FALSE, '2025-05-14', 108,  8, 8,  8, 1008, 'Completada'),
+  (FALSE, '2025-05-15', 109,  9, 9,  9, 1009, 'Completada'),
+  (FALSE, '2025-05-16', 110, 10,10, 10,1010, 'Completada');
+
+-- 3) Asociar cada ASESORÍA a su RESERVA
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1001 WHERE ID = 101;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1002 WHERE ID = 102;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1003 WHERE ID = 103;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1004 WHERE ID = 104;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1005 WHERE ID = 105;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1006 WHERE ID = 106;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1007 WHERE ID = 107;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1008 WHERE ID = 108;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1009 WHERE ID = 109;
+UPDATE ASESORIA_ENTITY SET RESERVA_ID = 1010 WHERE ID = 110;
 
 
 --Crear Tematicas
