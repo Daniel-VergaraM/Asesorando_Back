@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.entities.BaseEntity;
 import co.edu.uniandes.dse.asesorando.entities.CalendarioEntity;
 import co.edu.uniandes.dse.asesorando.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.asesorando.exceptions.IllegalOperationException;
@@ -69,30 +70,44 @@ class CalendarioServiceTest {
             entityManager.persist(entity);
             calendarioList.add(entity);
         }
-    }
-
-    /**
+    }    /**
      * Prueba para crear un Calendario.
      */
     @Test
     void testCreateCalendario() throws IllegalOperationException {
         CalendarioEntity entity = factory.manufacturePojo(CalendarioEntity.class);
-        if (entity.getId() == null) {
-            entity.setId(factory.manufacturePojo(Long.class));
+        try {
+            java.lang.reflect.Field idField = BaseEntity.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(entity, null);
+        } catch (Exception e) {
         }
+        
         CalendarioEntity result = calendarioService.createCalendario(entity);
+        
         assertNotNull(result);
 
-        CalendarioEntity entityInDatabase = entityManager.find(CalendarioEntity.class, result.getId());
+        Long resultId = null;
+        try {
+            java.lang.reflect.Field idField = BaseEntity.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            resultId = (Long) idField.get(result);
+        } catch (Exception e) {
+        }
+        assertNotNull(resultId);
+
+        CalendarioEntity entityInDatabase = entityManager.find(CalendarioEntity.class, resultId);
         assertNotNull(entityInDatabase);
-    }    /**
+    }
+
+    /**
      * Prueba para crear un Calendario con fechaInicio repetida.
      */
     @Test
     void testCreateCalendarioWithSameDate() {
         CalendarioEntity newEntity1 = factory.manufacturePojo(CalendarioEntity.class);
         newEntity1.setFechaInicio(calendarioList.get(0).getFechaInicio());
-        
+
         assertThrows(IllegalOperationException.class, () -> {
             calendarioService.createCalendario(newEntity1);
         });
