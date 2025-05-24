@@ -26,10 +26,11 @@ package co.edu.uniandes.dse.asesorando.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,7 +57,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(ProfesorService.class)
-public class ProfesorServiceTest {
+class ProfesorServiceTest {
 
     @Autowired
     private ProfesorService profesorService;
@@ -86,13 +87,13 @@ public class ProfesorServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void testCreateProfesorObject() throws EntityNotFoundException {
+    void testCreateProfesorObject() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         if (entity.getId() == null) {
             entity.setId(factory.manufacturePojo(Long.class));
@@ -111,7 +112,7 @@ public class ProfesorServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "RANDOM"})
-    public void testCreateProfesorTipo(String tipo) throws EntityNotFoundException {
+    void testCreateProfesorTipo(String tipo) throws EntityNotFoundException {
         ProfesorEntity p1 = factory.manufacturePojo(ProfesorEntity.class);
         ProfesorVirtualEntity p2 = factory.manufacturePojo(ProfesorVirtualEntity.class);
         ProfesorPresencialEntity p3 = factory.manufacturePojo(ProfesorPresencialEntity.class);
@@ -149,7 +150,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testCreateProfesorParams() throws EntityNotFoundException {
+    void testCreateProfesorParams() throws EntityNotFoundException {
         ProfesorEntity entity = profesorService.createProfesor("nombre", "correo", "contrasena", BASE_PROFESOR);
 
         ProfesorEntity entityInDB = entityManager.find(ProfesorEntity.class, entity.getId());
@@ -162,7 +163,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesores() throws EntityNotFoundException {
+    void testGetProfesores() throws EntityNotFoundException {
         List<ProfesorEntity> list = (List<ProfesorEntity>) profesorService.getProfesores();
         assertNotNull(list);
 
@@ -173,12 +174,12 @@ public class ProfesorServiceTest {
                     found = true;
                 }
             }
-            assertFalse(found);
+            assertTrue(found);
         }
     }
 
     @Test
-    public void testGetProfesor() throws EntityNotFoundException {
+    void testGetProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         ProfesorEntity result = profesorService.getProfesor(entity.getId());
@@ -190,7 +191,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testUpdateProfesor() throws EntityNotFoundException {
+    void testUpdateProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         ProfesorEntity result = profesorService.updateProfesor(entity.getId(), entity);
@@ -202,7 +203,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testDeleteProfesor() throws EntityNotFoundException {
+    void testDeleteProfesor() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
         profesorService.deleteProfesor(entity.getId());
@@ -212,7 +213,7 @@ public class ProfesorServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {BASE_PROFESOR, BASE_PROFESOR_VIRTUAL, BASE_PROFESOR_PRESENCIAL, "RANDOM"})
-    public void testGetProfesoresPorTipo(String tipo) throws EntityNotFoundException {
+    void testGetProfesoresPorTipo(String tipo) throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
 
@@ -229,7 +230,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesorPorCorreo() throws EntityNotFoundException {
+    void testGetProfesorPorCorreo() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
 
@@ -241,7 +242,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesorPorNombre() throws EntityNotFoundException {
+    void testGetProfesorPorNombre() throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         entityManager.persist(entity);
 
@@ -254,7 +255,7 @@ public class ProfesorServiceTest {
     }
 
     @Test
-    public void testGetProfesorPorTematica() {
+    void testGetProfesorPorTematica() {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
         entity.getTematicas().add(tematica);
@@ -269,7 +270,7 @@ public class ProfesorServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL", "RANDOM"})
-    public void testGetProfesorPorTipoTematica(String tipo) throws EntityNotFoundException {
+    void testGetProfesorPorTipoTematica(String tipo) throws EntityNotFoundException {
         ProfesorEntity entity = factory.manufacturePojo(ProfesorEntity.class);
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
         entity.getTematicas().add(tematica);

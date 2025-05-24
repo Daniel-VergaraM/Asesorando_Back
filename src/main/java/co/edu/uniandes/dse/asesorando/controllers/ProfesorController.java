@@ -74,7 +74,7 @@ public class ProfesorController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProfesorDTO> findAll() throws EntityNotFoundException {
-        List<ProfesorEntity> profesores = (List<ProfesorEntity>) profesorService.getProfesores();
+        List<ProfesorEntity> profesores = profesorService.getProfesores();
         return modelMapper.map(profesores, new TypeToken<List<ProfesorDTO>>() {
         }.getType());
     }
@@ -168,5 +168,6 @@ public class ProfesorController {
     public void deleteProfesor(@PathVariable Long id) throws EntityNotFoundException {
         profesorService.deleteProfesor(id);
     }
+    
 
 }

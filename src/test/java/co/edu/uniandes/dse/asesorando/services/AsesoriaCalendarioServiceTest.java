@@ -51,7 +51,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import({AsesoriaCalendarioService.class})
-public class AsesoriaCalendarioServiceTest {
+class AsesoriaCalendarioServiceTest {
     
     @Autowired
     private AsesoriaCalendarioService asesoriaCalendarioService;
@@ -150,20 +150,28 @@ public class AsesoriaCalendarioServiceTest {
      *
      * @throws EntityNotFoundException   Si el calendario o la asesoría no existen en la base de datos.
      * @throws IllegalOperationException Si la asesoría no pertenece al calendario especificado.
-    **/     
-
-    @Test
-    void testActualizarAsesoriaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
+    **/         @Test    void testActualizarAsesoriaEnCalendario() throws EntityNotFoundException, IllegalOperationException {
+        // Obtener una asesoría existente que ya esté asociada al calendario
         AsesoriaEntity asesoria = asesoriaList.get(0);
+        
+        // Crear datos nuevos para actualizar
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        nuevaAsesoria.setCalendario(null);  // Aseguramos que no tenga calendario para que no cause conflictos
         
-        AsesoriaEntity resultado = asesoriaCalendarioService.updateAsesoriaInCalendario(calendario.getId(), asesoria.getId());
+        // Verificamos que la asesoria esté correctamente asociada al calendario
+        assertEquals(calendario.getId(), asesoria.getCalendario().getId());
         
+        // Actualizamos la asesoría en el calendario con los nuevos datos
+        AsesoriaEntity resultado = asesoriaCalendarioService.updateAsesoriaInCalendario(calendario.getId(), asesoria.getId(), nuevaAsesoria);
+          // Verificaciones
         assertNotNull(resultado);
         assertEquals(nuevaAsesoria.getTematica(), resultado.getTematica());
         assertEquals(nuevaAsesoria.getDuracion(), resultado.getDuracion());
         assertEquals(nuevaAsesoria.getTipo(), resultado.getTipo());
         assertEquals(nuevaAsesoria.getArea(), resultado.getArea());
+        assertEquals(asesoria.getDuracion(), resultado.getDuracion());
+        assertEquals(asesoria.getTipo(), resultado.getTipo());
+        assertEquals(asesoria.getArea(), resultado.getArea());
     }
     
     /**
@@ -207,7 +215,6 @@ public class AsesoriaCalendarioServiceTest {
      */
     @Test
     void testActualizarAsesoriaEnCalendarioInexistente() {
-        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
         assertThrows(EntityNotFoundException.class, () -> {asesoriaCalendarioService.updateAsesoriaInCalendario(9999L, asesoriaList.get(0).getId());});
     }
 

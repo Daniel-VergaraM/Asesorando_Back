@@ -23,20 +23,26 @@ public class ProfesorCalendarioService {
     @Autowired
     private CalendarioRepository calendarioRepository;
 
+    private String exceptionPartString = "No se encontró el profesor con id: ";
+
+    private String exceptionPartString2 = "No se encontró el calendario con id: ";
+
+    private String exceptionPartString3 = "El calendario no está asociado a este profesor.";
+
     @Transactional
     public CalendarioEntity addCalendario(Long profesorId, Long calendarioId) throws EntityNotFoundException {
         log.info("Inicia proceso de asociar un calendario al profesor con id = {}", profesorId);
 
         if (!profesorRepository.existsById(profesorId)) {
-            throw new EntityNotFoundException("No se encontró el profesor con id: " + profesorId);
+            throw new EntityNotFoundException(exceptionPartString + profesorId);
         }
 
         if (!calendarioRepository.existsById(calendarioId)) {
-            throw new EntityNotFoundException("No se encontró el calendario con id: " + calendarioId);
+            throw new EntityNotFoundException(exceptionPartString2 + calendarioId);
         }
 
         ProfesorEntity profesor = profesorRepository.findById(profesorId).orElseThrow(()
-                -> new EntityNotFoundException("No se encontró el profesor con id: " + profesorId));
+                -> new EntityNotFoundException(exceptionPartString + profesorId));
 
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId).get();
 
@@ -54,7 +60,7 @@ public class ProfesorCalendarioService {
         log.info("Inicia proceso de consultar todos los calendarios del profesor con id = {}", profesorId);
 
         if (!profesorRepository.existsById(profesorId)) {
-            throw new EntityNotFoundException("No se encontró el profesor con id: " + profesorId);
+            throw new EntityNotFoundException(exceptionPartString + profesorId);
         }
 
         ProfesorEntity profesor = profesorRepository.findById(profesorId).get();
@@ -69,22 +75,22 @@ public class ProfesorCalendarioService {
         log.info("Inicia proceso de consultar el calendario con id = {} del profesor con id = {}", calendarioId, profesorId);
 
         if (!profesorRepository.existsById(profesorId)) {
-            throw new EntityNotFoundException("No se encontró el profesor con id: " + profesorId);
+            throw new EntityNotFoundException(exceptionPartString + profesorId);
         }
 
         if (!calendarioRepository.existsById(calendarioId)) {
-            throw new EntityNotFoundException("No se encontró el calendario con id: " + calendarioId);
+            throw new EntityNotFoundException(exceptionPartString2 + calendarioId);
         }
 
         ProfesorEntity profesor = profesorRepository.findById(profesorId).get();
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId).get();
 
         if (!calendario.getProfesor().equals(profesor)) {
-            throw new EntityNotFoundException("El calendario no está asociado a este profesor.");
+            throw new EntityNotFoundException(exceptionPartString3);
         }
 
         if (!profesor.getCalendario().contains(calendario)) {
-            throw new EntityNotFoundException("El calendario no está asociado a este profesor.");
+            throw new EntityNotFoundException(exceptionPartString3);
         }
 
         log.info("Termina proceso de consultar el calendario con id = {} del profesor con id = {}", calendarioId, profesorId);
@@ -96,18 +102,18 @@ public class ProfesorCalendarioService {
         log.info("Inicia proceso de eliminar un calendario del profesor con id = {}", profesorId);
 
         if (!profesorRepository.existsById(profesorId)) {
-            throw new EntityNotFoundException("No se encontró el profesor con id: " + profesorId);
+            throw new EntityNotFoundException(exceptionPartString + profesorId);
         }
 
         if (!calendarioRepository.existsById(calendarioId)) {
-            throw new EntityNotFoundException("No se encontró el calendario con id: " + calendarioId);
+            throw new EntityNotFoundException(exceptionPartString2 + calendarioId);
         }
 
         ProfesorEntity profesor = profesorRepository.findById(profesorId).get();
         CalendarioEntity calendario = calendarioRepository.findById(calendarioId).get();
 
         if (!calendario.getProfesor().equals(profesor)) {
-            throw new EntityNotFoundException("El calendario no está asociado a este profesor.");
+            throw new EntityNotFoundException(exceptionPartString3);
         }
 
         calendario.setProfesor(null);

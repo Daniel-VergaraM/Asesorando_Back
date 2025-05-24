@@ -53,7 +53,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(TematicaProfesorService.class)
-public class TematicaProfesorServiceTest {
+class TematicaProfesorServiceTest {
 
     @Autowired
     private TematicaProfesorService service;
@@ -88,13 +88,13 @@ public class TematicaProfesorServiceTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         clearData();
         insertData();
     }
 
     @Test
-    public void addProfesorTest() throws EntityNotFoundException {
+    void addProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -115,7 +115,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void getTematicasTest() throws EntityNotFoundException {
+    void getTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -129,7 +129,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void removeProfesorTest() throws EntityNotFoundException {
+    void removeProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -151,7 +151,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void profesorPoseeTematicaTest() throws EntityNotFoundException {
+    void profesorPoseeTematicaTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -173,7 +173,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void tematicaPoseeProfesorTest() throws EntityNotFoundException {
+    void tematicaPoseeProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -195,7 +195,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void profesorPoseeTematicasTest() throws EntityNotFoundException {
+    void profesorPoseeTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -210,7 +210,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void tematicaPoseeProfesoresTest() throws EntityNotFoundException {
+    void tematicaPoseeProfesoresTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -225,7 +225,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void eliminarProfesorDeTematicasTest() throws EntityNotFoundException {
+    void eliminarProfesorDeTematicasTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -242,7 +242,7 @@ public class TematicaProfesorServiceTest {
 
 
     @Test
-    public void getProfesoresDeTematicaTest() throws EntityNotFoundException {
+    void getProfesoresDeTematicaTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         ProfesorEntity profesor = profesores.get(0);
         service.agregarProfesorATematica(profesor.getId(), tematica.getId());
@@ -257,7 +257,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void actualizarTematicaProfesorTest() throws EntityNotFoundException {
+    void actualizarTematicaProfesorTest() throws EntityNotFoundException {
         TematicaEntity tematica = tematicas.get(0);
         List<ProfesorEntity> nuevosProfesores = new ArrayList<>();
         nuevosProfesores.add(profesores.get(1));
@@ -274,7 +274,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void eliminarProfesoresDeTematicaTest() throws EntityNotFoundException {
+    void eliminarProfesoresDeTematicaTest() throws EntityNotFoundException {
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
 
         for (int i = 0; i < 5; i++) {
@@ -301,7 +301,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void eliminarTematicasDeProfesorTest() throws EntityNotFoundException {
+    void eliminarTematicasDeProfesorTest() throws EntityNotFoundException {
         ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
 
         for (int i = 0; i < 5; i++) {
@@ -325,7 +325,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void getProfesorDeTematicaTest() throws EntityNotFoundException {
+    void getProfesorDeTematicaTest() throws EntityNotFoundException {
         ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
 
@@ -358,7 +358,7 @@ public class TematicaProfesorServiceTest {
     }
 
     @Test
-    public void getTematicaDeProfesorTest() throws EntityNotFoundException {
+    void getTematicaDeProfesorTest() throws EntityNotFoundException {
         ProfesorEntity profesor = factory.manufacturePojo(ProfesorEntity.class);
         TematicaEntity tematica = factory.manufacturePojo(TematicaEntity.class);
 
