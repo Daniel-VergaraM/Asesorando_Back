@@ -56,6 +56,8 @@ public class UsuarioService {
 
     private static final List<String> tipos = List.of("ESTUDIANTE", "PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL");
 
+    private String exceptionPartString = "El usuario no existe.";
+
     /**
      * Crea un usuario por medio de un objeto usuario
      */
@@ -132,7 +134,7 @@ public class UsuarioService {
         log.info("Actualizando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         usuarioExistente.setContrasena(usuario.getContrasena());
         usuarioExistente.setCorreo(usuario.getCorreo());
@@ -179,7 +181,7 @@ public class UsuarioService {
         log.info("Eliminando un usuario");
 
         UsuarioEntity usuarioExistente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El usuario no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString));
 
         log.info("Usuario eliminado");
         usuarioRepository.deleteById(usuarioExistente.getId());
@@ -198,7 +200,7 @@ public class UsuarioService {
         Optional<UsuarioEntity> usuarioExistente = usuarioRepository.findByCorreo(correo);
 
         if (usuarioExistente.isEmpty()) {
-            throw new EntityNotFoundException("El usuario no existe.");
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         log.info("Usuario obtenido");

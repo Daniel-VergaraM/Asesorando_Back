@@ -25,7 +25,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @DataJpaTest
 @Transactional
 @Import(ReservaComentarioService.class)
-public class ReservaComentarioServiceTest {
+class ReservaComentarioServiceTest {
 
     @Autowired
     private ReservaComentarioService reservaComentarioService;

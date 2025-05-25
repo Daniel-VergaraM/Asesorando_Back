@@ -52,6 +52,14 @@ public class UsuarioAsesoriaService {
     @Autowired
     private AsesoriaRepository asesoriaRepository;
 
+    private String exceptionPartString = "No se encontró el usuario con id = ";
+
+    private String exceptionPartString2 = "No se encontró la asesoría con id = ";
+
+    private String exceptionPartString3 = "La asesoría con id = ";
+
+
+
     /**
      * Obtiene una asesoria completada de un usuario
      *
@@ -62,10 +70,10 @@ public class UsuarioAsesoriaService {
     @Transactional
     public AsesoriaEntity getAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull Long asesoriaId) throws EntityNotFoundException {
         log.info("Inicia proceso de obtener una asesoría del usuario con id = {0}", usuarioId);
-        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
-        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId));
+        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString + usuarioId));
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + asesoriaId));
         if (!usuario.getAsesoriasCompletadas().contains(asesoria)) {
-            throw new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId + " en la lista de asesorías completadas del usuario con id = " + usuarioId);
+            throw new EntityNotFoundException(exceptionPartString2 + asesoriaId + " en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }
         log.info("Termina proceso de obtener una asesoría del usuario con id = {0}", usuarioId);
         return asesoria;
@@ -81,14 +89,14 @@ public class UsuarioAsesoriaService {
     @Transactional
     public UsuarioEntity addAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull Long asesoriaId) throws EntityNotFoundException, IllegalArgumentException {
         log.info("Inicia proceso de agregar una asesoría al usuario con id = {0}", usuarioId);
-        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
-        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId));
+        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString + usuarioId));
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + asesoriaId));
         if (usuario.getAsesoriasCompletadas().contains(asesoria)) {
-            throw new IllegalArgumentException("La asesoría con id = " + asesoria.getId() + " ya está en la lista de asesorías completadas del usuario con id = " + usuarioId);
+            throw new IllegalArgumentException(exceptionPartString3 + asesoria.getId() + " ya está en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }
 
-        if (asesoria.getCompletada() == false) {
-            throw new IllegalArgumentException("La asesoría con id = " + asesoria.getId() + " no está completada");
+        if (!asesoria.getCompletada()) {
+            throw new IllegalArgumentException(exceptionPartString3 + asesoria.getId() + " no está completada");
         }
 
         usuario.getAsesoriasCompletadas().add(asesoria);
@@ -107,10 +115,10 @@ public class UsuarioAsesoriaService {
     @Transactional
     public UsuarioEntity removeAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull Long asesoriaId) throws EntityNotFoundException, IllegalArgumentException {
         log.info("Inicia proceso de eliminar una asesoría al usuario con id = {0}", usuarioId);
-        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
-        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId));
+        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString + usuarioId));
+        AsesoriaEntity asesoria = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + asesoriaId));
         if (!usuario.getAsesoriasCompletadas().contains(asesoria)) {
-            throw new IllegalArgumentException("La asesoría con id = " + asesoriaId + " no está en la lista de asesorías completadas del usuario con id = " + usuarioId);
+            throw new IllegalArgumentException(exceptionPartString3 + asesoriaId + " no está en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }
         usuario.getAsesoriasCompletadas().remove(asesoria);
         usuarioRepository.save(usuario);
@@ -128,7 +136,7 @@ public class UsuarioAsesoriaService {
     @Transactional
     public Iterable<AsesoriaEntity> getAsesoriasCompletadas(@Valid @NotNull Long usuarioId) throws EntityNotFoundException {
         log.info("Inicia proceso de obtener las asesorías completadas del usuario con id = {0}", usuarioId);
-        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
+        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString + usuarioId));
         log.info("Termina proceso de obtener las asesorías completadas del usuario con id = {0}", usuarioId);
         return usuario.getAsesoriasCompletadas();
     }
@@ -144,10 +152,10 @@ public class UsuarioAsesoriaService {
     @Transactional
     public AsesoriaEntity updateAsesoria(@Valid @NotNull Long usuarioId, @Valid @NotNull Long asesoriaId, @Valid @NotNull AsesoriaEntity asesoria) throws EntityNotFoundException, IllegalArgumentException {
         log.info("Inicia proceso de actualizar una asesoría al usuario con id = {0}", usuarioId);
-        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException("No se encontró el usuario con id = " + usuarioId));
-        AsesoriaEntity asesoriaActualizada = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException("No se encontró la asesoría con id = " + asesoriaId));
+        UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString + usuarioId));
+        AsesoriaEntity asesoriaActualizada = asesoriaRepository.findById(asesoriaId).orElseThrow(() -> new EntityNotFoundException(exceptionPartString2 + asesoriaId));
         if (!usuario.getAsesoriasCompletadas().contains(asesoriaActualizada)) {
-            throw new IllegalArgumentException("La asesoría con id = " + asesoriaId + " no está en la lista de asesorías completadas del usuario con id = " + usuarioId);
+            throw new IllegalArgumentException(exceptionPartString3 + asesoriaId + " no está en la lista de asesorías completadas del usuario con id = " + usuarioId);
         }
         asesoriaActualizada.setCompletada(asesoria.getCompletada());
         asesoriaRepository.save(asesoriaActualizada);

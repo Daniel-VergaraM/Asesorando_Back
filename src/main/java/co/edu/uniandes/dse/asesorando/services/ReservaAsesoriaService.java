@@ -24,6 +24,12 @@ public class ReservaAsesoriaService {
     @Autowired
     private AsesoriaRepository asesoriaRepository;
 
+    private String exceptionPartString = "Reserva con ID ";
+
+    private String exceptionPartString2 = " no encontrada";
+
+    private String exceptionPartString3 = "No hay asesoría asociada a la reserva con ID ";
+
     /**
      * Asocia una asesoría a una reserva (crear o actualizar).
      */
@@ -33,7 +39,7 @@ public class ReservaAsesoriaService {
 
         // Buscar la reserva en la base de datos
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("Reserva con ID " + reservaId + " no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + reservaId + exceptionPartString2));
 
         // Verificar si la reserva ya tiene una asesoría asociada
         if (reserva.getAsesoria() != null) {
@@ -63,10 +69,10 @@ public class ReservaAsesoriaService {
         log.info("Obteniendo asesoría de la reserva con ID: {}", reservaId);
 
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("Reserva con ID " + reservaId + " no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + reservaId + " no encontrada"));
 
         if (reserva.getAsesoria() == null) {
-            throw new EntityNotFoundException("No hay asesoría asociada a la reserva con ID " + reservaId);
+            throw new EntityNotFoundException(exceptionPartString3 + reservaId);
         }
 
         log.info("Asesoría obtenida exitosamente para la reserva con ID: {}", reservaId);
@@ -81,11 +87,11 @@ public class ReservaAsesoriaService {
         log.info("Actualizando asesoría de la reserva con ID: {}", reservaId);
 
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("Reserva con ID " + reservaId + " no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + reservaId + " no encontrada"));
 
         AsesoriaEntity asesoriaExistente = reserva.getAsesoria();
         if (asesoriaExistente == null) {
-            throw new EntityNotFoundException("No hay asesoría asociada a la reserva con ID " + reservaId);
+            throw new EntityNotFoundException(exceptionPartString3 + reservaId);
         }
 
         asesoriaActualizada.setId(asesoriaExistente.getId());
@@ -103,11 +109,11 @@ public class ReservaAsesoriaService {
         log.info("Eliminando asesoría de la reserva con ID: {}", reservaId);
 
         ReservaEntity reserva = reservaRepository.findById(reservaId)
-                .orElseThrow(() -> new EntityNotFoundException("Reserva con ID " + reservaId + " no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString + reservaId + " no encontrada"));
 
         AsesoriaEntity asesoria = reserva.getAsesoria();
         if (asesoria == null) {
-            throw new EntityNotFoundException("No hay asesoría asociada a la reserva con ID " + reservaId);
+            throw new EntityNotFoundException(exceptionPartString3 + reservaId);
         }
 
         reserva.setAsesoria(null);

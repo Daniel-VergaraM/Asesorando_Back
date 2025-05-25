@@ -55,6 +55,14 @@ public class ProfesorService {
 
     private static final List<String> tipos = List.of("PROFESOR", "PROFESORVIRTUAL", "PROFESORPRESENCIAL");
 
+    private String exceptionPartString = "El profesor ya esta registrado.";
+
+    private String exceptionPartString2 = "El tipo de profesor no es valido.";
+
+    private String exceptionPartString3 = "El profesor no existe.";
+
+    private String exceptionPartString4 = "Profesores obtenidos: ";
+
     /**
      * Metodo para registrar un profesor por medio de sus atributos base
      *
@@ -64,7 +72,8 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity createProfesor(@Valid @NotNull String nombre, @Valid @NotNull String correo, @Valid @NotNull String contrasena, @Valid @NotNull String tipo) throws EntityNotFoundException {
+    public ProfesorEntity createProfesor(@Valid @NotNull String nombre, @Valid @NotNull String correo,
+            @Valid @NotNull String contrasena, @Valid @NotNull String tipo) throws EntityNotFoundException {
         ProfesorEntity profesor = new ProfesorEntity();
         profesor.setNombre(nombre);
         profesor.setCorreo(correo);
@@ -73,11 +82,11 @@ public class ProfesorService {
         Optional<ProfesorEntity> profesorExistente = profesorRepository.findByCorreo(correo);
 
         if (profesorExistente.isPresent()) {
-            throw new EntityNotFoundException("El profesor ya esta registrado.");
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         if (!tipos.contains(tipo)) {
-            throw new EntityNotFoundException("El tipo de profesor no es valido.");
+            throw new EntityNotFoundException(exceptionPartString2);
         }
 
         log.info("Profesor creado");
@@ -91,19 +100,20 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public ProfesorEntity createProfesor(@Valid @NotNull ProfesorEntity profesor, @Valid @NotNull String tipo) throws EntityNotFoundException {
+    public ProfesorEntity createProfesor(@Valid @NotNull ProfesorEntity profesor, @Valid @NotNull String tipo)
+            throws EntityNotFoundException {
         log.info("Registrando un profesor nuevo");
 
         Optional<ProfesorEntity> profesorExistente = profesorRepository.findById(profesor.getId());
 
         if (profesorExistente.isPresent()) {
-            log.error("El profesor ya esta registrado.");
-            throw new EntityNotFoundException("El profesor ya esta registrado.");
+            log.error(exceptionPartString);
+            throw new EntityNotFoundException(exceptionPartString);
         }
 
         if (!tipos.contains(tipo)) {
-            log.error("El tipo de profesor no es valido.");
-            throw new EntityNotFoundException("El tipo de profesor no es valido.");
+            log.error(exceptionPartString2);
+            throw new EntityNotFoundException(exceptionPartString2);
         }
 
         log.info("Profesor creado");
@@ -111,19 +121,19 @@ public class ProfesorService {
     }
 
     /**
-     * Metodo para actualizar un profesor por medio de su id y un objeto
-     * profesor
+     * Metodo para actualizar un profesor por medio de su id y un objeto profesor
      *
      * @param id
      * @param profesor
      * @return
      */
     @Transactional
-    public ProfesorEntity updateProfesor(@NotNull Long id, @Valid @NotNull ProfesorEntity profesor) throws EntityNotFoundException {
+    public ProfesorEntity updateProfesor(@NotNull Long id, @Valid @NotNull ProfesorEntity profesor)
+            throws EntityNotFoundException {
         log.info("Actualizando un profesor");
 
         ProfesorEntity profesorExistente = profesorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString3));
 
         profesorExistente.setNombre(profesor.getNombre());
         profesorExistente.setCorreo(profesor.getCorreo());
@@ -138,7 +148,7 @@ public class ProfesorService {
         profesorExistente.setPrecioHora(profesor.getPrecioHora());
         // Relaciones
         profesorExistente.setTematicas(profesor.getTematicas());
-        
+
         // Correctly handle collections with orphanRemoval=true
         // Instead of replacing the asesorias collection, we modify it in-place
         if (profesor.getAsesorias() != null) {
@@ -148,7 +158,7 @@ public class ProfesorService {
                 profesorExistente.getAsesorias().addAll(profesor.getAsesorias());
             }
         }
-        
+
         // Handle calendario collection in the same way
         if (profesor.getCalendario() != null) {
             profesorExistente.getCalendario().clear();
@@ -156,19 +166,15 @@ public class ProfesorService {
                 profesorExistente.getCalendario().addAll(profesor.getCalendario());
             }
         }
-
-        if (profesor instanceof ProfesorVirtualEntity && profesorExistente instanceof ProfesorVirtualEntity) {
-            ((ProfesorVirtualEntity) profesorExistente)
-                    .setEnlaceReunion(((ProfesorVirtualEntity) profesor).getEnlaceReunion());
+        if (profesor instanceof ProfesorVirtualEntity profesorVirtual
+                && profesorExistente instanceof ProfesorVirtualEntity profesorExistenteVirtual) {
+            profesorExistenteVirtual.setEnlaceReunion(profesorVirtual.getEnlaceReunion());
         }
-
-        if (profesor instanceof ProfesorPresencialEntity && profesorExistente instanceof ProfesorPresencialEntity) {
-            ((ProfesorPresencialEntity) profesorExistente)
-                    .setCodigoPostal(((ProfesorPresencialEntity) profesor).getCodigoPostal());
-            ((ProfesorPresencialEntity) profesorExistente)
-                    .setLatitud(((ProfesorPresencialEntity) profesor).getLatitud());
-            ((ProfesorPresencialEntity) profesorExistente)
-                    .setLongitud(((ProfesorPresencialEntity) profesor).getLongitud());
+        if (profesor instanceof ProfesorPresencialEntity profesorPresencial
+                && profesorExistente instanceof ProfesorPresencialEntity profesorExistentePresencial) {
+            profesorExistentePresencial.setCodigoPostal(profesorPresencial.getCodigoPostal());
+            profesorExistentePresencial.setLatitud(profesorPresencial.getLatitud());
+            profesorExistentePresencial.setLongitud(profesorPresencial.getLongitud());
         }
         log.info("Profesor actualizado");
         return profesorRepository.save(profesorExistente);
@@ -184,7 +190,7 @@ public class ProfesorService {
         log.info("Eliminando un profesor");
 
         ProfesorEntity profesorExistente = profesorRepository.findById(profesorId)
-                .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString3));
 
         log.info("Profesor eliminado");
         profesorRepository.deleteById(profesorExistente.getId());
@@ -203,7 +209,7 @@ public class ProfesorService {
         Optional<ProfesorEntity> profesorExistente = profesorRepository.findById(profesorId);
 
         if (profesorExistente.isEmpty()) {
-            throw new EntityNotFoundException("El profesor no existe.");
+            throw new EntityNotFoundException(exceptionPartString3);
         }
 
         log.info("Profesor obtenido");
@@ -219,7 +225,7 @@ public class ProfesorService {
     public List<ProfesorEntity> getProfesores() throws EntityNotFoundException {
         log.info("Obteniendo todos los profesores");
         List<ProfesorEntity> profesores = profesorRepository.findAll();
-        log.info("Profesores obtenidos: " + profesores.size());
+        log.info(exceptionPartString4 + profesores.size());
         return profesores;
     }
 
@@ -233,7 +239,7 @@ public class ProfesorService {
     public ProfesorEntity getProfesorPorCorreo(String correo) throws EntityNotFoundException {
         log.info("Obteniendo un profesor por correo");
         return profesorRepository.findByCorreo(correo)
-                .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString3));
     }
 
     /**
@@ -246,7 +252,7 @@ public class ProfesorService {
     public ProfesorEntity getProfesorPorNombre(String nombre) throws EntityNotFoundException {
         log.info("Obteniendo un profesor por nombre");
         return profesorRepository.findByNombre(nombre)
-                .orElseThrow(() -> new EntityNotFoundException("El profesor no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(exceptionPartString3));
     }
 
     /**
@@ -260,10 +266,7 @@ public class ProfesorService {
         log.info("Obteniendo un profesor por tematica");
         List<ProfesorEntity> profesores = new ArrayList<>();
         profesores.addAll(profesorRepository.findAll());
-        profesores.removeIf(
-                profesor -> profesor.getTematicas()
-                        .stream().noneMatch(t -> t.getTema()
-                        .equals(tematica)));
+        profesores.removeIf(profesor -> profesor.getTematicas().stream().noneMatch(t -> t.getTema().equals(tematica)));
         log.info("Profesores obtenidos");
         return profesores;
     }
@@ -277,13 +280,13 @@ public class ProfesorService {
     @Transactional
     public List<ProfesorEntity> getProfesoresPorTipo(String tipo) throws EntityNotFoundException {
         log.info("Obteniendo profesores por tipo: " + tipo);
-        
+
         if (!tipos.contains(tipo)) {
-            throw new EntityNotFoundException("El tipo de profesor no es valido.");
+            throw new EntityNotFoundException(exceptionPartString2);
         }
-        
+
         List<ProfesorEntity> profesores = profesorRepository.findByTipo(tipo);
-        log.info("Profesores obtenidos: " + profesores.size());
+        log.info(exceptionPartString4 + profesores.size());
         return profesores;
     }
 
@@ -295,23 +298,23 @@ public class ProfesorService {
      * @return
      */
     @Transactional
-    public Iterable<ProfesorEntity> getProfesorPorTipoTematica(String tipo, String tematica) throws EntityNotFoundException {
+    public Iterable<ProfesorEntity> getProfesorPorTipoTematica(String tipo, String tematica)
+            throws EntityNotFoundException {
         log.info("Obteniendo profesores por tipo y tematica: " + tipo + ", " + tematica);
-        
+
         if (!tipos.contains(tipo)) {
-            throw new EntityNotFoundException("El tipo de profesor no es valido.");
+            throw new EntityNotFoundException(exceptionPartString2);
         }
-        
+
         // Use the repository method to find professors by type first
         List<ProfesorEntity> profesoresPorTipo = profesorRepository.findByTipo(tipo);
-        
+
         // Then filter by tematica
-        List<ProfesorEntity> profesores = profesoresPorTipo.stream()
-            .filter(profesor -> profesor.getTematicas() != null && 
-                   profesor.getTematicas().stream().anyMatch(t -> t.getTema() != null && t.getTema().equals(tematica)))
-            .toList();
-        
-        log.info("Profesores obtenidos: " + profesores.size());
+        List<ProfesorEntity> profesores = profesoresPorTipo.stream().filter(profesor -> profesor.getTematicas() != null
+                && profesor.getTematicas().stream().anyMatch(t -> t.getTema() != null && t.getTema().equals(tematica)))
+                .toList();
+
+        log.info(exceptionPartString4 + profesores.size());
         return profesores;
     }
 
