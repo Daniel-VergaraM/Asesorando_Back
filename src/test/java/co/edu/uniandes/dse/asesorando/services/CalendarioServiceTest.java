@@ -70,7 +70,9 @@ class CalendarioServiceTest {
             entityManager.persist(entity);
             calendarioList.add(entity);
         }
-    }    /**
+    }
+
+    /**
      * Prueba para crear un Calendario.
      */
     @Test
@@ -83,8 +85,13 @@ class CalendarioServiceTest {
         } catch (Exception e) {
         }
         
+        // Set a unique fechaInicio value to avoid conflict with existing entities
+        java.util.Date currentDate = new java.util.Date();
+        // Add a unique timestamp to ensure it's different from any existing dates
+        entity.setFechaInicio(new java.util.Date(currentDate.getTime() + 1000000));
+
         CalendarioEntity result = calendarioService.createCalendario(entity);
-        
+
         assertNotNull(result);
 
         Long resultId = null;
