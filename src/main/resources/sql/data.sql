@@ -33,6 +33,28 @@ VALUES
 (190002, 2.4435, -76.6048, 15, 'ProfesorEntity', 'profpass5', 'silvia.morales@example.com', 'https://meet.google.com/silvia', 'Docente universitaria e investigadora en biotecnología vegetal', 'Doctorado en Biología Molecular', 'https://randomuser.me/api/portraits/women/35.jpg', 'Silvia Morales', '68000', '3157788990', 'PROFESOR', 'https://youtube.com/silvia/biotecnologia');
 
 
+--Crear Calendario
+-- Calendario 1: Asesoría de Física con Alberto Ruiz
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-07 14:00:00', '2025-05-07 13:00:00', 1, 101);
+-- Calendario 2: Asesoría de Matemáticas con Beatriz Mendoza
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-08 11:30:00', '2025-05-08 10:00:00', 2, 102);
+-- Calendario 3: Asesoría de Psicología con Beatriz Mendoza
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-09 16:00:00', '2025-05-09 15:00:00', 3, 102);
+-- Calendario 4: Asesoría de Comunicación Social con Alberto Ruiz
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-10 12:00:00', '2025-05-10 11:15:00', 4, 101);
+-- Calendario 5: Asesoría de Matemáticas con Beatriz Mendoza
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-11 13:30:00', '2025-05-11 12:00:00', 5, 102);
+-- Calendario 6: Asesoría de Física con Alberto Ruiz
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-12 14:00:00', '2025-05-12 13:00:00', 6, 101);
+-- Calendario 7: Asesoría de Biología con Beatriz Mendoza
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-13 16:30:00', '2025-05-13 15:00:00', 7, 102);
+-- Calendario 8: Asesoría de Química con Carlos Vera
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-14 12:00:00', '2025-05-14 11:00:00', 8, 103);
+-- Calendario 9: Asesoría de Literatura con Beatriz Mendoza
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-15 13:30:00', '2025-05-15 12:15:00', 9, 102);
+-- Calendario 10: Asesoría de Ingeniería de Software con Carlos Vera
+INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-16 14:30:00', '2025-05-16 13:00:00', 10, 103);
+
 -- 1) Insertar ASESORÍAS sin reserva (RESERVA_ID = NULL)
 INSERT INTO ASESORIA_ENTITY
   (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO)
@@ -186,4 +208,3 @@ INSERT INTO ASESORIA_ENTITY (
   (FALSE, 3,  13, 101, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
   (FALSE, 4,  14, 101, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
   (FALSE, 5,  15, 101, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual');
-

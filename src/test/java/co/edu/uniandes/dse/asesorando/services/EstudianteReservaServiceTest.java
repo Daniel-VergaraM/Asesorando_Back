@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,6 @@ class EstudianteReservaServiceTest {
 
     @Autowired
     private EstudianteReservaService estudianteReservaService;
-
 
     @Autowired
     private ReservaRepository reservaRepository;
@@ -55,7 +54,7 @@ class EstudianteReservaServiceTest {
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
-        reserva.setFechaReserva(LocalDate.now().plusDays(2));;
+        reserva.setFechaReserva(LocalDateTime.now().plusDays(2));;
         reserva.setEstudiante(estudiante);
         entityManager.persist(reserva);
         entityManager.flush();
@@ -65,7 +64,7 @@ class EstudianteReservaServiceTest {
     void testCrearReserva() {
         try {
             ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-            nuevaReserva.setFechaReserva(LocalDate.now().plusDays(2));
+            nuevaReserva.setFechaReserva(LocalDateTime.now().plusDays(2));
             
             ReservaEntity result = estudianteReservaService.crearReserva(estudiante.getId(), nuevaReserva);
             
@@ -91,7 +90,7 @@ class EstudianteReservaServiceTest {
     void testActualizarReserva() {
         try {
             ReservaEntity reservaActualizada = factory.manufacturePojo(ReservaEntity.class);
-            reservaActualizada.setFechaReserva(LocalDate.now().plusDays(2));
+            reservaActualizada.setFechaReserva(LocalDateTime.now().plusDays(2));
             
             ReservaEntity result = estudianteReservaService.actualizarReserva(reserva.getId(), reservaActualizada);
             

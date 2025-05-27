@@ -38,6 +38,32 @@ public class ReservaComentarioService {
     }
 
     @Transactional
+    public ComentarioEntity crearYAsociarComentario(Long reservaId, ComentarioEntity comentario)
+    throws EntityNotFoundException, IllegalOperationException {
+
+    log.info("Inicia proceso de creación y asociación de comentario");
+
+    log.info("Buscando reserva con ID {}", reservaId);
+    ReservaEntity reserva = reservaRepository.findById(reservaId)
+        .orElseThrow(() -> new EntityNotFoundException("Reserva no encontrada"));
+
+    log.info("Asociando estudiante de la reserva al comentario");
+    comentario.setEstudiante(reserva.getEstudiante());
+
+    log.info("Guardando comentario en base de datos");
+    comentario = comentarioRepository.save(comentario);
+
+    log.info("Asociando comentario a la reserva y actualizando reserva");
+    reserva.setComentario(comentario);
+    reservaRepository.save(reserva);
+
+    log.info("Comentario creado y asociado correctamente a la reserva con ID {}", reservaId);
+
+    return comentario;
+}
+
+
+    @Transactional
     public ComentarioEntity obtenerComentarioPorReserva(Long reservaId) throws EntityNotFoundException {
         // Obtiene el comentario asociado a la reserva
         ReservaEntity reserva = reservaRepository.findById(reservaId)

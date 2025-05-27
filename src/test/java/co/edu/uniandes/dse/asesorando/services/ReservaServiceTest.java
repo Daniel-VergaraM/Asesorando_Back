@@ -1,12 +1,10 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import co.edu.uniandes.dse.asesorando.dto.ReservaDTO;
 import co.edu.uniandes.dse.asesorando.entities.AsesoriaEntity;
 import co.edu.uniandes.dse.asesorando.entities.EstudianteEntity;
 import co.edu.uniandes.dse.asesorando.entities.ReservaEntity;
@@ -54,87 +53,92 @@ class ReservaServiceTest {
     }
 
     @Test
-    void testCrearReserva() {
-        try {
-            LocalDate fecha = LocalDate.now();
-            ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+    void testCrearReserva() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
 
-            assertNotNull(reserva);
-            assertEquals(fecha, reserva.getFechaReserva());
-            assertEquals(estudiante, reserva.getEstudiante());
-            assertEquals(asesoria, reserva.getAsesoria());
-        } catch (EntityNotFoundException ex) {
-            assertNotNull(ex);
-        }
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
+        assertNotNull(reserva);
+        assertEquals(fecha, reserva.getFechaReserva());
+        assertEquals(estudiante.getId(), reserva.getEstudiante().getId());
+        assertEquals(asesoria.getId(), reserva.getAsesoria().getId());
+    }
+
+
+    @Test
+    void testListarReservas() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
+
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        reservaService.crearReserva(dto);
+
+        List<ReservaEntity> reservas = reservaService.listarReservas();
+        assertFalse(reservas.isEmpty());
     }
 
     @Test
-    void testCrearReservaConDatosNulos() {
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(null, estudiante, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), null, asesoria));
-        assertThrows(EntityNotFoundException.class, () -> reservaService.crearReserva(LocalDate.now(), estudiante, null));
+    void testActualizarReserva() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
+
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
+        LocalDateTime nuevaFecha = LocalDateTime.now().plusDays(2);
+        EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+
+        entityManager.persist(nuevoEstudiante);
+        entityManager.persist(nuevaAsesoria);
+
+        ReservaEntity actualizada = reservaService.updateReserva(reserva.getId(), nuevaFecha, nuevoEstudiante, nuevaAsesoria);
+
+        assertNotNull(actualizada);
+        assertEquals(nuevaFecha, actualizada.getFechaReserva());
+        assertEquals(nuevoEstudiante.getId(), actualizada.getEstudiante().getId());
+        assertEquals(nuevaAsesoria.getId(), actualizada.getAsesoria().getId());
     }
 
     @Test
-    void testListarReservas() {
-        try {
-            LocalDate fecha = LocalDate.now();
-            reservaService.crearReserva(fecha, estudiante, asesoria);
+    void testEliminarReserva() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
 
-            List<ReservaEntity> reservas = reservaService.listarReservas();
-            assertFalse(reservas.isEmpty());
-        } catch (EntityNotFoundException ex) {
-            assertNotNull(ex);
-        }
-    }
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
 
-    @Test
-    void testActualizarReserva() {
-        try {
-            LocalDate fecha = LocalDate.now();
-            ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+        ReservaEntity reserva = reservaService.crearReserva(dto);
 
-            LocalDate nuevaFecha = LocalDate.now().plusDays(2);
-            EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
-            AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
-
-            entityManager.persist(nuevoEstudiante);
-            entityManager.persist(nuevaAsesoria);
-
-            ReservaEntity actualizada = reservaService.updateReserva(reserva.getId(), nuevaFecha, nuevoEstudiante, nuevaAsesoria);
-
-            assertNotNull(actualizada);
-            assertEquals(nuevaFecha, actualizada.getFechaReserva());
-            assertEquals(nuevoEstudiante, actualizada.getEstudiante());
-            assertEquals(nuevaAsesoria, actualizada.getAsesoria());
-        } catch (EntityNotFoundException ex) {
-            assertNotNull(ex);
-        }
-    }
-
-    @Test
-    void testEliminarReserva() {
-        try {
-            LocalDate fecha = LocalDate.now();
-            ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
-
-            reservaService.eliminarReserva(reserva.getId());
-            assertFalse(reservaRepository.existsById(reserva.getId()));
-        } catch (EntityNotFoundException ex) {
-            assertNotNull(ex);
-        }
+        reservaService.eliminarReserva(reserva.getId());
+        assertFalse(reservaRepository.existsById(reserva.getId()));
     }
 
     @Test
     void testGetReserva_Exito() throws EntityNotFoundException {
-        // Crea una reserva
-        LocalDate fecha = LocalDate.now();
-        ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+        LocalDateTime fecha = LocalDateTime.now();
 
-        // Obtén la reserva por su ID
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
         ReservaEntity reservaEncontrada = reservaService.getReserva(reserva.getId());
 
-        // Verifica que la reserva fue encontrada y es la correcta
         assertNotNull(reservaEncontrada);
         assertEquals(reserva.getId(), reservaEncontrada.getId());
         assertEquals(reserva.getFechaReserva(), reservaEncontrada.getFechaReserva());
@@ -142,82 +146,81 @@ class ReservaServiceTest {
 
     @Test
     void testGetReserva_NoEncontrada() {
-        // Intenta obtener una reserva con un ID inexistente
         assertThrows(EntityNotFoundException.class, () -> reservaService.getReserva(Long.MAX_VALUE));
     }
 
     @Test
-    void testEliminarReserva_Exito() throws EntityNotFoundException {
-        // Crea una reserva
-        LocalDate fecha = LocalDate.now();
-        ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
-
-        // Elimina la reserva
-        reservaService.eliminarReserva(reserva.getId());
-
-        // Verifica que la reserva haya sido eliminada
-        assertFalse(reservaRepository.existsById(reserva.getId()));
-    }
-
-    @Test
     void testEliminarReserva_IdNulo() {
-        // Intenta eliminar una reserva con un ID nulo
         assertThrows(EntityNotFoundException.class, () -> reservaService.eliminarReserva(null));
     }
 
     @Test
     void testEliminarReserva_NoExistente() {
-        // Intenta eliminar una reserva con un ID inexistente
         assertThrows(EntityNotFoundException.class, () -> reservaService.eliminarReserva(Long.MAX_VALUE));
     }
 
     @Test
-    void testActualizarReserva_Exito() throws EntityNotFoundException {
-        // Crea una reserva
-        LocalDate fecha = LocalDate.now();
-        ReservaEntity reserva = reservaService.crearReserva(fecha, estudiante, asesoria);
+    void testActualizarReserva_Fallo_FechaNula() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
 
-        // Nuevos datos para la actualización
-        LocalDate nuevaFecha = LocalDate.now().plusDays(2);
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
         EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
         AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
 
-        // Persiste los nuevos estudiantes y asesorías
         entityManager.persist(nuevoEstudiante);
         entityManager.persist(nuevaAsesoria);
 
-        // Actualiza la reserva
-        ReservaEntity reservaActualizada = reservaService.updateReserva(reserva.getId(), nuevaFecha, nuevoEstudiante, nuevaAsesoria);
-
-        // Verifica que los datos de la reserva se han actualizado correctamente
-        assertNotNull(reservaActualizada);
-        assertEquals(nuevaFecha, reservaActualizada.getFechaReserva());
-        assertEquals(nuevoEstudiante, reservaActualizada.getEstudiante());
-        assertEquals(nuevaAsesoria, reservaActualizada.getAsesoria());
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(reserva.getId(), null, nuevoEstudiante, nuevaAsesoria));
     }
 
     @Test
-    void testActualizarReserva_Fallo_FechaNula() {
-        // Intenta actualizar una reserva con fecha nula
-        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, null, estudiante, asesoria));
+    void testActualizarReserva_Fallo_EstudianteNulo() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
+
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
+        entityManager.persist(nuevaAsesoria);
+
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(reserva.getId(), LocalDateTime.now(), null, nuevaAsesoria));
     }
 
     @Test
-    void testActualizarReserva_Fallo_EstudianteNulo() {
-        // Intenta actualizar una reserva con estudiante nulo
-        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), null, asesoria));
-    }
+    void testActualizarReserva_Fallo_AsesoriaNula() throws EntityNotFoundException {
+        LocalDateTime fecha = LocalDateTime.now();
 
-    @Test
-    void testActualizarReserva_Fallo_AsesoriaNula() {
-        // Intenta actualizar una reserva con asesoría nula
-        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), estudiante, null));
+        ReservaDTO dto = new ReservaDTO();
+        dto.setFechaReserva(fecha);
+        dto.setEstudianteId(estudiante.getId());
+        dto.setAsesoriaId(asesoria.getId());
+
+        ReservaEntity reserva = reservaService.crearReserva(dto);
+
+        EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
+        entityManager.persist(nuevoEstudiante);
+
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(reserva.getId(), LocalDateTime.now(), nuevoEstudiante, null));
     }
 
     @Test
     void testActualizarReserva_NoExistente() {
-        // Intenta actualizar una reserva con un ID inexistente
-        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDate.now(), estudiante, asesoria));
-    }
+        EstudianteEntity nuevoEstudiante = factory.manufacturePojo(EstudianteEntity.class);
+        AsesoriaEntity nuevaAsesoria = factory.manufacturePojo(AsesoriaEntity.class);
 
+        entityManager.persist(nuevoEstudiante);
+        entityManager.persist(nuevaAsesoria);
+
+        assertThrows(EntityNotFoundException.class, () -> reservaService.updateReserva(Long.MAX_VALUE, LocalDateTime.now(), nuevoEstudiante, nuevaAsesoria));
+    }
 }

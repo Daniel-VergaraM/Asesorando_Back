@@ -1,6 +1,6 @@
 package co.edu.uniandes.dse.asesorando.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,13 +54,13 @@ class ReservaCalendarioServiceTest {
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
-        reserva.setFechaReserva(LocalDate.now().plusDays(2));
+        reserva.setFechaReserva(LocalDateTime.now().plusDays(2));
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
 
         reserva2 = factory.manufacturePojo(ReservaEntity.class);
-        reserva2.setFechaReserva(LocalDate.now().plusDays(3));
+        reserva2.setFechaReserva(LocalDateTime.now().plusDays(3));
         entityManager.persist(reserva2);
         entityManager.flush();
     }
