@@ -49,17 +49,20 @@ class ReservaCalendarioServiceTest {
     @BeforeEach
     void setUp() {
         calendario = factory.manufacturePojo(CalendarioEntity.class);
+        calendario.setId(null);
         calendario.setReservas(new ArrayList<>());
         entityManager.persist(calendario);
         entityManager.flush();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
+        reserva.setId(null);
         reserva.setFechaReserva(LocalDateTime.now().plusDays(2));
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
 
         reserva2 = factory.manufacturePojo(ReservaEntity.class);
+        reserva2.setId(null);
         reserva2.setFechaReserva(LocalDateTime.now().plusDays(3));
         entityManager.persist(reserva2);
         entityManager.flush();
@@ -93,7 +96,7 @@ class ReservaCalendarioServiceTest {
 
     @Test
     void testCrearReservaEnCalendario_ReservaYaAsociada() {
-        reserva.setCalendario(calendario); // Asocia la reserva al calendario
+        reserva.setCalendario(calendario);
         entityManager.persist(reserva);
 
         assertThrows(IllegalOperationException.class, () -> {
@@ -110,7 +113,6 @@ class ReservaCalendarioServiceTest {
 
     @Test
     void testObtenerReservasPorCalendario_Exito() throws EntityNotFoundException, IllegalOperationException {
-        // Llamada al servicio para obtener reservas por calendario
         CalendarioEntity c = factory.manufacturePojo(CalendarioEntity.class);
         c.setReservas(new ArrayList<>());
         entityManager.persist(c);
@@ -124,12 +126,10 @@ class ReservaCalendarioServiceTest {
 
     @Test
     void testCrearReservaEnCalendario_CalendarioYaTieneReserva() {
-        // Asocia previamente la reserva al calendario
         reserva.setCalendario(calendario);
         entityManager.persist(reserva);
         entityManager.flush();
 
-        // Verifica que se lanza IllegalOperationException
         assertThrows(IllegalOperationException.class, () -> {
             reservaCalendarioService.crearReservaEnCalendario(calendario.getId(), reserva.getId());
         });
