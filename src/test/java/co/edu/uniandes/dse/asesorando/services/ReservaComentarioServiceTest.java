@@ -50,7 +50,9 @@ class ReservaComentarioServiceTest {
         entityManager.getEntityManager().createQuery("DELETE FROM ReservaEntity").executeUpdate();
 
         reserva = factory.manufacturePojo(ReservaEntity.class);
+        reserva.setId(null);
         comentario = factory.manufacturePojo(ComentarioEntity.class);
+        comentario.setId(null);
 
         entityManager.persist(reserva);
     }
@@ -58,6 +60,7 @@ class ReservaComentarioServiceTest {
     @Test
     void testCrearComentario() throws EntityNotFoundException {
         ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
+        nuevoComentario.setId(null);
         ComentarioEntity resultado = reservaComentarioService.crearComentario(reserva.getId(), nuevoComentario);
 
         assertNotNull(resultado);
@@ -69,11 +72,11 @@ class ReservaComentarioServiceTest {
     @Test
     void testCrearComentarioReservaNoExiste() {
         ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
+        nuevoComentario.setId(null);
         assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.crearComentario(999L, nuevoComentario);
         });
     }
-
 
     @Test
     void testObtenerComentarioReservaNoExiste() {
@@ -82,15 +85,12 @@ class ReservaComentarioServiceTest {
         });
     }
 
-
-
     @Test
     void testEliminarComentarioNoExiste() {
         assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.eliminarComentario(999L);
         });
     }
-
 
     @Test
     void testEliminarReservaYComentario() throws EntityNotFoundException {
@@ -116,7 +116,8 @@ class ReservaComentarioServiceTest {
     void testCrearComentarioEnReserva() throws EntityNotFoundException, IllegalOperationException {
         entityManager.persist(comentario);
 
-        ComentarioEntity resultado = reservaComentarioService.crearComentarioEnReserva(reserva.getId(), comentario.getId());
+        ComentarioEntity resultado = reservaComentarioService.crearComentarioEnReserva(reserva.getId(),
+                comentario.getId());
 
         assertNotNull(resultado);
         assertEquals(comentario.getComentario(), resultado.getComentario());
@@ -132,48 +133,47 @@ class ReservaComentarioServiceTest {
     }
 
     @Test
-void testAsociarComentarioAReserva() throws EntityNotFoundException {
-    // Crear y persistir una reserva
-    ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-    entityManager.persist(nuevaReserva);
+    void testAsociarComentarioAReserva() throws EntityNotFoundException {
+        ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
+        entityManager.persist(nuevaReserva);
 
-    // Crear y persistir un comentario
-    ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
-    entityManager.persist(nuevoComentario);
+        ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
+        nuevoComentario.setId(null);
+        entityManager.persist(nuevoComentario);
 
-    // Asociar el comentario a la reserva
-    ComentarioEntity resultado = reservaComentarioService.asociarComentarioAReserva(nuevaReserva.getId(), nuevoComentario.getId());
+        ComentarioEntity resultado = reservaComentarioService.asociarComentarioAReserva(nuevaReserva.getId(),
+                nuevoComentario.getId());
 
-    // Verificar que la asociación fue exitosa
-    assertNotNull(resultado);
-    assertEquals(nuevoComentario.getComentario(), resultado.getComentario());
-    assertEquals(nuevoComentario.getCalificacion(), resultado.getCalificacion());
-    assertEquals(nuevaReserva.getId(), resultado.getReserva().getId());
-}
+        assertNotNull(resultado);
+        assertEquals(nuevoComentario.getComentario(), resultado.getComentario());
+        assertEquals(nuevoComentario.getCalificacion(), resultado.getCalificacion());
+        assertEquals(nuevaReserva.getId(), resultado.getReserva().getId());
+    }
 
-@Test
-void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundException {
-    // Crear y persistir una reserva con un comentario ya asociado
-    ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
-    ComentarioEntity comentarioExistente = factory.manufacturePojo(ComentarioEntity.class);
-    nuevaReserva.setComentario(comentarioExistente);
-    comentarioExistente.setReserva(nuevaReserva);
-    entityManager.persist(nuevaReserva);
-    entityManager.persist(comentarioExistente);
+    @Test
+    void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundException {
+        ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
+        ComentarioEntity comentarioExistente = factory.manufacturePojo(ComentarioEntity.class);
+        comentarioExistente.setId(null);
+        nuevaReserva.setComentario(comentarioExistente);
+        comentarioExistente.setReserva(nuevaReserva);
+        entityManager.persist(nuevaReserva);
+        entityManager.persist(comentarioExistente);
 
-    // Crear y persistir un nuevo comentario
-    ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
-    entityManager.persist(nuevoComentario);
+        ComentarioEntity nuevoComentario = factory.manufacturePojo(ComentarioEntity.class);
+        nuevoComentario.setId(null);
+        entityManager.persist(nuevoComentario);
 
-    // Asociar el nuevo comentario a la reserva (debe actualizar el existente)
-    ComentarioEntity resultado = reservaComentarioService.asociarComentarioAReserva(nuevaReserva.getId(), nuevoComentario.getId());
+        ComentarioEntity resultado = reservaComentarioService.asociarComentarioAReserva(nuevaReserva.getId(),
+                nuevoComentario.getId());
 
-    // Verificar que el comentario existente fue actualizado
-    assertNotNull(resultado);
-    assertEquals(nuevoComentario.getComentario(), resultado.getComentario());
-    assertEquals(nuevoComentario.getCalificacion(), resultado.getCalificacion());
-    assertEquals(nuevaReserva.getId(), resultado.getReserva().getId());
-}
+        assertNotNull(resultado);
+        assertEquals(nuevoComentario.getComentario(), resultado.getComentario());
+        assertEquals(nuevoComentario.getCalificacion(), resultado.getCalificacion());
+        assertEquals(nuevaReserva.getId(), resultado.getReserva().getId());
+    }
 
     @Test
     void testAsociarComentarioAReservaNoExiste() {
@@ -188,6 +188,7 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
     @Test
     void testAsociarComentarioAReservaComentarioNoExiste() {
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
         entityManager.persist(nuevaReserva);
 
         assertThrows(EntityNotFoundException.class, () -> {
@@ -207,10 +208,12 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
     void testActualizarComentarioComentarioNoExiste() {
         // Crear una reserva sin comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
         entityManager.persist(nuevaReserva);
 
         // Intentar actualizar el comentario cuando no existe
         ComentarioEntity comentarioActualizado = factory.manufacturePojo(ComentarioEntity.class);
+        comentarioActualizado.setId(null);
         assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.actualizarComentario(nuevaReserva.getId(), comentarioActualizado);
         });
@@ -218,23 +221,23 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
 
     @Test
     void testActualizarComentarioExitoso() throws EntityNotFoundException {
-        // Crear y persistir una reserva con un comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
         ComentarioEntity comentarioExistente = factory.manufacturePojo(ComentarioEntity.class);
+        comentarioExistente.setId(null);
         nuevaReserva.setComentario(comentarioExistente);
         comentarioExistente.setReserva(nuevaReserva);
         entityManager.persist(nuevaReserva);
         entityManager.persist(comentarioExistente);
 
-        // Crear el comentario actualizado
         ComentarioEntity comentarioActualizado = factory.manufacturePojo(ComentarioEntity.class);
+        comentarioActualizado.setId(null);
         comentarioActualizado.setComentario("Nuevo Comentario");
         comentarioActualizado.setCalificacion(5);
 
-        // Realizar la actualización
-        ComentarioEntity resultado = reservaComentarioService.actualizarComentario(nuevaReserva.getId(), comentarioActualizado);
+        ComentarioEntity resultado = reservaComentarioService.actualizarComentario(nuevaReserva.getId(),
+                comentarioActualizado);
 
-        // Verificar que el comentario fue actualizado
         assertNotNull(resultado);
         assertEquals("Nuevo Comentario", resultado.getComentario());
         assertEquals(5, resultado.getCalificacion());
@@ -249,12 +252,11 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
     }
 
     @Test
-    void testEliminarComentarioComentarioNoExiste() {
-        // Crear una reserva sin comentario
+    void testEliminarComentarioComentarioNoExiste() { // Crear una reserva sin comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
         entityManager.persist(nuevaReserva);
 
-        // Intentar eliminar el comentario cuando no existe
         assertThrows(EntityNotFoundException.class, () -> {
             reservaComentarioService.eliminarComentario(nuevaReserva.getId());
         });
@@ -262,18 +264,17 @@ void testAsociarComentarioAReservaYaTieneComentario() throws EntityNotFoundExcep
 
     @Test
     void testEliminarComentarioExitoso() throws EntityNotFoundException {
-        // Crear y persistir una reserva con un comentario
         ReservaEntity nuevaReserva = factory.manufacturePojo(ReservaEntity.class);
+        nuevaReserva.setId(null);
         ComentarioEntity comentarioExistente = factory.manufacturePojo(ComentarioEntity.class);
+        comentarioExistente.setId(null);
         nuevaReserva.setComentario(comentarioExistente);
         comentarioExistente.setReserva(nuevaReserva);
         entityManager.persist(nuevaReserva);
         entityManager.persist(comentarioExistente);
 
-        // Eliminar el comentario
         reservaComentarioService.eliminarComentario(nuevaReserva.getId());
 
-        // Verificar que el comentario fue eliminado
         assertFalse(comentarioRepository.existsById(comentarioExistente.getId()));
         assertNull(nuevaReserva.getComentario());
     }
