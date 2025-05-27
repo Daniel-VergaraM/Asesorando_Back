@@ -140,6 +140,7 @@ public class UsuarioService {
         usuarioExistente.setCorreo(usuario.getCorreo());
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setTipo(usuario.getTipo());
+        usuarioExistente.setTelefono(usuario.getTelefono());
         usuarioExistente.setAsesoriasCompletadas(usuario.getAsesoriasCompletadas());
 
         if (usuario instanceof ProfesorEntity profesor && usuarioExistente instanceof ProfesorEntity profesorExistente) {

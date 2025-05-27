@@ -83,6 +83,32 @@ INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (
 INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 8, 8, 'La asesoría fue increíble, el profesor tiene una gran forma de explicar la química orgánica. ¡Me ayudó mucho!');
 INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 9, 9, 'La asesoría fue excelente, la profesora explicó muy bien la literatura contemporánea y me dio muchos recursos adicionales.');
 INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 10, 10, 'La asesoría fue útil, aunque me gustaría que se hablara más sobre los detalles del desarrollo ágil de software.');
+INSERT INTO ASESORIA_ENTITY (
+  COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID,
+  USUARIO_ID, AREA, DURACION, TEMATICA, TIPO
+) VALUES
+  (FALSE, 1,  11, 101, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 101, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 101, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 101, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 101, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual'),
+
+  (FALSE, 1,  11, 102, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 102, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 102, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 102, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 102, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual'),
+
+  (FALSE, 1,  11, 105, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 105, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 105, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 105, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 105, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual')
+  
+  
+  ;
+
+  select * from USUARIO_ENTITY;
 
 
 --Crear Asesorias 
@@ -115,3 +141,11 @@ INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMEN
 INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 8, 8, 8, 8, 1008, 'Completada');
 INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 9, 9, 9, 9, 1009, 'Completada');
 INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 10, 10, 10, 10, 1010, 'Completada');
+
+SELECT * FROM ASESORIA_ENTITY ;
+SELECT * FROM CALENDARIO_ENTITY  ;
+SELECT * FROM COMENTARIO_ENTITY ;
+SELECT * FROM RESERVA_ENTITY  ;
+SELECT * FROM TEMATICA_ENTITY  ;
+SELECT * FROM USUARIO_ENTITY ;
+SELECT * FROM USUARIO_ENTITY_TEMATICAS  ;
