@@ -79,6 +79,16 @@ public class AsesoriaController {
         return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDTO>>() {}.getType());
     }
 
+    @GetMapping("/filtrar")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<AsesoriaDTO> filtrarAsesorias(
+        @RequestParam(required = false) String area,
+        @RequestParam(required = false) Long profesorId,
+        @RequestParam(required = false) String tipo) throws IllegalOperationException {
+
+        List<AsesoriaEntity> asesorias = asesoriaService.filtrarAsesorias(profesorId, tipo, area);
+        return modelMapper.map(asesorias, new TypeToken<List<AsesoriaDTO>>() {}.getType());
+    }
 
 
     /**
