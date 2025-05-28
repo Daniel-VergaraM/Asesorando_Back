@@ -185,5 +185,15 @@ SOFTWARE.
          return asesoriaRepository.findAll();
      }
      
+     @Transactional
+     public List<AsesoriaEntity> filtrarAsesorias(Long profesorId, String tipo, String area) {
+    List<AsesoriaEntity> todas = asesoriaRepository.findAll();
+
+    return todas.stream()
+        .filter(a -> profesorId == null || (a.getProfesor() != null && a.getProfesor().getId().equals(profesorId)))
+        .filter(a -> tipo == null || (a.getTipo() != null && a.getTipo().equalsIgnoreCase(tipo)))
+        .filter(a -> area == null || (a.getArea() != null && a.getArea().equalsIgnoreCase(area)))
+        .collect(Collectors.toList());
+    }
  }
  

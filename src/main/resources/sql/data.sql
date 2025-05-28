@@ -1,8 +1,10 @@
+delete from reserva_entity;
+delete from comentario_entity;
+delete from asesoria_entity;
+delete from calendario_entity;
+delete from usuario_entity_tematicas;
+delete from tematica_entity;
 delete from usuario_entity;
-
-
-
-
 
 -- Crear estudiantes con URLs de retratos reales
 INSERT INTO USUARIO_ENTITY (CODIGO_POSTAL, LATITUD, LONGITUD, ID, DTYPE, CONTRASENA, CORREO, ENLACE_REUNION, EXPERIENCIA, FORMACION, FOTO_URL, NOMBRE, PRECIO_HORA, TELEFONO, TIPO, VIDEO_URL)
@@ -33,30 +35,7 @@ VALUES
 (190002, 2.4435, -76.6048, 15, 'ProfesorEntity', 'profpass5', 'silvia.morales@example.com', 'https://meet.google.com/silvia', 'Docente universitaria e investigadora en biotecnología vegetal', 'Doctorado en Biología Molecular', 'https://randomuser.me/api/portraits/women/35.jpg', 'Silvia Morales', '68000', '3157788990', 'PROFESOR', 'https://youtube.com/silvia/biotecnologia');
 
 
---Crear Asesorias
--- Asesoría 1: Maria Gomez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 101, 1, 1001, 1, 'Física', 60, 'Mecánica cuántica', 'Virtual');
--- Asesoría 2: Juan Perez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 102, 2, 1002, 2, 'Matemáticas', 90, 'Cálculo diferencial', 'Presencial');
--- Asesoría 3: Laura Martinez toma una asesoría de Psicología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 102, 3, 1003, 3, 'Psicología', 60, 'Psicología del desarrollo', 'Virtual');
--- Asesoría 4: Carlos Lopez toma una asesoría de Comunicación Social con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 101, 4, 1004, 4, 'Comunicación Social', 75, 'Teoría de la comunicación', 'Presencial');
--- Asesoría 5: Paula Sanchez toma una asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 102, 5, 1005, 5, 'Matemáticas', 90, 'Álgebra lineal', 'Virtual');
--- Asesoría 6: Luis Fernandez toma una asesoría de Física con Alberto Ruiz
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 6, 101, 6, 1006, 6, 'Física', 60, 'Electromagnetismo', 'Presencial');
--- Asesoría 7: Ana Garcia toma una asesoría de Biología con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 7, 102, 7, 1007, 7, 'Biología', 90, 'Biología celular', 'Virtual');
--- Asesoría 8: David Moreno toma una asesoría de Química con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 8, 103, 8, 1008, 8, 'Química', 60, 'Química orgánica', 'Presencial');
--- Asesoría 9: Andrea Castillo toma una asesoría de Literatura con Beatriz Mendoza
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 9, 102, 9, 1009, 9, 'Literatura', 75, 'Literatura contemporánea', 'Virtual');
--- Asesoría 10: Julian Mendez toma una asesoría de Ingeniería de Software con Carlos Vera
-INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 10, 103, 10, 1010, 10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
-
-
---Crear Tematicas
+--Crear Tematicas  
 INSERT INTO TEMATICA_ENTITY (ID, AREA, TEMA) VALUES (1, 'Matemáticas', 'Álgebra lineal');
 INSERT INTO TEMATICA_ENTITY (ID, AREA, TEMA) VALUES (2, 'Matemáticas', 'Cálculo diferencial');
 INSERT INTO TEMATICA_ENTITY (ID, AREA, TEMA) VALUES (3, 'Física', 'Mecánica clásica');
@@ -69,8 +48,7 @@ INSERT INTO TEMATICA_ENTITY (ID, AREA, TEMA) VALUES (9, 'Biología', 'Genética'
 INSERT INTO TEMATICA_ENTITY (ID, AREA, TEMA) VALUES (10, 'Biología', 'Evolución');
 
 
-
---Crear Usuario_Entity_Tematicas
+--Crear Usuario_Entity_Tematicas  
 INSERT INTO USUARIO_ENTITY_TEMATICAS(PROFESORES_ID, TEMATICAS_ID) VALUES (101, 3); -- Alberto Ruiz → Mecánica clásica
 INSERT INTO USUARIO_ENTITY_TEMATICAS(PROFESORES_ID, TEMATICAS_ID) VALUES (101, 4); -- Alberto Ruiz → Termodinámica
 INSERT INTO USUARIO_ENTITY_TEMATICAS(PROFESORES_ID, TEMATICAS_ID) VALUES (102, 1); -- Beatriz Mendoza → Álgebra lineal
@@ -83,80 +61,30 @@ INSERT INTO USUARIO_ENTITY_TEMATICAS(PROFESORES_ID, TEMATICAS_ID) VALUES (11, 1)
 INSERT INTO USUARIO_ENTITY_TEMATICAS(PROFESORES_ID, TEMATICAS_ID) VALUES (11, 2); -- Marcela Ramirez → Cálculo diferencial
 
 
-
---Crear Reserva_Entity
--- Reserva 1: Maria Gomez toma asesoría de Física con Alberto Ruiz
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 1, 1, 1, 1, 1001, 'Completada');
--- Reserva 2: Juan Perez toma asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 2, 2, 2, 2, 1002, 'Completada');
--- Reserva 3: Laura Martinez toma asesoría de Psicología con Beatriz Mendoza
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 3, 3, 3, 3, 1003, 'Completada');
--- Reserva 4: Carlos Lopez toma asesoría de Comunicación Social con Alberto Ruiz
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 4, 4, 4, 4, 1004, 'Completada');
--- Reserva 5: Paula Sanchez toma asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 5, 5, 5, 5, 1005, 'Completada');
--- Reserva 6: Luis Fernandez toma asesoría de Física con Alberto Ruiz
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 6, 6, 6, 6, 1006, 'Completada');
--- Reserva 7: Ana Garcia toma asesoría de Biología con Beatriz Mendoza
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 7, 7, 7, 7, 1007, 'Completada');
--- Reserva 8: David Moreno toma asesoría de Química con Carlos Vera
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 8, 8, 8, 8, 1008, 'Completada');
--- Reserva 9: Andrea Castillo toma asesoría de Literatura con Beatriz Mendoza
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 9, 9, 9, 9, 1009, 'Completada');
--- Reserva 10: Julian Mendez toma asesoría de Ingeniería de Software con Carlos Vera
-INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 10, 10, 10, 10, 1010, 'Completada');
-
-
-
-
---Crear comentario
--- Comentario 1: Maria Gomez comenta sobre su asesoría de Física con Alberto Ruiz
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 1, 1, 'La asesoría fue excelente, me ayudó mucho a entender la teoría de la mecánica cuántica.');
--- Comentario 2: Juan Perez comenta sobre su asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 2, 2, 'La asesoría fue buena, pero creo que se podría haber explicado más detalladamente el cálculo diferencial.');
--- Comentario 3: Laura Martinez comenta sobre su asesoría de Psicología con Beatriz Mendoza
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 3, 3, 'Me encantó la asesoría, la profesora explicó muy bien los conceptos de psicología del desarrollo.');
--- Comentario 4: Carlos Lopez comenta sobre su asesoría de Comunicación Social con Alberto Ruiz
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (3, 4, 4, 'La asesoría fue útil, pero hubo algunos momentos en los que se hacía muy técnica la explicación de la teoría de la comunicación.');
--- Comentario 5: Paula Sanchez comenta sobre su asesoría de Matemáticas con Beatriz Mendoza
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 5, 5, 'La asesoría estuvo bien, pero hubiera preferido más ejemplos prácticos de álgebra lineal.');
--- Comentario 6: Luis Fernandez comenta sobre su asesoría de Física con Alberto Ruiz
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 6, 6, 'Fue una excelente asesoría, entendí muy bien los temas de electromagnetismo. ¡Muy recomendable!');
--- Comentario 7: Ana Garcia comenta sobre su asesoría de Biología con Beatriz Mendoza
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 7, 7, 'La clase fue bastante clara, aunque me gustaría que se profundizara un poco más en los detalles de la biología celular.');
--- Comentario 8: David Moreno comenta sobre su asesoría de Química con Carlos Vera
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 8, 8, 'La asesoría fue increíble, el profesor tiene una gran forma de explicar la química orgánica. ¡Me ayudó mucho!');
--- Comentario 9: Andrea Castillo comenta sobre su asesoría de Literatura con Beatriz Mendoza
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 9, 9, 'La asesoría fue excelente, la profesora explicó muy bien la literatura contemporánea y me dio muchos recursos adicionales.');
--- Comentario 10: Julian Mendez comenta sobre su asesoría de Ingeniería de Software con Carlos Vera
-INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 10, 10, 'La asesoría fue útil, aunque me gustaría que se hablara más sobre los detalles del desarrollo ágil de software.');
-
-
-
-
---Crear Calendario
--- Calendario 1: Asesoría de Física con Alberto Ruiz
+--Crear Calendario 
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-07 14:00:00', '2025-05-07 13:00:00', 1, 101);
--- Calendario 2: Asesoría de Matemáticas con Beatriz Mendoza
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-08 11:30:00', '2025-05-08 10:00:00', 2, 102);
--- Calendario 3: Asesoría de Psicología con Beatriz Mendoza
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-09 16:00:00', '2025-05-09 15:00:00', 3, 102);
--- Calendario 4: Asesoría de Comunicación Social con Alberto Ruiz
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-10 12:00:00', '2025-05-10 11:15:00', 4, 101);
--- Calendario 5: Asesoría de Matemáticas con Beatriz Mendoza
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-11 13:30:00', '2025-05-11 12:00:00', 5, 102);
--- Calendario 6: Asesoría de Física con Alberto Ruiz
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-12 14:00:00', '2025-05-12 13:00:00', 6, 101);
--- Calendario 7: Asesoría de Biología con Beatriz Mendoza
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-13 16:30:00', '2025-05-13 15:00:00', 7, 102);
--- Calendario 8: Asesoría de Química con Carlos Vera
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-14 12:00:00', '2025-05-14 11:00:00', 8, 103);
--- Calendario 9: Asesoría de Literatura con Beatriz Mendoza
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-15 13:30:00', '2025-05-15 12:15:00', 9, 102);
--- Calendario 10: Asesoría de Ingeniería de Software con Carlos Vera
 INSERT INTO CALENDARIO_ENTITY (FECHA_FIN, FECHA_INICIO, ID, PROFESOR_ID) VALUES ('2025-05-16 14:30:00', '2025-05-16 13:00:00', 10, 103);
 
 
+--Crear Comentario  
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 1, 1, 'La asesoría fue excelente, me ayudó mucho a entender la teoría de la mecánica cuántica.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 2, 2, 'La asesoría fue buena, pero creo que se podría haber explicado más detalladamente el cálculo diferencial.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 3, 3, 'Me encantó la asesoría, la profesora explicó muy bien los conceptos de psicología del desarrollo.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (3, 4, 4, 'La asesoría fue útil, pero hubo algunos momentos en los que se hacía muy técnica la explicación de la teoría de la comunicación.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 5, 5, 'La asesoría estuvo bien, pero hubiera preferido más ejemplos prácticos de álgebra lineal.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 6, 6, 'Fue una excelente asesoría, entendí muy bien los temas de electromagnetismo. ¡Muy recomendable!');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 7, 7, 'La clase fue bastante clara, aunque me gustaría que se profundizara un poco más en los detalles de la biología celular.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 8, 8, 'La asesoría fue increíble, el profesor tiene una gran forma de explicar la química orgánica. ¡Me ayudó mucho!');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (5, 9, 9, 'La asesoría fue excelente, la profesora explicó muy bien la literatura contemporánea y me dio muchos recursos adicionales.');
+INSERT INTO COMENTARIO_ENTITY(CALIFICACION, ESTUDIANTE, ID, COMENTARIO) VALUES (4, 10, 10, 'La asesoría fue útil, aunque me gustaría que se hablara más sobre los detalles del desarrollo ágil de software.');
 INSERT INTO ASESORIA_ENTITY (
   COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID,
   USUARIO_ID, AREA, DURACION, TEMATICA, TIPO
@@ -165,5 +93,61 @@ INSERT INTO ASESORIA_ENTITY (
   (FALSE, 2,  12, 101, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
   (FALSE, 3,  13, 101, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
   (FALSE, 4,  14, 101, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
-  (FALSE, 5,  15, 101, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual');
+  (FALSE, 5,  15, 101, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual'),
 
+  (FALSE, 1,  11, 102, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 102, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 102, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 102, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 102, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual'),
+
+  (FALSE, 1,  11, 105, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual'),
+  (FALSE, 2,  12, 105, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial'),
+  (FALSE, 3,  13, 105, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual'),
+  (FALSE, 4,  14, 105, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial'),
+  (FALSE, 5,  15, 105, NULL,10, 'Física', '90', 'Mecánica de fluidos', 'Virtual')
+  
+  
+  ;
+
+  select * from USUARIO_ENTITY;
+
+
+--Crear Asesorias 
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 1, 101, NULL, 1, 'Física', 60, 'Mecánica cuántica', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 2, 102, NULL, 2, 'Matemáticas', 90, 'Cálculo diferencial', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 3, 102, NULL, 3, 'Psicología', 60, 'Psicología del desarrollo', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 4, 101, NULL, 4, 'Comunicación Social', 75, 'Teoría de la comunicación', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 5, 102, NULL, 5, 'Matemáticas', 90, 'Álgebra lineal', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 6, 6, 101, NULL, 6, 'Física', 60, 'Electromagnetismo', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 7, 7, 102, NULL, 7, 'Biología', 90, 'Biología celular', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 8, 8, 103, NULL, 8, 'Química', 60, 'Química orgánica', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 9, 9, 102, NULL, 9, 'Literatura', 75, 'Literatura contemporánea', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 10, 10, 103, NULL, 10, 'Ingeniería de Software', 90, 'Desarrollo ágil de software', 'Presencial');
+
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 1, 11, 101, NULL, 6, 'Física', '45', 'Ondas y sonido', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 2, 12, 101, NULL, 7, 'Física', '60', 'Óptica física', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 3, 13, 101, NULL, 8, 'Física', '30', 'Electromagnetismo avanzado', 'Virtual');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 4, 14, 101, NULL, 9, 'Física', '75', 'Termodinámica aplicada', 'Presencial');
+INSERT INTO ASESORIA_ENTITY (COMPLETADA, CALENDARIO_ID, ID, PROFESOR_ID, RESERVA_ID, USUARIO_ID, AREA, DURACION, TEMATICA, TIPO) VALUES (FALSE, 5, 15, 101, NULL, 10, 'Física', '90', 'Mecánica de fluidos', 'Virtual');
+
+
+--Crear Reserva_Entity  
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 1, 1, 1, 1, 1001, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 2, 2, 2, 2, 1002, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 3, 3, 3, 3, 1003, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 4, 4, 4, 4, 1004, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 5, 5, 5, 5, 1005, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 6, 6, 6, 6, 1006, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 7, 7, 7, 7, 1007, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 8, 8, 8, 8, 1008, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 9, 9, 9, 9, 1009, 'Completada');
+INSERT INTO RESERVA_ENTITY(CANCELADA, FECHA_RESERVA, ASESORIA, CALENDARIO, COMENTARIO, ESTUDIANTE, ID, ESTADO)VALUES (FALSE, '2025-05-04', 10, 10, 10, 10, 1010, 'Completada');
+
+SELECT * FROM ASESORIA_ENTITY ;
+SELECT * FROM CALENDARIO_ENTITY  ;
+SELECT * FROM COMENTARIO_ENTITY ;
+SELECT * FROM RESERVA_ENTITY  ;
+SELECT * FROM TEMATICA_ENTITY  ;
+SELECT * FROM USUARIO_ENTITY ;
+SELECT * FROM USUARIO_ENTITY_TEMATICAS  ;

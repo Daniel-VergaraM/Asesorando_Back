@@ -156,15 +156,13 @@ public UsuarioDTO update(
     @PathVariable Long id,
     @RequestBody UsuarioDTO usuarioDto
 ) throws EntityNotFoundException {
-    // 1) Obtiene la entidad completa del usuario antes de actualizar
-    UsuarioEntity existente = usuarioService.getUsuario(id);
-    // 2) Mapea sólo los campos que vienen en el DTO
-    UsuarioEntity cambios = modelMapper.map(usuarioDto, UsuarioEntity.class);
-    // 3) Preserva la lista de asesorías completadas
-    cambios.setAsesoriasCompletadas(existente.getAsesoriasCompletadas());
-    // 4) Llama al servicio, que ahora no recibirá null en esa colección
-    UsuarioEntity actualizado = usuarioService.updateUsuario(id, cambios);
-    // 5) Devuelve el DTO resultante
+     UsuarioEntity existente = usuarioService.getUsuario(id);
+
+    modelMapper.map(usuarioDto, existente);
+
+    UsuarioEntity actualizado = usuarioService.updateUsuario(id, existente);
+
+    // 4) Devolver DTO para el cliente
     return modelMapper.map(actualizado, UsuarioDTO.class);
 }
 
